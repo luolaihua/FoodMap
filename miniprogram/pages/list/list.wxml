@@ -1,0 +1,20 @@
+<form bindsubmit='bindconfirm'>
+    <view class="cu-bar search bg-white">
+      <view class='search-form round'>
+        <text class="cuIcon-search"></text>
+        <input type="text" placeholder="搜索店铺" value="{{defaultSearchValue}}" bindconfirm="storeSearch" name="searchContent" confirm-type="search"></input>
+       <text class="cuIcon-roundclose" bindtap="clearSearch"></text>
+      </view>
+    </view>
+  </form>
+<block wx:for="{{stores}}" wx:key="_id">
+  <navigator url="../info/info?id={{item._id}}">
+    <view class="card">
+      <view class="card_title">{{item.title}}</view>
+      <view class="card_infobar">
+        <view class="card_address">{{item.address}}</view>
+        <view class="card_thumbsup">{{item.thumbs_up}}</view>
+      </view>
+    </view>
+  </navigator>
+</block>

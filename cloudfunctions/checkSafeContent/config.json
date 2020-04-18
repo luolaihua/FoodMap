@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "openapi": [
+      "security.msgSecCheck",
+      "security.imgSecCheck",
+      "img.aiCrop"
+    ]
+  }
+}

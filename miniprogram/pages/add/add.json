@@ -1,0 +1,8 @@
+{
+  "usingComponents": {
+    "rate":"../../components/wechat-miniprogram-rate/index",
+    "van-button": "@vant/weapp/button/index",
+    "van-rate": "@vant/weapp/rate/index",
+    "van-uploader": "@vant/weapp/uploader/index"
+  }
+}

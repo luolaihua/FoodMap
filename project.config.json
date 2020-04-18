@@ -1,0 +1,80 @@
+{
+	"miniprogramRoot": "miniprogram/",
+	"cloudfunctionRoot": "cloudfunctions/",
+	"setting": {
+		"urlCheck": true,
+		"es6": true,
+		"postcss": true,
+		"preloadBackgroundData": false,
+		"minified": true,
+		"newFeature": true,
+		"coverView": true,
+		"nodeModules": true,
+		"autoAudits": false,
+		"showShadowRootInWxmlPanel": true,
+		"scopeDataCheck": false,
+		"checkInvalidKey": true,
+		"checkSiteMap": true,
+		"uploadWithSourceMap": true,
+		"babelSetting": {
+			"ignore": [],
+			"disablePlugins": [],
+			"outputPath": ""
+		},
+		"enhance": true
+	},
+	"appid": "wxaf60970efe7d982d",
+	"projectname": "foodMap",
+	"libVersion": "2.10.4",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
+	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"condition": {
+		"search": {
+			"current": -1,
+			"list": []
+		},
+		"conversation": {
+			"current": -1,
+			"list": []
+		},
+		"plugin": {
+			"current": -1,
+			"list": []
+		},
+		"game": {
+			"list": []
+		},
+		"miniprogram": {
+			"current": 3,
+			"list": [
+				{
+					"id": -1,
+					"name": "全部内容",
+					"pathName": "pages/list/list",
+					"query": ""
+				},
+				{
+					"id": 1,
+					"name": "商铺详情",
+					"pathName": "pages/info/info",
+					"query": "id=XE0cj8DR1TiNzjpY",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "新增数据",
+					"pathName": "pages/add/add",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "搜索页面",
+					"pathName": "pages/search/search",
+					"query": "",
+					"scene": null
+				}
+			]
+		}
+	}
+}
