@@ -22,22 +22,26 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+
     var that = this
     setTimeout(() => {
       this.setData({
-        hideMe:true
+        hideMe: true
       })
     }, 3000);
-    this.initMap()
+    this.setData({
+      windowHeight: app.globalData.windowHeight,
+      defaultScale: config.default_scale
+    })
   },
-  initMap(){
+  async initMap() {
     var that = this
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度
       altitude: 'true',
       isHighAccuracy: 'true',
-      success(res){
+      success(res) {
         console.log(res)
         const latitude = res.latitude
         const longitude = res.longitude
@@ -49,23 +53,39 @@ Page({
       }
     })
 
-    wx.showLoading({
-      title: '数据加载中...',
-    })
-    store.get().then(res => {
-      let data = res.data;
-      // 将 _id 给 id ,确保 marker 事件的正确触发
-      data.map(item => {
-        item.id = item._id
-      });
-      this.setData({
-        stores: res.data,
-        windowHeight: app.globalData.windowHeight,
-        defaultScale: config.default_scale
-      }, () => {
-        wx.hideLoading();
+    //获取openid,然后从云端获取该id的数据
+    var openId = wx.getStorageSync('openID')
+    var storesArr
+    //如果id为空
+    if (openId == '') {
+      await wx.cloud.callFunction({
+        name: "getUserOpenId"
+      }).then(res => {
+        console.log(res)
+        wx.setStorageSync('openID', res.result.openId)
+        userInfo.where({
+          openId: res.result.openId
+        }).get().then(res => {
+          storesArr = res.data[0].stores
+          wx.setStorageSync('storesArr', storesArr)
+          that.setData({
+            stores:storesArr
+          })
+        })
       })
-    })
+    } else {
+      console.log(openId)
+      var info = await userInfo.where({
+        openId: openId
+      }).get()
+      storesArr = info.data[0].stores
+      wx.setStorageSync('storesArr', storesArr)
+       console.log(storesArr)
+       this.setData({
+         stores: storesArr,
+       })
+    }
+
   },
 
   onShow: function () {
@@ -78,48 +98,67 @@ Page({
     })
   },
   getUserInfo: function (e) {
+
     if (e.detail.userInfo) {
-      userInfo.get().then(res => {
-        if (!res.data.length) {
-          userInfo.add({
-            data: e.detail.userInfo
-          })
-        }
-        app.globalData.is_administrator = true;
-        wx.navigateTo({
-          url: '../add/add',
+      var info = e.detail.userInfo
+      var userInfo = wx.getStorageSync('userInfo')
+      if (userInfo == '' || userInfo == undefined) {
+        wx.setStorageSync('userInfo', info)
+        //console.log(info)
+        wx.cloud.callFunction({
+          name: "getUserOpenId",
+          data: {
+            action: 'initInfo',
+            info: info
+          }
+        }).then(res => {
+          console.log(res)
+          app.globalData.openId = res.result.openId
+          wx.setStorageSync('openID', res.result.openId)
         })
+      }
+      app.globalData.is_administrator = true;
+      wx.navigateTo({
+        url: '../add/add',
+      })
 
-        /*         wx.cloud.callFunction({
-                  name: 'checkUserAuth'
-                }).then(res => {
+      /*       userInfo.get().then(res => {
+              if (!res.data.length) {
+                userInfo.add({
+                  data: e.detail.userInfo
+                })
+              }
 
-                  if (res.result.data.is_administrator) {
-                    app.globalData.is_administrator = true;
-                    wx.showModal({
-                      title: '管理员登陆成功',
-                      content: '管理员您好，是否要进入新增界面？',
-                      success: res => {
-                        if (res.cancel == false && res.confirm == true) {
-                          wx.navigateTo({
-                            url: '../add/add',
+                      wx.cloud.callFunction({
+                        name: 'checkUserAuth'
+                      }).then(res => {
+
+                        if (res.result.data.is_administrator) {
+                          app.globalData.is_administrator = true;
+                          wx.showModal({
+                            title: '管理员登陆成功',
+                            content: '管理员您好，是否要进入新增界面？',
+                            success: res => {
+                              if (res.cancel == false && res.confirm == true) {
+                                wx.navigateTo({
+                                  url: '../add/add',
+                                })
+                              } else {
+                                wx.showToast({
+                                  title: '您可以点击下方查看全部按钮管理已有数据',
+                                  icon: 'none'
+                                });
+                              }
+                            }
                           })
                         } else {
                           wx.showToast({
-                            title: '您可以点击下方查看全部按钮管理已有数据',
+                            title: '您不是管理员，无法进入管理入口！',
                             icon: 'none'
                           });
                         }
-                      }
-                    })
-                  } else {
-                    wx.showToast({
-                      title: '您不是管理员，无法进入管理入口！',
-                      icon: 'none'
-                    });
-                  }
-                }) */
-      })
+                      }) 
+            }) */
     } else {
       // 处理未授权的场景
       wx.showModal({

@@ -30,4 +30,35 @@ textarea{
 }
 .submit{
   margin-top: 40rpx;
+  margin-bottom: 20rpx;
+  background-color: transparent;
+  border: none;
+}
+.custom-button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 20%;
+  width: 8vw;
+  height: 4vh;
+  background-color: orangered;
+  color: #fff;
+
+}
+.form-group{
+  background-color: white;
+  border-top: 1rpx solid #eee;
+  padding: 1rpx 30rpx;
+  display: flex;
+  align-items: center;
+  min-height: 100rpx;
+  justify-content: space-between; 
+  height: 200rpx;
+}
+.scrollX{
+  height: 100rpx;
+  width: 400rpx;
+}
+.test{
+  background-color: rgb(25, 151, 230);
 }

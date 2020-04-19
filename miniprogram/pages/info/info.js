@@ -18,24 +18,27 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    store.doc(options.id).get().then(res => {
+    var index = options.index
+    var storesArr = wx.getStorageSync('storesArr')
+    var store = storesArr[index]
+
       if (config.dynamic_title){
         wx.setNavigationBarTitle({
-          title: res.data.title,
+          title: store.name,
         });
       }
       // 两次切割以适配中英文逗号
-      let keywords_array = res.data.keywords.split(',').map(item => { return item.split('，') })
+      let keywords_array = store.keywords.split(',').map(item => { return item.split('，') })
       // 将数组压平
       let keywords = [].concat.apply([], keywords_array);
-      res.data.keywords = keywords
+      store.keywords = keywords
       this.setData({
-        store: res.data,
+        store: store,
         is_administrator: app.globalData.is_administrator
       },res => {
         wx.hideLoading();
       })
-    })
+
   },
   tapImage:function(e){
     wx.previewImage({
@@ -93,14 +96,14 @@ Page({
     wx.openLocation({
       latitude: this.data.store.latitude,
       longitude: this.data.store.longitude,
-      name: this.data.store.title,
+      name: this.data.store.name,
       address: this.data.store.address
     })
   },
   deleteItem:function(e){
     wx.showModal({
       title: '删除确认',
-      content: '您真的要删除' + this.data.store.title + "么？",
+      content: '您真的要删除' + this.data.store.name + "么？",
       success: res => {
         if (res.confirm) {
           store.doc(this.data.store._id).remove().then(res => {

@@ -3,6 +3,10 @@
     "rate":"../../components/wechat-miniprogram-rate/index",
     "van-button": "@vant/weapp/button/index",
     "van-rate": "@vant/weapp/rate/index",
-    "van-uploader": "@vant/weapp/uploader/index"
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-slider": "@vant/weapp/slider/index",
+    "van-tab": "@vant/weapp/tab/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tag": "@vant/weapp/tag/index"
   }
 }

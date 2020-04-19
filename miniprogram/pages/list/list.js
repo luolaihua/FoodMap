@@ -1,6 +1,8 @@
 const app = getApp();
 const db = wx.cloud.database()
 const store = db.collection('store');
+const userInfo = db.collection('userInfo');
+
 Page({
 
   /**
@@ -8,21 +10,21 @@ Page({
    */
   data: {
     numbers: 0,
-    searchNum:0,
+    searchNum: 0,
     stores: [],
-    defaultSearchValue:''
+    defaultSearchValue: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
-    this.loadData(this.data.numbers);
+    this.clearSearch()
+    //this.loadData(this.data.numbers);
   },
   loadData: function (numbers) {
     console.log(numbers)
-    if(numbers==undefined ||numbers==''){
+    if (numbers == undefined || numbers == '') {
       numbers = 0
     }
     store.skip(numbers).get().then(res => {
@@ -36,17 +38,17 @@ Page({
         });
         return;
       }
-      if(numbers==0){
-      this.setData({
-        stores: res.data,
-        numbers: numbers + res.data.length,
-        defaultSearchValue:''
-      });
-      }else{
+      if (numbers == 0) {
+        this.setData({
+          stores: res.data,
+          numbers: numbers + res.data.length,
+          defaultSearchValue: ''
+        });
+      } else {
         this.setData({
           stores: this.data.stores.concat(res.data),
           numbers: numbers + res.data.length,
-          defaultSearchValue:''
+          defaultSearchValue: ''
         });
       }
 
@@ -56,32 +58,27 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    this.loadData(this.data.numbers);
+    //this.loadData(this.data.numbers);
   },
-  clearSearch(){
-    this.loadData(0)
+  clearSearch() {
+    var storesArr = wx.getStorageSync('storesArr')
+    this.setData({
+      stores: storesArr,
+      defaultSearchValue: ''
+    })
   },
   storeSearch: function (e) {
     var keywords = e.detail.value
-
-    //TODO 小程序端只能取十条，后期用云函数
-    store.where({
-      title: db.RegExp({
-        regexp: keywords,
-        options: 'i',
-      })
-    }).get().then(res => {
-      console.log(res)
-      if (res.data.length == 0) {
-        wx.showToast({
-          title: '无数据',
-        })
-      }else{
-        this.setData({
-        stores: res.data,
-      });
-      }
-
+    var storesArr = wx.getStorageSync('storesArr')
+    function search(obj) {
+      var str = JSON.stringify(obj);
+      return str.search(keywords) != -1
+    }
+    this.setData({
+      stores: storesArr.filter(search)
     })
+
+
+
   }
 })

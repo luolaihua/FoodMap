@@ -19,7 +19,7 @@
         class='button' 
         open-type='getUserInfo' 
         bindgetuserinfo='getUserInfo' 
-        bindlongpress='getOpenID' lang='zh_CN'>管理入口</button>
+        bindlongpress='getOpenID' lang='zh_CN'>添加美食</button>
     </cover-view>
     <!-- 搜索按钮 
         <cover-view wx:else class="cover">

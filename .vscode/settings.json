@@ -1,0 +1,44 @@
+{
+    // 高亮的颜色，emm暂时只支持这样写
+"wxmlConfig.activeColor": {
+    "color": "#e5c07b"
+  },
+
+  // 是否禁用高亮组件
+  "wxmlConfig.activeDisable": false,
+  // 是否开启保存自动格式化
+  "wxmlConfig.onSaveFormat": false,
+
+  "wxmlConfig.format": {
+    "brace_style": "collapse",
+    "end_with_newline": false,
+    "indent_char": "",
+    "indent_handlebars": false,
+    "indent_inner_html": false,
+    "indent_scripts": "keep",
+    "indent_size": 2,
+    "indent_with_tabs": true,
+    "max_preserve_newlines": 1,
+    "wrap_attributes_count": 4,
+    "unformatted": "['text']",
+    "disable_automatic_closing_labels": false,
+    "preserve_newlines": true,
+    "wrap_attributes": "force-expand-multiline"
+  },
+
+  // 高亮所忽略的组件数组
+  "wxmlConfig.tagNoActiveArr": [
+    "view",
+    "button",
+    "text",
+    "icon",
+    "image",
+    "navigator",
+    "block",
+    "input",
+    "template",
+    "form",
+    "camera",
+    "textarea"
+  ]
+}
