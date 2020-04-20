@@ -1,28 +1,39 @@
-<view class="cu-bar search bg-white">
+<block wx:if="{{stores.length>0&&isShowData}}">
+  <view class="cu-bar search bg-white">
 	<view class='search-form round'>
 		<text class="cuIcon-search" />
       <input type="text" placeholder="搜索店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" name="searchContent" confirm-type="search" />
       <text class="cuIcon-roundclose" bindtap="clearSearch" />
     </view>
   </view>
-<view class="cu-list menu-avatar">
-  <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{stores}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
-      <view  bind:tap="toInfo" id="{{item.id}}" class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100{{index+1}}.jpg);">
-        <image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
-      </view>
-      <view class="content" bind:tap="toInfo" id="{{item.id}}">
-        <view class="text-black">{{item.name}}</view>
-        <view class="text-gray text-sm">
-          <text class="cuIcon-locationfill text-orange" ></text>{{item.address}}
-	      </view>
-      </view>
-      <view class="action" bind:tap="toInfo" id="{{item.id}}">
-        <view class="text-grey text-xs">¥ {{item.price_per}}</view>
-        <view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
-      </view>
-      <view class="move">
-        <view class="bg-grey">置顶</view>
-        <view class="bg-red">删除</view>
-      </view>
+  <view class="cu-list menu-avatar">
+    <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{stores}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
+        <view  bind:tap="toInfo" id="{{item.id}}" class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100{{index+1}}.jpg);">
+          <image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+        </view>
+        <view class="content" bind:tap="toInfo" id="{{item.id}}">
+          <view class="text-black">{{item.name}}</view>
+          <view class="text-gray text-sm">
+            <text class="cuIcon-locationfill text-orange" ></text>{{item.address}}
+          </view>
+        </view>
+        <view class="action" bind:tap="toInfo" id="{{index}}">
+          <view class="text-grey text-xs">¥ {{item.price_per}}</view>
+          <view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
+        </view>
+        <view class="move">
+          <view class="bg-grey">置顶</view>
+          <view class="bg-red">删除</view>
+        </view>
+    </view>
   </view>
-</view>
+</block>
+<block wx:elif="{{stores.length==0}}">
+  <view class="noData">---暂无数据---</view>
+</block>
+<block wx:else>
+  <input class="" value=""  placeholder="" placeholder-style="" placeholder-class="input-placeholder" 
+    disabled="false" maxlength="140" focus="false" bindinput="" bindfocus="" bindblur="" bindconfirm="">
+    
+  </input>
+</block>

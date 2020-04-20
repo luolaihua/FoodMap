@@ -1,35 +1,47 @@
-<map 
-  id="map" 
-  scale="{{defaultScale}}" 
-  longitude='{{longitude}}' 
-  latitude='{{latitude}}' 
-  style='height:{{windowHeight}}px' 
-  markers="{{stores}}" 
-  subkey="{{mapSubKey}}" 
-  show-compass="{{true}}"
-  setting="{{setting}}"
-   bindmarkertap="onMarkerTap">
-   <!-- 上方的添加提醒 -->
-    <block wx:if="{{!hideMe}}">
-      <cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
-      <cover-view class="up" bindtap="hideMe"></cover-view>
-    </block>
-    <!-- 管理入口 -->
-    <cover-view class="cover">
-      <button 
-        class='button' 
-        open-type='getUserInfo' 
-        bindgetuserinfo='getUserInfo' 
-        bindlongpress='getOpenID' lang='zh_CN'>添加美食</button>
-    </cover-view>
-    <!-- 搜索按钮 
+<map
+ id="map"
+ scale="{{defaultScale}}"
+ longitude='{{longitude}}'
+ latitude='{{latitude}}'
+ style='height:{{windowHeight}}px'
+ markers="{{stores}}"
+ subkey="{{mapSubKey}}"
+ show-compass="{{true}}"
+ setting="{{setting}}"
+ bindmarkertap="onMarkerTap"
+>
+	<!-- 上方的添加提醒 -->
+	<block wx:if="{{!hideMe}}">
+		<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
+		<cover-view class="up" bindtap="hideMe" />
+	</block>
+	<!-- 管理入口 -->
+	<cover-view class="cover">
+		<button
+		 class='button'
+     bindtap = "toAdd"
+		>添加美食
+		</button>
+	</cover-view>
+  <!--
+  	<cover-view class="cover">
+		<button
+		 class='button'
+		 open-type='getUserInfo'
+		 bindgetuserinfo='getUserInfo'
+		 bindlongpress='getOpenID'
+		 lang='zh_CN'
+		>添加美食
+		</button>
+	</cover-view>-->
+	<!-- 搜索按钮 
         <cover-view wx:else class="cover">
       <button class='button' bindtap='search'>搜索</button>
     </cover-view>
     -->
 
-    <!-- 查看全部 -->
-    <cover-view class="button show_all" bindtap="viewAll" bindlongpress='showAdmin'>查看全部</cover-view>
-    
- 
+	<!-- 查看全部 -->
+	<cover-view class="button show_all" bindtap="viewAll" bindlongpress='toList'>查看美食</cover-view>
+
 </map>
+

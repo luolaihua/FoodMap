@@ -34,7 +34,11 @@ Page({
     hideMe: true,
     showAdmin: false,
   },
-
+  toAdd(e) {
+    wx.navigateTo({
+      url: '../add/add',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -74,38 +78,39 @@ Page({
     var storesArr = []
     //如果id为空
     if (openId == '') {
+      //初始化
+      var info = {
+        time: myApi.formatDate(new Date())
+      }
       await wx.cloud.callFunction({
-        name: "getUserOpenId"
+        name: "getUserOpenId",
+        data: {
+          action: 'initInfo',
+          info: info,
+          shareCode: myApi.getRandomCode(6)
+        }
       }).then(res => {
         console.log(res)
+        app.globalData.openId = res.result.openId
         wx.setStorageSync('openID', res.result.openId)
-        userInfo.where({
-          openId: res.result.openId
-        }).get().then(res => {
-          if (res.data.length != 0) {
-            storesArr = res.data[0].stores
-          }
-          wx.setStorageSync('storesArr', storesArr)
-          that.setData({
-            stores: storesArr
-          })
-        })
+        wx.setStorageSync('shareCode', res.result.shareCode);
       })
     } else {
       console.log(openId)
       var info = await userInfo.where({
         openId: openId
       }).get()
+      console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
+        wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
-      wx.setStorageSync('storesArr', storesArr)
-      console.log(storesArr)
-      this.setData({
-        stores: storesArr,
-      })
     }
-
+    wx.setStorageSync('storesArr', storesArr)
+    console.log(storesArr)
+    this.setData({
+      stores: storesArr,
+    })
   },
 
   onShow: function () {
@@ -114,7 +119,12 @@ Page({
 
   viewAll: function () {
     wx.navigateTo({
-      url: '../list/list',
+      url: '../list/list?action=viewSelf',
+    })
+  },
+  toList:function(){
+    wx.navigateTo({
+      url: '../list/list?action=viewOthers',
     })
   },
   getUserInfo: function (e) {
@@ -137,48 +147,9 @@ Page({
           wx.setStorageSync('openID', res.result.openId)
         })
       }
-      app.globalData.is_administrator = true;
       wx.navigateTo({
         url: '../add/add',
       })
-
-      /*       userInfo.get().then(res => {
-              if (!res.data.length) {
-                userInfo.add({
-                  data: e.detail.userInfo
-                })
-              }
-
-                      wx.cloud.callFunction({
-                        name: 'checkUserAuth'
-                      }).then(res => {
-
-                        if (res.result.data.is_administrator) {
-                          app.globalData.is_administrator = true;
-                          wx.showModal({
-                            title: '管理员登陆成功',
-                            content: '管理员您好，是否要进入新增界面？',
-                            success: res => {
-                              if (res.cancel == false && res.confirm == true) {
-                                wx.navigateTo({
-                                  url: '../add/add',
-                                })
-                              } else {
-                                wx.showToast({
-                                  title: '您可以点击下方查看全部按钮管理已有数据',
-                                  icon: 'none'
-                                });
-                              }
-                            }
-                          })
-                        } else {
-                          wx.showToast({
-                            title: '您不是管理员，无法进入管理入口！',
-                            icon: 'none'
-                          });
-                        }
-                      }) 
-            }) */
     } else {
       // 处理未授权的场景
       wx.showModal({
@@ -191,6 +162,8 @@ Page({
         }
       })
     }
+
+
   },
   /**
    * 用户点击右上角分享
@@ -198,15 +171,15 @@ Page({
   onShareAppMessage: function () {
     return {
       title: '我在' + config.appName + '上发现了好吃的，你也看看吧！',
-      path: '/pages/map/map?_mta_ref_id=group',
+      path: '/pages/map/map',
       imageUrl: "/images/share.jpg"
     }
   },
   onMarkerTap: function (event) {
     console.log(event)
-     wx.navigateTo({
+    wx.navigateTo({
       url: '../info/info?id=' + event.markerId,
-    }) 
+    })
   },
   getOpenID: function (event) {
     wx.cloud.callFunction({

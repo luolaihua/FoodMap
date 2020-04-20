@@ -279,7 +279,6 @@ Page({
       }
     })
   },
-
   uploadPhoto(filePath) {
     return wx.cloud.uploadFile({
       cloudPath: `userFoodImages/${Date.now()}-${Math.floor(Math.random(0, 1) * 10000000)}.png`,

@@ -31,6 +31,7 @@ async function initInfo(event, openId) {
           info: event.info,
           stores: [],
           openId: openId,
+          shareCode:event.shareCode
         }
       })
       return {

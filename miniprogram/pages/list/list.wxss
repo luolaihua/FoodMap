@@ -1,31 +1,3 @@
-.card{
-  border-bottom: 1rpx solid #cecece;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  padding:10rpx;
-}
-.card_title{
-  font-size: 50rpx;
-  font-weight: 700;
-}
-.card_infobar{
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-.card_address{
-  font-size: 30rpx;
-  font-weight: 300;
-  width: 600rpx;
-  overflow: hidden;
-  white-space:nowrap;
-}
-.card_thumbsup{
-  font-size: 30rpx;
-  font-weight: 700;
-  
-}
 .search_input{
   background-color: #eee;
   margin:5px;
@@ -38,4 +10,9 @@
 .avatar{
   width: 100%;
   width: 100%;
+}
+.noData{
+  position: relative;
+  top: 50vh;
+  text-align: center;
 }
