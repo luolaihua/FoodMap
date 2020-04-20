@@ -58,7 +58,7 @@ Page({
       altitude: 'true',
       isHighAccuracy: 'true',
       success(res) {
-        console.log(res)
+        //console.log(res)
         const latitude = res.latitude
         const longitude = res.longitude
         that.setData({

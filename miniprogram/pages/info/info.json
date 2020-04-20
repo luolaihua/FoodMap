@@ -1,4 +1,6 @@
 {
-  "usingComponents": {},
+  "usingComponents": {
+      "van-rate": "@vant/weapp/rate/index"
+  },
   "navigationBarTitleText": "商铺详情"
 }

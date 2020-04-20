@@ -8,34 +8,39 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    cardCur: 0,
+    keywords_array:[]
   },
-
+    // cardSwiper
+    cardSwiper(e) {
+      this.setData({
+        cardCur: e.detail.current
+      })
+    },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    // 初始化towerSwiper 传已有的数组名即可
     wx.showLoading({
       title: '加载中...',
     })
-    var id = options.id
-    var storesArr = wx.getStorageSync('storesArr')
-    
+     var storesArr = wx.getStorageSync('storesArr')
+     var id = options.id
     var store =storesArr.find(item=>{
       return item.id==id
-    })
-
+    }) 
       if (config.dynamic_title){
         wx.setNavigationBarTitle({
           title: store.name,
         });
       }
       // 两次切割以适配中英文逗号
-      let keywords_array = store.keywords.split(',').map(item => { return item.split('，') })
-      // 将数组压平
-      let keywords = [].concat.apply([], keywords_array);
-      store.keywords = keywords
+      let keywords_array = store.keywords.split(',')
+
+      //console.log(keywords_array)
       this.setData({
+        keywords_array,
         store: store,
         is_administrator: app.globalData.is_administrator
       },res => {

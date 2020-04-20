@@ -3,6 +3,7 @@ const myApi = require('../../utils/myApi')
 const db = wx.cloud.database()
 const store = db.collection('store');
 const userInfo = db.collection('userInfo')
+var tabList=['火锅', '麻辣烫', '奶茶', '烧烤', '串串', '水果','自助', '海鲜', '农家乐', '烤鸭', '烤鸡', '烤鱼','小吃', '烧饼', '炒粉']
 Page({
 
   /**
@@ -21,7 +22,7 @@ Page({
     openId: '',
     notes:'',
     price_per: 50,
-    tabList: ['火锅', '麻辣烫', '奶茶', '烧烤', '串串', '水果'],
+    tabList: [],
     tagList:[],
     colorList:["#f2826a","#7232dd","#ff4500"],
     isShow: true
@@ -62,6 +63,7 @@ Page({
       price_per: event.detail.value
     });
   },
+  //读取照片之后
   async afterRead(event) {
     var that = this
     var imgList = this.data.imgList
@@ -117,7 +119,8 @@ Page({
     console.log(storesArr)
     this.setData({
       stores: storesArr,
-      openId
+      openId,
+      tabList:tabList.sort(myApi.randomSort)
     })
   },
   chooseLocation: function (event) {
@@ -161,7 +164,8 @@ Page({
     //安全检测评论内容
     if (content.length != 0) {
       var isSafe = await myApi.doMsgSecCheck('content')
-      if (!isSafe.result) {
+      //console.log(isSafe)
+      if (!isSafe) {
         wx.showToast({
           title: '个人评论存在不安全内容',
           icon: 'none',

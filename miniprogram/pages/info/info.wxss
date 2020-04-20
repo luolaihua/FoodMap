@@ -1,55 +1,63 @@
-.slide-image {
-  width: 750rpx;
-}
 
-.contact {
+.contact,.star,.keywords,.notes,.per,.title {
   padding: 20rpx;
+  margin-right: 20rpx;
 }
 
 .star {
-  padding: 20rpx;
+  margin-top: 4vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.star text,.per text,.keywords text{
+  margin-right: 20rpx;
 }
 
-.keywords {
-  padding: 20rpx;
+text {
+  font-size: larger;
 }
 
 .notes {
-  padding: 20rpx;
+ display: flex;
+ flex-direction: row;
 }
-
+.notes-title{
+  white-space: nowrap;
+  margin-right: 20rpx;
+ }
+ .notes-content{
+    border: solid 1px lightpink;
+    padding: 20rpx;
+ }
 .per {
-  padding: 20rpx;
+ 
 }
 
 .address {
-  padding: 20rpx;
+  
 }
-
-.thumbs_up {
-  padding: 20rpx;
-}
-
-.title {
-  padding: 20rpx;
-  font-size: 50rpx;
-}
-
-swiper {
-  height: 240px;
-  background-color: #eee;
-}
-
-.two_column {
+.title-box{
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+}
+.title {
+  font-size: 60rpx;
+}
+.navigateTo{
+  height: 90rpx;
+  width: 30vw;
+  font-size: 40rpx;
+  margin-right: 40rpx;
+  color: #7795f8;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 }
 
+
 .copy_path{
-  position: absolute;
-  right: 100rpx;
-  bottom: 50rpx;
+
   color: #7795f8;
   background-color: rgb(255, 255, 255);
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);

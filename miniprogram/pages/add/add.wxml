@@ -10,18 +10,21 @@
 		<input placeholder='店铺的门牌号是？' name="address" value='{{address}}' />
 		<text class="cuIcon-locationfill text-orange"/>
 	</view>
-	<view class="cu-form-group">
+	<!--
+		<view class="cu-form-group">
 		<view class="title">电话:</view>
 		<input placeholder='店家的电话是？' type="number" name="contact" value='{{phone}}' />
 	</view>
+	-->
+
 	<view class="cu-form-group">
-		<view class="title">人均:</view>
+		<view class="title">人均消费:</view>
 		<view style="width:70vw">
 			<van-slider
   		value="{{ price_per }}"
   		use-button-slot
 		  step='5'
-		  bar-height='4px'
+		  bar-height='3px'
 		  active-color="#ff4500"
   		bind:drag="onDrag">
   			<view class="custom-button" slot="button">¥{{ price_per*2 }}</view>
@@ -32,7 +35,7 @@
 
 	<view class="cu-form-group">
 		<view class="title">关键词:</view>
-		<block wx:for="{{tagList}}">
+		<block wx:for="{{tagList}}" wx:key="index">
 			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
 		</block>
 	</view>
@@ -42,7 +45,7 @@
 			</block>
 		</van-tabs>
 	<view class="cu-form-group">
-		<view class="title">评分</view>
+		<view class="title">推荐指数:</view>
 		<van-rate
 		 name='star'
 		 value="{{ rateValue }}"
@@ -68,20 +71,18 @@
 			{{imgList.length}}/5
 		</view>
 	</view>
-	<view class="cu-form-group">
+	<view class="cu-form-group upImage">
 		<van-uploader
 		 max-count='6'
 		 bind:delete="DelImg"
 		 file-list="{{ fileList }}"
 		 bind:after-read="afterRead"
-		
 		 max-size="1000000"
 		/>
 
 	</view>
 	
-
-	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">创建</van-button>
+	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
 
 
 

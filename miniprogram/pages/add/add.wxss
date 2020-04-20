@@ -1,64 +1,22 @@
 page{
   background-color: #eee;
 }
-.bar {
-  padding: 20rpx 50rpx;
-  display: flex;
-  align-items: center;
-  margin-top: 30rpx;
-  background-color: #fff;
-}
-
-.bar--text {
-  margin-left: 30rpx;
-  font-size: 28rpx;
-  color: #666;
-}
-
-.desc{
-  padding: 20rpx;
-}
-.loactionGroup{
-  padding: 10rpx;
-  display: flex;
-  flex-direction: row;
-}
 textarea{
   background-color: #fff;
   padding: 20rpx;
   width:  710rpx;
 }
-.submit{
-  margin-top: 40rpx;
-  margin-bottom: 20rpx;
-  background-color: transparent;
-  border: none;
-}
 .custom-button{
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 20%;
+  border-radius: 10%;
   width: 10vw;
   height: 4vh;
   background-color: orangered;
   color: #fff;
 
 }
-.form-group{
-  background-color: white;
-  border-top: 1rpx solid #eee;
-  padding: 1rpx 30rpx;
-  display: flex;
-  align-items: center;
-  min-height: 100rpx;
-  justify-content: space-between; 
-  height: 200rpx;
-}
-.scrollX{
-  height: 100rpx;
-  width: 400rpx;
-}
-.test{
-  background-color: rgb(25, 151, 230);
+.upImage{
+  margin-bottom: 40rpx;
 }

@@ -1,57 +1,69 @@
-<block wx:if="{{store.images}}">
+<block wx:if="{{store.images.length!=0}}">
 	<swiper
-	 indicator-dots="{{true}}"
-	 autoplay="{{true}}"
-	 interval="{{5000}}"
-	 duration="{{1000}}"
+	 class="card-swiper square-dot"
+	 indicator-dots="true"
+	 circular="true"
+	 autoplay="true"
+	 interval="5000"
+	 duration="500"
+	 bindchange="cardSwiper"
+	 indicator-color="#8799a3"
+	 indicator-active-color="#0081ff"
 	>
-		<block wx:for="{{store.images}}" wx:key="index">
-			<swiper-item>
-				<image
-				 src="{{item}}"
-				 data-url="{{item}}"
-				 class="slide-image"
-				 mode="aspectFit"
-				 bindtap="tapImage"
-				/>
-			</swiper-item>
-		</block>
+		<swiper-item
+		 wx:for="{{store.images}}"
+		 wx:key="index"
+		 class="{{cardCur==index?'cur':''}}"
+		 bindtap="tapImage"
+		>
+			<view class="swiper-item">
+				<image src="{{item}}" mode="aspectFill" data-url="{{item}}" />
+			</view>
+		</swiper-item>
 	</swiper>
 </block>
 <view>
-	<view class="title">
-		{{store.name}}
-	</view>
-	<view class="two_column">
-		<view class="contact" bindtap='callContact'>
-			{{store.contact}}</view>
-		<view class="star">
-			评分: {{store.star}}</view>
-	</view>
-	<view class="two_column">
-		<view class="per">
-			人均: {{store.price_per}}元</view>
-		<view class="keywords">
-			关键词: {{store.keywords}}</view>
+	<view class="title-box">
+		<text selectable="{{true}}" class="title text-shadow text-black">{{store.name}}</text>
+		<view class="cu-tag line-orange round navigateTo" bindtap="navigate">
+		去这里
+		<text class='cuIcon-forward text-orange'/>
+		</view>
 	</view>
 
-	<view class="address">
-		{{store.address}}</view>
+	<view class="star">
+		<text class="" selectable="false" space="false" decode="false">推荐指数：</text>
+		<van-rate readonly allow-half value="{{ store.rateValue }}" />
+	</view>
+	<view class="per">
+		<text>人均消费：</text>
+		<view class="cu-capsule round">
+			<view class="cu-tag bg-blue" style="font-size:larger">
+				¥
+			</view>
+			<view class="cu-tag line-blue"style="font-size:larger">
+				{{store.price_per}}
+			</view>
+		</view>
+	</view>
+	<view class="keywords" wx:if="{{keywords_array[0]!=''}}">
+		<text>关键词语：</text>
+		<view class="cu-tag bg-orange round">{{keywords_array[0]}}</view>
+		<view class="cu-tag bg-purple round" wx:if="{{keywords_array.length>1}}">{{keywords_array[1]}}</view>
+		<view class="cu-tag bg-cyan round" wx:if="{{keywords_array.length>2}}">{{keywords_array[2]}}</view>
+	</view>
 	<view class="notes">
-		点评: {{store.notes}}</view>
-</view>
-
-<block>
-	<!--
-  <button class='button copy_path' bindtap='copyPath'>复制路径</button>
--->
-
-	<button class='button copy_path' bindtap='navigate'>导航</button>
-	<button class='button delete_item' bindtap='deleteItem'>删除店铺</button>
-</block>
-<!-- <block wx:else>
-	<view class="navigateBox">
-		<button class='button navigate' bindtap='navigate'>导航</button>
+		<text class="notes-title">店铺地址：</text>
+		<text selectable="{{true}}">{{store.address}}</text>
 	</view>
+	<view class="notes" wx:if="{{store.notes!=''}}">
+		<text class="notes-title">个人点评：</text>
+		<text  class="notes-content"selectable="{{true}}" >{{store.notes}}</text>
+	</view>
+
+</view>
+<block>
+
+	<!--	<button class='button delete_item' bindtap='deleteItem'>删除店铺</button>-->
 </block>
- -->
+
