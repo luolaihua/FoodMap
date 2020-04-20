@@ -11,6 +11,22 @@ Page({
    * 页面的初始数据
    */
   data: {
+    setting: {
+      skew: 0,
+      rotate: 0,
+      showLocation: true,
+      showScale: true,
+      subKey: '',
+      layerStyle: -1,
+      enableZoom: true,
+      enableScroll: true,
+      enableRotate: true,
+      showCompass: true,
+      enable3D: false,
+      enableOverlooking: false,
+      enableSatellite: false,
+      enableTraffic: false,
+    },
     longitude: config.center_longitude,
     latitude: config.center_latitude,
     windowHeight: 600,
@@ -187,9 +203,10 @@ Page({
     }
   },
   onMarkerTap: function (event) {
-    wx.navigateTo({
+    console.log(event)
+     wx.navigateTo({
       url: '../info/info?id=' + event.markerId,
-    })
+    }) 
   },
   getOpenID: function (event) {
     wx.cloud.callFunction({

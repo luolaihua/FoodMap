@@ -17,9 +17,9 @@ Page({
     defaultSearchValue: ''
   },
   toInfo(e){
-    var index = e.currentTarget.id
+    var id = e.currentTarget.id
     wx.navigateTo({
-      url: '../info/info?index='+index,
+      url: '../info/info?id='+id,
       success: (result)=>{
         
       },

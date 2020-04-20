@@ -225,6 +225,7 @@ Page({
     var rateValue = this.data.rateValue
     var notes = this.data.notes
     var storeData = {
+      id:new Date().getTime(),
       address:address,
       name:name,
       rateValue:rateValue,

@@ -18,9 +18,12 @@ Page({
     wx.showLoading({
       title: '加载中...',
     })
-    var index = options.index
+    var id = options.id
     var storesArr = wx.getStorageSync('storesArr')
-    var store = storesArr[index]
+    
+    var store =storesArr.find(item=>{
+      return item.id==id
+    })
 
       if (config.dynamic_title){
         wx.setNavigationBarTitle({
