@@ -9,11 +9,53 @@ Page({
    * 页面的初始数据
    */
   data: {
+    modalName:'',
+    defaultImage:'../../images/share.jpg',
     numbers: 0,
     searchNum: 0,
     stores: [],
     defaultSearchValue: ''
   },
+  toInfo(e){
+    var index = e.currentTarget.id
+    wx.navigateTo({
+      url: '../info/info?index='+index,
+      success: (result)=>{
+        
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
+  },
+    // ListTouch触摸开始
+    ListTouchStart(e) {
+      this.setData({
+        ListTouchStart: e.touches[0].pageX
+      })
+    },
+  
+    // ListTouch计算方向
+    ListTouchMove(e) {
+      this.setData({
+        ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
+      })
+    },
+  
+    // ListTouch计算滚动
+    ListTouchEnd(e) {
+      if (this.data.ListTouchDirection =='left'){
+        this.setData({
+          modalName: e.currentTarget.dataset.target
+        })
+      } else {
+        this.setData({
+          modalName: null
+        })
+      }
+      this.setData({
+        ListTouchDirection: null
+      })
+    },
 
   /**
    * 生命周期函数--监听页面加载

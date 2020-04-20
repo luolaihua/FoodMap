@@ -55,7 +55,7 @@ Page({
 
     //获取openid,然后从云端获取该id的数据
     var openId = wx.getStorageSync('openID')
-    var storesArr
+    var storesArr = []
     //如果id为空
     if (openId == '') {
       await wx.cloud.callFunction({
@@ -66,10 +66,12 @@ Page({
         userInfo.where({
           openId: res.result.openId
         }).get().then(res => {
-          storesArr = res.data[0].stores
+          if (res.data.length != 0) {
+            storesArr = res.data[0].stores
+          }
           wx.setStorageSync('storesArr', storesArr)
           that.setData({
-            stores:storesArr
+            stores: storesArr
           })
         })
       })
@@ -78,12 +80,14 @@ Page({
       var info = await userInfo.where({
         openId: openId
       }).get()
-      storesArr = info.data[0].stores
+      if (info.data.length != 0) {
+        storesArr = info.data[0].stores
+      }
       wx.setStorageSync('storesArr', storesArr)
-       console.log(storesArr)
-       this.setData({
-         stores: storesArr,
-       })
+      console.log(storesArr)
+      this.setData({
+        stores: storesArr,
+      })
     }
 
   },

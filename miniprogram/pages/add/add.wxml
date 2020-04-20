@@ -15,7 +15,7 @@
 		<input placeholder='店家的电话是？' type="number" name="contact" value='{{phone}}' />
 	</view>
 	<view class="cu-form-group">
-		<view class="title">人均  ¥:</view>
+		<view class="title">人均:</view>
 		<view style="width:70vw">
 			<van-slider
   		value="{{ price_per }}"
@@ -24,7 +24,7 @@
 		  bar-height='4px'
 		  active-color="#ff4500"
   		bind:drag="onDrag">
-  			<view class="custom-button" slot="button">{{ price_per*2 }}</view>
+  			<view class="custom-button" slot="button">¥{{ price_per*2 }}</view>
 	</van-slider>
 		</view>
 

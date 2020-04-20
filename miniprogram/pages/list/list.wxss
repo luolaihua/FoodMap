@@ -35,3 +35,7 @@
 .input-placeholder{
   text-align: center;
 }
+.avatar{
+  width: 100%;
+  width: 100%;
+}

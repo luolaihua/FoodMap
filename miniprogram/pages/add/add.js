@@ -216,7 +216,7 @@ Page({
       })
     })
   },
-  addData: function () {
+  addData:async function () {
     var stores = this.data.stores
     var price_per = this.data.price_per * 2
     var keywords = this.data.tagList.toString()
@@ -242,42 +242,14 @@ Page({
     }
     //更新数据
     stores.push(storeData)
-    console.log("-->", stores)
-    userInfo.where({
-      openId: this.data.openId
-    }).update({
-      data: {
-        stores: stores
-      }
-    }).then(res => {
-      wx.setStorageSync('storesArr', stores)
-      console.log(res)
-      wx.showToast({
-        title: '创建成功！',
-        icon: 'success',
-        success: res => {
-          wx.navigateBack({})
-        }
-      })
-    })
-
-    /*     store.add({
-          data: storeData
-        }).then(res => {
-          wx.hideLoading({
-            success: res => {
-              wx.showToast({
-                title: '创建成功！',
-                icon: 'success',
-                success: res => {
-                  wx.navigateBack({})
-                }
-              })
-            }
-          });
-        }).catch(error => {
-          console.error(error);
-        }) */
+   await myApi.updateStore(stores)
+   wx.showToast({
+    title: '创建成功！',
+    icon: 'success',
+    success: res => {
+      wx.navigateBack({})
+    }
+  })
   },
   DelImg(e) {
     var fileList = this.data.fileList

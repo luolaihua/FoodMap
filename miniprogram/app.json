@@ -1,11 +1,13 @@
 {
   "pages": [
-       "pages/map/map", 
+  "pages/map/map", 
+     "pages/list/list", 
+     
      "pages/add/add",
  
   
 
-    "pages/list/list",
+  
     "pages/info/info"
   ],
   "window": {

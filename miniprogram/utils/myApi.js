@@ -1,3 +1,4 @@
+const db = wx.cloud.database()
  function checkMsgSec(content) {
    return wx.cloud.callFunction({
      name: 'checkSafeContent',
@@ -114,7 +115,25 @@
 
  }
 
+ async function updateStore(stores) {
+   const userInfo = db.collection('userInfo')
+   var openId = wx.getStorageSync('openID');
+   //更新数据
+   console.log(openId, "-->", stores)
+   var res = await userInfo.where({
+     openId: openId
+   }).update({
+     data: {
+       stores: stores
+     }
+   })
+   wx.setStorageSync('storesArr', stores)
+   console.log(res)
+
+ }
+
  module.exports = {
+   updateStore,
    doImgSecCheck,
    doMsgSecCheck,
    checkMsgSec,
