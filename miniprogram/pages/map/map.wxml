@@ -3,7 +3,7 @@
  scale="{{defaultScale}}"
  longitude='{{longitude}}'
  latitude='{{latitude}}'
- style='height:{{windowHeight}}px'
+ style='height:100vh'
  markers="{{stores}}"
  subkey="{{mapSubKey}}"
  show-compass="{{true}}"

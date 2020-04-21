@@ -2,33 +2,31 @@
 	<view class="cu-bar search bg-white">
 		<view class='search-form round'>
 			<text class="cuIcon-search" />
-
       <input type="text" placeholder="搜索店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" name="searchContent" confirm-type="search" />
       <text class="cuIcon-roundclose" bindtap="clearSearch" />
     </view>
-  </view>
-  <view class="cu-list menu-avatar">
-    <view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{stores}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
-        <view  bind:tap="toInfo" id="{{item.id}}" class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100{{index+1}}.jpg);">
-          <image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
-        </view>
-        <view class="content" bind:tap="toInfo" id="{{item.id}}">
-          <view class="text-black">{{item.name}}</view>
-          <view class="text-gray text-sm">
-            <text class="cuIcon-locationfill text-orange" >
-</text>
-			{{item.address}}
+  	</view>
+		<view class="cu-list menu-avatar">
+			<view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{stores}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
+				<view  bind:tap="toInfo" id="{{item.id}}" class="cu-avatar radius lg" style="background-image:url(https://ossweb-img.qq.com/images/lol/web201310/skin/big2100{{index+1}}.jpg);">
+				<image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+				</view>
+				<view class="content" bind:tap="toInfo" id="{{item.id}}">
+				<view class="text-black">{{item.name}}</view>
+				<view class="text-gray text-sm">
+					<text class="cuIcon-locationfill text-orange" ></text>
+					{{item.address}}
+				</view>
+			</view>
+			<view class="action" bind:tap="toInfo" id="{{index}}">
+				<view class="text-grey text-xs">¥ {{item.price_per}}</view>
+				<view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
+			</view>
+			<view class="move">
+				<view class="bg-grey" id="{{index}}" bindtap = "topItem">置顶</view>
+				<view class="bg-red" id="{{index}}" bindtap = "deleteItem">删除</view>
+			</view>
 		</view>
-	</view>
-	<view class="action" bind:tap="toInfo" id="{{index}}">
-		<view class="text-grey text-xs">¥ {{item.price_per}}</view>
-		<view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
-	</view>
-	<view class="move">
-		<view class="bg-grey">置顶</view>
-		<view class="bg-red">删除</view>
-	</view>
-	</view>
 	</view>
 </block>
 <block wx:if="{{condition=='noData'}}">
@@ -45,11 +43,11 @@
 		 bindblur=""
 		 bindconfirm=""
 		/>
-    <view class="button-box">
-      <view class="left right" bindtap = "backToMap">取消</view>
-      <view class="right" bindtap = "confirmCode">确认</view>
-    </view>
+		<view class="button-box">
+			<view class="left right" bindtap="backToMap">取消</view>
+			<view class="right" bindtap="confirmCode">确认</view>
+		</view>
 	</view>
 </block>
- <button wx:if="{{action=='viewSelf'&&condition=='showData'}}" class="cu-btn round bg-mauve shadow share" bindtap = "share">分享</button>
+<button wx:if="{{action=='viewSelf'&&condition=='showData'}}" class="cu-btn round bg-mauve shadow share" bindtap="share">分享</button>
 

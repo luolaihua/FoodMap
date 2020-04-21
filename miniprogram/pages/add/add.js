@@ -27,6 +27,7 @@ Page({
     colorList:["#f2826a","#7232dd","#ff4500"],
     isShow: true
   },
+  //TODO 个性化maker图标
   inputNotes(e){
     this.setData({
       notes:e.detail.value

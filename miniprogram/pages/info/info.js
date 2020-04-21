@@ -22,7 +22,7 @@ Page({
    */
   onLoad: function (options) {
     var storesArr= wx.getStorageSync('storesArr')
-    if(options.isDataFromOthers=='1'){
+    if(options.action=='viewOthers'){
       storesArr=wx.getStorageSync('storesFromOthers')
     }
     
@@ -35,7 +35,7 @@ Page({
           title: store.name,
         });
       }
-      // 两次切割以适配中英文逗号
+      // 切割逗号
       let keywords_array = store.keywords.split(',')
     //console.log(keywords_array)
       this.setData({

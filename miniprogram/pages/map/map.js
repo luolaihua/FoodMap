@@ -1,9 +1,9 @@
 const app = getApp();
 const config = require('../../config.js');
 const db = wx.cloud.database()
-const store = db.collection('store');
 const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
+const imgUrl = require('../../utils/imgUrl')
 
 Page({
 
@@ -29,11 +29,11 @@ Page({
     },
     longitude: config.center_longitude,
     latitude: config.center_latitude,
-    windowHeight: 600,
     mapSubKey: config.mapSubKey,
     hideMe: true,
     showAdmin: false,
   },
+  //去添加页面
   toAdd(e) {
     wx.navigateTo({
       url: '../add/add',
@@ -43,20 +43,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-
     var that = this
-    setTimeout(() => {
-      this.setData({
-        hideMe: true
-      })
-    }, 3000);
+    //TODO 引导分享 暂时不做
+    /*     setTimeout(() => {
+          this.setData({
+            hideMe: true
+          })
+        }, 3000); */
+
     this.setData({
-      windowHeight: app.globalData.windowHeight,
       defaultScale: config.default_scale
     })
   },
   async initMap() {
     var that = this
+    //初始化 定位
     wx.getLocation({
       type: 'gcj02', //返回可以用于wx.openLocation的经纬度
       altitude: 'true',
@@ -66,10 +67,9 @@ Page({
         const latitude = res.latitude
         const longitude = res.longitude
         that.setData({
-          latitude: latitude,
-          longitude: longitude,
+          latitude,
+          longitude
         })
-
       }
     })
 
@@ -79,8 +79,9 @@ Page({
     //如果id为空
     if (openId == '') {
       //初始化
+      //TODO 用户信息上传，暂时只上传初始化时间
       var info = {
-        time: myApi.formatDate(new Date())
+        time: myApi.formatTime(new Date())
       }
       await wx.cloud.callFunction({
         name: "getUserOpenId",
@@ -96,6 +97,7 @@ Page({
         wx.setStorageSync('shareCode', res.result.shareCode);
       })
     } else {
+      //如果有id 从云端更新数据
       console.log(openId)
       var info = await userInfo.where({
         openId: openId
@@ -103,7 +105,7 @@ Page({
       console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
-        wx.setStorageSync('shareCode', info.data[0].shareCode);
+        //wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
     }
     wx.setStorageSync('storesArr', storesArr)
@@ -116,56 +118,57 @@ Page({
   onShow: function () {
     this.initMap()
   },
-
+  //点击查看美食
   viewAll: function () {
     wx.navigateTo({
       url: '../list/list?action=viewSelf',
     })
   },
-  toList:function(){
+  //长按查看美食
+  toList: function () {
     wx.navigateTo({
       url: '../list/list?action=viewOthers',
     })
   },
-  //TODO 获取用户信息
-  getUserInfo: function (e) {
+  //TODO 获取用户信息 暂时不用
+  /*   getUserInfo: function (e) {
 
-    if (e.detail.userInfo) {
-      var info = e.detail.userInfo
-      var userInfo = wx.getStorageSync('userInfo')
-      if (userInfo == '' || userInfo == undefined) {
-        wx.setStorageSync('userInfo', info)
-        //console.log(info)
-        wx.cloud.callFunction({
-          name: "getUserOpenId",
-          data: {
-            action: 'initInfo',
-            info: info
+      if (e.detail.userInfo) {
+        var info = e.detail.userInfo
+        var userInfo = wx.getStorageSync('userInfo')
+        if (userInfo == '' || userInfo == undefined) {
+          wx.setStorageSync('userInfo', info)
+          //console.log(info)
+          wx.cloud.callFunction({
+            name: "getUserOpenId",
+            data: {
+              action: 'initInfo',
+              info: info
+            }
+          }).then(res => {
+            console.log(res)
+            app.globalData.openId = res.result.openId
+            wx.setStorageSync('openID', res.result.openId)
+          })
+        }
+        wx.navigateTo({
+          url: '../add/add',
+        })
+      } else {
+        // 处理未授权的场景
+        wx.showModal({
+          title: '授权失败',
+          content: '您尚未授权获取您的用户信息，是否开启授权界面？',
+          success: res => {
+            if (res.confirm) {
+              wx.openSetting({})
+            }
           }
-        }).then(res => {
-          console.log(res)
-          app.globalData.openId = res.result.openId
-          wx.setStorageSync('openID', res.result.openId)
         })
       }
-      wx.navigateTo({
-        url: '../add/add',
-      })
-    } else {
-      // 处理未授权的场景
-      wx.showModal({
-        title: '授权失败',
-        content: '您尚未授权获取您的用户信息，是否开启授权界面？',
-        success: res => {
-          if (res.confirm) {
-            wx.openSetting({})
-          }
-        }
-      })
-    }
 
 
-  },
+    }, */
   /**
    * 用户点击右上角分享
    */
@@ -173,46 +176,34 @@ Page({
     return {
       title: '我在' + config.appName + '上发现了好吃的，你也看看吧！',
       path: '/pages/map/map',
-      imageUrl: "/images/share.jpg"
+      imageUrl: imgUrl.share
     }
   },
+  //点击地图maker
   onMarkerTap: function (event) {
     console.log(event)
     wx.navigateTo({
       url: '../info/info?id=' + event.markerId,
     })
   },
-  getOpenID: function (event) {
-    wx.cloud.callFunction({
-      name: "getUserOpenId"
-    }).then(res => {
-      wx.setClipboardData({
-        data: res.result.openid,
-        success: res => {
-          wx.showToast({
-            title: 'openID已复制',
-          })
-        }
+  //获取openid
+  /*   getOpenID: function (event) {
+      wx.cloud.callFunction({
+        name: "getUserOpenId"
+      }).then(res => {
+        wx.setClipboardData({
+          data: res.result.openid,
+          success: res => {
+            wx.showToast({
+              title: 'openID已复制',
+            })
+          }
+        })
       })
-    })
-  },
+    }, */
   hideMe: function (res) {
     this.setData({
       hideMe: true
     })
   },
-  showAdmin: function (res) {
-    wx.setStorage({
-      key: 'showAdmin',
-      data: !this.data.showAdmin,
-    })
-    this.setData({
-      showAdmin: !this.data.showAdmin
-    })
-  },
-  search: function () {
-    wx.navigateTo({
-      url: '../search/search',
-    })
-  }
 })
