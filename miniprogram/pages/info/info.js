@@ -21,7 +21,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-     var storesArr = wx.getStorageSync('storesArr')
+    var storesArr= wx.getStorageSync('storesArr')
+    if(options.isDataFromOthers=='1'){
+      storesArr=wx.getStorageSync('storesFromOthers')
+    }
+    
      var id = options.id
     var store =storesArr.find(item=>{
       return item.id==id

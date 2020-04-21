@@ -127,6 +127,7 @@ Page({
       url: '../list/list?action=viewOthers',
     })
   },
+  //TODO 获取用户信息
   getUserInfo: function (e) {
 
     if (e.detail.userInfo) {
