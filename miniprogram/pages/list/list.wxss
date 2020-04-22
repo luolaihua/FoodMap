@@ -60,5 +60,5 @@
 .share{
   position: fixed;
   bottom: 40rpx;
-  left: 40rpx;
+  right: 50rpx;
 }

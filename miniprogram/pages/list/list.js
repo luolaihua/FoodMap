@@ -16,32 +16,34 @@ Page({
     numbers: 0,
     searchNum: 0,
     stores: [],
+    storesArr: [],
     defaultSearchValue: '',
     condition: 'noData',
     shareCode: '',
     isDataFromOthers: '0',
-    action: 'viewSelf'
+    action: 'viewSelf',
+    friendsIndex: 'self'
   },
-  topItem:function(e){
+  topItem: function (e) {
     var index = e.currentTarget.id
-    var action = this.data.action
+    var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
-    var item = stores.slice(index,index+1)[0]
-    stores.splice(index,1)
+    var item = stores.slice(index, index + 1)[0]
+    stores.splice(index, 1)
     stores.unshift(item)
-    if(action=='viewSelf'){
+    if (friendsIndex == 'self') {
       myApi.updateStore(stores)
     }
     this.setData({
       stores
     })
   },
-  deleteItem:function(e){
+  deleteItem: function (e) {
     var index = e.currentTarget.id
-    var action = this.data.action
+    var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
-    stores.splice(index,1)
-    if(action=='viewSelf'){
+    stores.splice(index, 1)
+    if (friendsIndex == 'self') {
       myApi.updateStore(stores)
     }
     this.setData({
@@ -52,29 +54,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var action = options.action
-    var storesArr = wx.getStorageSync('storesArr')
+    //friendsIndex
+    var friendsIndex = options.friendsIndex
+    var storesArr = []
 
-    console.log(action)
+    console.log(friendsIndex)
     //TODO 以后做个列表单独放保存过的分享用户
-    if (action == 'viewOthers') {
-      var shareCodeFromOthers = wx.getStorageSync('shareCodeFromOthers')
-      this.setData({
-        condition: 'inputCode',
-        shareCode: shareCodeFromOthers
-      })
-    } else {
-      if (storesArr.length != 0) {
-        this.setData({
-          condition: 'showData'
-        })
-      }
+    if (friendsIndex == 'self') {
+      storesArr = wx.getStorageSync('storesArr')
+    }else{
+      var friendsList = wx.getStorageSync('friendsList')
+      storesArr = friendsList[friendsIndex].stores
     }
 
     this.setData({
-      action,
       stores: storesArr,
-      defaultSearchValue: ''
+      storesArr,
+      defaultSearchValue: '',
+      friendsIndex
     })
   },
   share() {
@@ -130,73 +127,27 @@ Page({
       });
     }
   },
-  inputCode(e) {
-    this.setData({
-      shareCode: e.detail.value
-    })
-  },
   backToMap() {
     wx.navigateBack({
       delta: 1
     });
   },
-  async confirmCode() {
-    wx.showLoading({
-      title:'加载中',
-    });
-    var shareCode = this.data.shareCode
-    var info = await userInfo.where({
-      shareCode: shareCode
-    }).get()
-    console.log(info)
-    if (info.data.length != 0) {
-      var storesArr = info.data[0].stores
-      wx.setStorageSync('shareCodeFromOthers', shareCode);
-      wx.setStorageSync('storesFromOthers', storesArr);
-      wx.setNavigationBarTitle({
-        title: '好友的美食列表',
-      });
-      this.setData({
-        stores: storesArr,
-        condition: 'showData',
-      },()=>{
-        wx.hideLoading();
-      })
-    } else {
-      wx.showToast({
-        title: '数据不存在',
-        icon: 'none'
-      });
-    }
-  },
   toInfo(e) {
     var id = e.currentTarget.id
+    console.log(this.data.friendsIndex)
     wx.navigateTo({
-      url: '../info/info?id=' + id + '&action=' + this.data.action,
+      url: '../info/info?id=' + id +'&friendsIndex='+this.data.friendsIndex,
     });
   },
 
   clearSearch() {
-    var storesArr = []
-    if (this.data.action == 'viewSelf') {
-      storesArr = wx.getStorageSync('storesArr')
-    } else {
-      storesArr = wx.getStorageSync('storesFromOthers')
-    }
-
     this.setData({
-      stores: storesArr,
-      defaultSearchValue: ''
+      stores: this.data.storesArr,
     })
   },
   storeSearch: function (e) {
     var keywords = e.detail.value
-    var storesArr = []
-    if (this.data.action == 'viewSelf') {
-      storesArr = wx.getStorageSync('storesArr')
-    } else {
-      storesArr = wx.getStorageSync('storesFromOthers')
-    }
+    var storesArr = this.data.storesArr
 
     function search(obj) {
       var str = JSON.stringify(obj);

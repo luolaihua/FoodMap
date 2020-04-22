@@ -121,13 +121,13 @@ Page({
   //点击查看美食
   viewAll: function () {
     wx.navigateTo({
-      url: '../list/list?action=viewSelf',
+      url: '../list/list?friendsIndex=self',
     })
   },
   //长按查看美食
   toList: function () {
     wx.navigateTo({
-      url: '../list/list?action=viewOthers',
+      url: '../friends/friends',
     })
   },
   //TODO 获取用户信息 暂时不用

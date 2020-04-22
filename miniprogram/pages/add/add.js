@@ -3,13 +3,16 @@ const myApi = require('../../utils/myApi')
 const db = wx.cloud.database()
 const store = db.collection('store');
 const userInfo = db.collection('userInfo')
-var tabList=['火锅', '麻辣烫', '奶茶', '烧烤', '串串', '水果','自助', '海鲜', '农家乐', '烤鸭', '烤鸡', '烤鱼','小吃', '烧饼', '炒粉']
+const imgUrl = require('../../utils/imgUrl')
+var tabList=['火锅', '奶茶', '烧烤', '串串', '水果','自助', '海鲜','烤鸭', '烤鸡', '烤鱼','小吃', '烧饼','早点','水饺', '馄饨', '面条', '香锅', '拌饭', '麻辣烫', '黄焖鸡']
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    foodIconUrl:"/images/food.png",
+    foodIconList:imgUrl.foodIconLocal,
     rateValue: 3.0,
     imgList: [],
     images: [],
@@ -24,10 +27,17 @@ Page({
     price_per: 50,
     tabList: [],
     tagList:[],
-    colorList:["#f2826a","#7232dd","#ff4500"],
-    isShow: true
+    colorList:["#f2826a","#7232dd","#1cbbb4"],
+    isShow: true,
   },
   //TODO 个性化maker图标
+  //TODO 个性化标题栏
+  chooseIcon(e){
+    var index =Number(e.currentTarget.id) 
+    this.setData({
+      foodIconUrl:this.data.foodIconList[index]
+    })
+  },
   inputNotes(e){
     this.setData({
       notes:e.detail.value
@@ -47,7 +57,7 @@ Page({
     })
   },
   tabClick(e) {
-    var index = e.detail.index
+    var index = e.currentTarget.id
     var tagList = this.data.tagList
     var tabList = this.data.tabList
     if(tagList.length>2){
@@ -121,7 +131,7 @@ Page({
     this.setData({
       stores: storesArr,
       openId,
-      tabList:tabList.sort(myApi.randomSort)
+      tabList:tabList//.sort(myApi.randomSort)
     })
   },
   chooseLocation: function (event) {
@@ -238,7 +248,7 @@ Page({
       keywords:keywords,
       notes:notes,
       thumbs_up: 1,
-      iconPath: "/images/food.png",
+      iconPath: this.data.foodIconUrl,
       longitude: this.data.longitude,
       latitude: this.data.latitude,
       label: {

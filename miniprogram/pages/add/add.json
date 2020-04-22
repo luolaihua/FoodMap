@@ -1,12 +1,14 @@
 {
   "usingComponents": {
-    "rate":"../../components/wechat-miniprogram-rate/index",
     "van-button": "@vant/weapp/button/index",
     "van-rate": "@vant/weapp/rate/index",
     "van-uploader": "@vant/weapp/uploader/index",
     "van-slider": "@vant/weapp/slider/index",
     "van-tab": "@vant/weapp/tab/index",
     "van-tabs": "@vant/weapp/tabs/index",
-    "van-tag": "@vant/weapp/tag/index"
-  }
+    "van-tag": "@vant/weapp/tag/index",
+    "van-dropdown-menu": "@vant/weapp/dropdown-menu/index",
+    "van-dropdown-item": "@vant/weapp/dropdown-item/index"
+  },
+  "navigationBarTitleText": "添加美食店铺"
 }

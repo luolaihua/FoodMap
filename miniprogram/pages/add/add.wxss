@@ -20,3 +20,21 @@ textarea{
 .upImage{
   margin-bottom: 40rpx;
 }
+.keywords-item,.foodIcon{
+  margin-bottom: 20rpx;
+  margin-right: 20rpx;
+  margin-left: 10rpx;
+}
+
+.keywords-box{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap:wrap ;
+  background-color: white;
+  z-index: 100;
+}
+.foodIcon{
+  height:60rpx;
+  width:60rpx
+}

@@ -21,12 +21,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    console.log(options)
     var storesArr= wx.getStorageSync('storesArr')
-    if(options.action=='viewOthers'){
-      storesArr=wx.getStorageSync('storesFromOthers')
+    var friendsIndex = options.friendsIndex
+    var id = options.id
+    if(friendsIndex!='self'){
+      var friendsList = wx.getStorageSync('friendsList')
+      storesArr=friendsList[friendsIndex].stores
+      console.log(friendsList)
+      console.log(friendsIndex)
+      console.log(storesArr)
+
     }
-    
-     var id = options.id
     var store =storesArr.find(item=>{
       return item.id==id
     }) 
@@ -48,18 +54,6 @@ Page({
     wx.previewImage({
       urls: this.data.store.images,
       current: e.currentTarget.dataset.url
-    })
-  },
-  copyPath:function(e){
-    let path = this.route + "?id="+ this.data.store._id
-    wx.setClipboardData({
-      data: path,
-      success: res => {
-        wx.showToast({
-          title: '路径复制成功',
-          icon:"success"
-        })
-      }
     })
   },
   /**
@@ -91,11 +85,6 @@ Page({
     }
     
   },
-  callContact:function(event){
-    wx.makePhoneCall({
-      phoneNumber: this.data.store.contact
-    })
-  },
   navigate:function(e){
     wx.openLocation({
       latitude: this.data.store.latitude,
@@ -104,31 +93,5 @@ Page({
       address: this.data.store.address
     })
   },
-  deleteItem:function(e){
-    wx.showModal({
-      title: '删除确认',
-      content: '您真的要删除' + this.data.store.name + "么？",
-      success: res => {
-        if (res.confirm) {
-          store.doc(this.data.store._id).remove().then(res => {
-            wx.showToast({
-              title: '删除成功',
-              icon:'success',
-              success:res => {
-                wx.navigateBack({
-                  delta: 2
-                })
-              }
-            })
-          }).catch(error => {
-            wx.showToast({
-              title: '删除失败！请添加微信 ixiqin_com 排查问题',
-            })
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
-  }
+
 })

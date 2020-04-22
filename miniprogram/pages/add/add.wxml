@@ -1,4 +1,3 @@
-
 	<view class="cu-form-group">
 		<view class="title">店铺名称:</view>
 		<input placeholder='可在地图上选择' name="name" value='{{name}}' bindinput="inputName" />
@@ -16,34 +15,20 @@
 		<input placeholder='店家的电话是？' type="number" name="contact" value='{{phone}}' />
 	</view>
 	-->
-
 	<view class="cu-form-group">
 		<view class="title">人均消费:</view>
 		<view style="width:70vw">
 			<van-slider
-  		value="{{ price_per }}"
-  		use-button-slot
-		  step='5'
-		  bar-height='3px'
-		  active-color="#ff4500"
-  		bind:drag="onDrag">
-  			<view class="custom-button" slot="button">¥{{ price_per*2 }}</view>
-	</van-slider>
+				value="{{ price_per }}"
+				use-button-slot
+				step='5'
+				bar-height='3px'
+				active-color="#ff4500"
+				bind:drag="onDrag">
+				<view class="custom-button" slot="button">¥{{ price_per*2 }}</view>
+			</van-slider>
 		</view>
-
 	</view>
-
-	<view class="cu-form-group">
-		<view class="title">关键词:</view>
-		<block wx:for="{{tagList}}" wx:key="index">
-			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
-		</block>
-	</view>
-		<van-tabs active="{{ active }}" bind:click="tabClick">
-			<block wx:for="{{tabList}}" wx:key="index">
-			<van-tab title="{{item}}"></van-tab>
-			</block>
-		</van-tabs>
 	<view class="cu-form-group">
 		<view class="title">推荐指数:</view>
 		<van-rate
@@ -52,7 +37,6 @@
 		 bind:change="setRateValue"
 		 size="{{ 25 }}"
 		 allow-half
-		 color="#ff4500"
 		 void-color="#eee"
 		 void-icon="star"
 		 gutter="8px"
@@ -63,12 +47,51 @@
 		<view class="title">个人点评:</view>
 		<textarea placeholder='你为大家推荐什么菜呢？' bindinput="inputNotes" name="notes" value="{{notes}}" />
 	</view>
+	<view class="cu-form-group">
+		<view class="title">关键词:</view>
+		<block wx:for="{{tagList}}" wx:key="index">
+			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
+		</block>
+		<van-dropdown-menu>
+			<van-dropdown-item id="item" title="">
+				<view class="keywords-box">
+					<block wx:for="{{tabList}}" wx:key="index">
+						<view class="cu-tag round bg-grey keywords-item" id="{{index}}" bindtap = "tabClick">{{item}}</view>
+					</block>
+				</view>
+			</van-dropdown-item>
+		</van-dropdown-menu>
+	</view>
+	<view class="cu-form-group">
+		<view class="title">个性图标:</view>
+		<image style="  height:60rpx;width:60rpx" src="{{foodIconUrl}}" mode="aspectFit"></image>
+		<van-dropdown-menu>
+			<van-dropdown-item id="item" title="">
+				<view class="keywords-box">
+					<block wx:for="{{foodIconList}}" wx:key="index">
+						<image class="foodIcon" src="{{item}}" id="{{index}}" mode="aspectFit" bindtap = "chooseIcon"></image>
+					</block>
+				</view>
+			</van-dropdown-item>
+		</van-dropdown-menu>
+	</view>
+	<!--
+			<van-tabs active="{{ active }}" bind:click="tabClick">
+			<block wx:for="{{tabList}}" wx:key="index">
+			<van-tab title="{{item}}"></van-tab>
+			</block>
+		</van-tabs>
+	-->
+
+
+
+
 	<view class="cu-bar bg-white margin-top">
 		<view class="action">
 			图片上传(小于1M)
 		</view>
 		<view class="action">
-			{{imgList.length}}/5
+			{{imgList.length}}/6
 		</view>
 	</view>
 	<view class="cu-form-group upImage">

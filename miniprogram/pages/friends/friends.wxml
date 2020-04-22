@@ -1,0 +1,43 @@
+<!--miniprogram/pages/friends/friends.wxml-->
+<block wx:if="{{friendsList.length==0 || isShowInputCode}}">
+	<view class="input-box shadow">
+		<input
+		 class="inputCode"
+		 value="{{shareCode}}"
+		 placeholder="请输入美食分享码"
+		 bindinput="inputCode"
+		 bindfocus=""
+		 bindblur=""
+		 bindconfirm=""
+		/>
+		<view class="button-box">
+			<view class="left right" bindtap="cancel">取消</view>
+			<view class="right" bindtap="confirmCode">确认</view>
+		</view>
+	</view>
+</block>
+
+		<view class="cu-list menu-avatar">
+			<view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{friendsList}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
+				<view  bind:tap="toList" id="{{index}}" class="cu-avatar round lg">
+					<image class="cu-avatar round lg" src="{{defaultImage}}" mode="aspectFill"></image>
+				</view>
+				<view class="content" bind:tap="toList" id="{{index}}">
+					<view class="text-black">{{item.shareCode}}</view>
+					<view class="text-gray text-sm">
+						<text class="cuIcon-command text-orange" ></text>
+						{{item.shareCode}}
+					</view>
+				</view>
+				<view class="action" bind:tap="toList" id="{{index}}">
+					<view class="text-grey text-xs">{{item.stores.length}}</view>
+					<view class="cuIcon-favorfill text-yellow sm"></view>
+				</view>
+				<view class="move">
+					<view class="bg-grey" id="{{index}}" bindtap = "topItem">置顶</view>
+					<view class="bg-red" id="{{index}}" bindtap = "deleteItem">删除</view>
+				</view>
+			</view>
+		</view>
+<button class="cu-btn round bg-mauve shadow share" bindtap="addFriends">添加</button>
+
