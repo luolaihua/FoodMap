@@ -11,6 +11,8 @@ Page({
     cardCur: 0,
     keywords_array:[]
   },
+  //TODO 收藏好友的店铺功能
+  //TODO 在地图上查看好友的美食地图
     // cardSwiper
     cardSwiper(e) {
       this.setData({
@@ -53,7 +55,7 @@ Page({
   tapImage:function(e){
     wx.previewImage({
       urls: this.data.store.images,
-      current: e.currentTarget.dataset.url
+      current: e.currentTarget.id
     })
   },
   /**

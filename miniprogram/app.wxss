@@ -11,3 +11,12 @@
   border-radius: 50rpx;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 }
+.share{
+  height: 14vw;
+  width: 14vw;
+  position: fixed;
+  bottom: 4vh;
+  right: 43vw;
+  z-index: 100;
+  opacity: 0.6;
+}

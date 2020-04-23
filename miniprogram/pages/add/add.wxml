@@ -1,3 +1,8 @@
+	
+<cu-custom bgColor="bg-gradual-blue" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">添加美食店铺</view>
+</cu-custom>
 	<view class="cu-form-group">
 		<view class="title">店铺名称:</view>
 		<input placeholder='可在地图上选择' name="name" value='{{name}}' bindinput="inputName" />

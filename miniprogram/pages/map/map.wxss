@@ -41,3 +41,16 @@ map{
 	border-left:20rpx solid transparent;
 	border-bottom:20rpx solid rgb(62, 207, 142);
 }
+.img-switch-style,.img-style {
+  height: 14vw;
+  width: 14vw;
+  position: fixed;
+  bottom: 6vh;
+  right: 43vw;
+  z-index: 100;
+ }
+  
+ .img-style {
+  opacity: 0;
+ }
+ 

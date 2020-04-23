@@ -13,35 +13,86 @@ Page({
   data: {
     friendsList: [],
     shareCode: '',
-    isShowInputCode:false,
+    isShowInputCode: false,
     defaultImage: imgUrl.head,
     modalName: '',
 
   },
-  addFriends(){
+  //从云端根据分享码再获取一遍数据
+  async updateItem(e) {
+    wx.showLoading({
+      title: '更新数据中',
+      mask: true,
+    });
+    var index = e.currentTarget.id
+    var friendsList = this.data.friendsList
+    var shareCode = friendsList[index].shareCode
+    var info = await userInfo.where({
+      shareCode: shareCode
+    }).get()
+    friendsList[index].stores=info.data[0].stores
+    wx.setStorageSync('friendsList', friendsList);
     this.setData({
-      isShowInputCode:!this.data.isShowInputCode
+      friendsList
+    }, () => {
+      wx.hideLoading();
+      wx.navigateTo({
+        url: '../list/list?friendsIndex=' + index,
+      });
     })
   },
-  cancel(){
+  topItem(e){
+    var index = e.currentTarget.id
+    var friendsList = this.data.friendsList
+    friendsList = myApi.makeItemTop(friendsList,index)
+    wx.setStorageSync('friendsList', friendsList);
     this.setData({
-      isShowInputCode:false
+      friendsList
+    },() => {
+      wx.showToast({
+        title: '置顶成功',
+        icon: 'success',
+      });
     })
   },
-  toList(e){
+  deleteItem: function (e) {
+    var index = e.currentTarget.id
+    var friendsList = this.data.friendsList
+    friendsList.splice(index, 1)
+    wx.setStorageSync('friendsList', friendsList);
+    this.setData({
+      friendsList
+    },() => {
+      wx.showToast({
+        title: '删除成功',
+        icon: 'success',
+      });
+    })
+  },
+  addFriends() {
+    this.setData({
+      isShowInputCode: !this.data.isShowInputCode
+    })
+  },
+  cancel() {
+    this.setData({
+      isShowInputCode: false
+    })
+    if (this.data.friendsList.length == 0) {
+      wx.navigateBack({
+        delta: 1
+      });
+    }
+  },
+  toList(e) {
     wx.showLoading({
       title: '加载中',
       mask: true,
-      success: (result)=>{
-        
-      },
-      fail: ()=>{},
-      complete: ()=>{}
     });
     var friendsIndex = e.currentTarget.id
     wx.navigateTo({
-      url: '../list/list?friendsIndex='+friendsIndex,
-      success: (result)=>{
+      url: '../list/list?friendsIndex=' + friendsIndex,
+      success: (result) => {
         wx.hideLoading();
       },
     });
@@ -52,11 +103,36 @@ Page({
     })
   },
   async confirmCode() {
+    var shareCode = this.data.shareCode
+    //先判断分享码格式是否符合规范
+    if (shareCode.length != 6) {
+      wx.showToast({
+        title: '分享码错误，请重新输入',
+        icon: 'none',
+      });
+      return
+    }
+
     wx.showLoading({
       title: '加载中',
     });
-    var shareCode = this.data.shareCode
     var friendsList = this.data.friendsList
+    //需要判断当前分享码是否已经存在列表中,先取出所有分享码
+    var shareCodesFromList = []
+    friendsList.forEach(item => {
+      shareCodesFromList.push(item.shareCode)
+    })
+    if (shareCodesFromList.indexOf(shareCode) != -1) {
+      wx.showToast({
+        title: '该美食好友已存在',
+        icon: 'none',
+      });
+      this.setData({
+        shareCode: ''
+      })
+      return
+    }
+    console.log(shareCodesFromList)
     console.log(friendsList)
     var info = await userInfo.where({
       shareCode: shareCode
@@ -64,7 +140,7 @@ Page({
     console.log(info)
     if (info.data.length != 0) {
       var storesArr = info.data[0].stores
-     var friendInfo = {
+      var friendInfo = {
         shareCode: shareCode,
         stores: storesArr
       }
@@ -72,11 +148,11 @@ Page({
       wx.setStorageSync('friendsList', friendsList);
       this.setData({
         friendsList,
-        isShowInputCode:false
+        isShowInputCode: false
       }, () => {
         wx.hideLoading();
         wx.navigateTo({
-          url: '../list/list?friendsIndex='+(friendsList.length-1),
+          url: '../list/list?friendsIndex=' + (friendsList.length - 1),
         });
       })
     } else {
@@ -91,14 +167,17 @@ Page({
         }
       });
     }
+    this.setData({
+      shareCode:''
+    })
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     var friendsList = wx.getStorageSync('friendsList');
-    if(friendsList==''){
-      friendsList=[]
+    if (friendsList == '') {
+      friendsList = []
     }
     this.setData({
       friendsList
@@ -153,8 +232,8 @@ Page({
   onShareAppMessage: function () {
 
   },
-   // ListTouch触摸开始
-   ListTouchStart(e) {
+  // ListTouch触摸开始
+  ListTouchStart(e) {
     this.setData({
       ListTouchStart: e.touches[0].pageX
     })

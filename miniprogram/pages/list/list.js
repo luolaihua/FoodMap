@@ -4,7 +4,7 @@ const store = db.collection('store');
 const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
-
+//TODO 动态分享码 分享指定内容 
 Page({
 
   /**
@@ -28,9 +28,7 @@ Page({
     var index = e.currentTarget.id
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
-    var item = stores.slice(index, index + 1)[0]
-    stores.splice(index, 1)
-    stores.unshift(item)
+    stores = myApi.makeItemTop(stores, index)
     if (friendsIndex == 'self') {
       myApi.updateStore(stores)
     }
@@ -42,9 +40,14 @@ Page({
     var index = e.currentTarget.id
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
+    var friendsList = wx.getStorageSync('friendsList');
     stores.splice(index, 1)
+    //如果是自身数据就更新到云端，如果是他人数据就更新本地
     if (friendsIndex == 'self') {
       myApi.updateStore(stores)
+    } else {
+      friendsList[friendsIndex].stores = stores
+      wx.setStorageSync('friendsList', friendsList);
     }
     this.setData({
       stores
@@ -58,13 +61,20 @@ Page({
     var friendsIndex = options.friendsIndex
     var storesArr = []
 
-    console.log(friendsIndex)
-    //TODO 以后做个列表单独放保存过的分享用户
+    //console.log(friendsIndex)
     if (friendsIndex == 'self') {
       storesArr = wx.getStorageSync('storesArr')
-    }else{
+    } else {
       var friendsList = wx.getStorageSync('friendsList')
       storesArr = friendsList[friendsIndex].stores
+      wx.setNavigationBarTitle({
+        title: '好友的美食列表',
+        success: (result) => {
+
+        },
+        fail: () => {},
+        complete: () => {}
+      });
     }
 
     this.setData({
@@ -76,56 +86,23 @@ Page({
   },
   share() {
     var shareCode = wx.getStorageSync('shareCode')
-    var isShowIntroduction = wx.getStorageSync('isShowIntroduction')
-    if (isShowIntroduction === '') {
-      wx.showModal({
-        title: '提示',
-        content: '长按地图界面 "查看美食" 按钮，输入美食分享码即可查看好友美食列表',
-        showCancel: false,
-        confirmText: '我知道啦',
-        confirmColor: '#3CC51F',
-        success: (result) => {
-          if (result.confirm) {
-            wx.setStorageSync('isShowIntroduction', false);
-            wx.showModal({
-              title: '您的美食分享码',
-              content: shareCode,
-              showCancel: true,
-              cancelText: '取消',
-              cancelColor: '#000000',
-              confirmText: '确定',
-              confirmColor: '#3CC51F',
-              success: (result) => {
-                if (result.confirm) {
-                  wx.setClipboardData({
-                    data: shareCode,
-                  });
-                }
-              },
 
-            });
-          }
-        },
-      });
-    }
-    if (isShowIntroduction === false) {
-      wx.showModal({
-        title: '您的美食分享码',
-        content: shareCode,
-        showCancel: true,
-        cancelText: '取消',
-        cancelColor: '#000000',
-        confirmText: '确定',
-        confirmColor: '#3CC51F',
-        success: (result) => {
-          if (result.confirm) {
-            wx.setClipboardData({
-              data: shareCode,
-            });
-          }
-        },
-      });
-    }
+    wx.showModal({
+      title: '您的美食分享码',
+      content: shareCode,
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if (result.confirm) {
+          wx.setClipboardData({
+            data: shareCode,
+          });
+        }
+      },
+    });
   },
   backToMap() {
     wx.navigateBack({
@@ -136,13 +113,14 @@ Page({
     var id = e.currentTarget.id
     console.log(this.data.friendsIndex)
     wx.navigateTo({
-      url: '../info/info?id=' + id +'&friendsIndex='+this.data.friendsIndex,
+      url: '../info/info?id=' + id + '&friendsIndex=' + this.data.friendsIndex,
     });
   },
 
   clearSearch() {
     this.setData({
       stores: this.data.storesArr,
+      defaultSearchValue:''
     })
   },
   storeSearch: function (e) {

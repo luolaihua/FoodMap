@@ -57,8 +57,3 @@
 .left{
  border-right: solid lightblue 1px;
 }
-.share{
-  position: fixed;
-  bottom: 40rpx;
-  right: 50rpx;
-}

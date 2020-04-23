@@ -251,8 +251,15 @@ Page({
       iconPath: this.data.foodIconUrl,
       longitude: this.data.longitude,
       latitude: this.data.latitude,
-      label: {
-        content: name
+      callout: {
+        content: name,
+        padding: 8,
+        display: 'BYCLICK',
+        fontSize: 12,
+        textAlign: 'center',
+        borderRadius: 30,
+        //borderWidth: 1,
+       // bgColor: '#ffffff'
       },
       images: this.data.images
     }

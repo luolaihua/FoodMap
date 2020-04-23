@@ -8,7 +8,8 @@
  subkey="{{mapSubKey}}"
  show-compass="{{true}}"
  setting="{{setting}}"
- bindmarkertap="onMarkerTap"
+ bindtap="tapMap"
+ bindcallouttap="onMarkerTap"
 >
 	<!-- 上方的添加提醒 -->
 	<block wx:if="{{!hideMe}}">
@@ -16,13 +17,18 @@
 		<cover-view class="up" bindtap="hideMe" />
 	</block>
 	<!-- 管理入口 -->
-	<cover-view class="cover">
+	<!--
+		<cover-view class="cover">
 		<button
 		 class='button'
      bindtap = "toAdd"
 		>添加美食
 		</button>
 	</cover-view>
+	<cover-view class="button show_all" bindtap="viewAll" bindlongpress='toList'>查看美食</cover-view>
+
+	-->
+
   <!--
   	<cover-view class="cover">
 		<button
@@ -41,7 +47,14 @@
     -->
 
 	<!-- 查看全部 -->
-	<cover-view class="button show_all" bindtap="viewAll" bindlongpress='toList'>查看美食</cover-view>
 
 </map>
+<view>
+ <image src="../../images/f.png" class="img-style" animation="{{animAddFriends}}" bindtap="toFriends"></image>
+ <image src="../../images/add4.png" class="img-style" animation="{{animAddStore}}" bindtap="toAdd"></image>
+ <image src="../../images/menu.png" class="img-style" animation="{{animToList}}" bindtap="toList"></image>
+ <image src="../../images/menu.png" class="img-style" animation="{{animInput}}" bindtap="toList"></image>
+ <image src="../../images/add4.png" class="img-style" animation="{{animCloud}}" bindtap="toAdd"></image>
+ <image src="../../images/friend.png" class="img-switch-style" animation="{{animMenu}}" bindtap="openMenu"></image>
+</view>
 

@@ -1,8 +1,12 @@
+<cu-custom bgColor="bg-gradual-pink" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">添加美食店铺</view>
+</cu-custom>
 <block wx:if="{{stores.length!=0}}">
 	<view class="cu-bar search bg-white">
 		<view class='search-form round'>
 			<text class="cuIcon-search" />
-			<input type="text" placeholder="搜索店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" name="searchContent" confirm-type="search" />
+			<input type="text" placeholder="搜索美食店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" confirm-type="search" />
 			<text class="cuIcon-roundclose" bindtap="clearSearch" />
     	</view>
   	</view>
@@ -23,12 +27,12 @@
 					<view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
 				</view>
 				<view class="move">
-					<view class="bg-grey" id="{{index}}" bindtap = "topItem">置顶</view>
-					<view class="bg-red" id="{{index}}" bindtap = "deleteItem">删除</view>
+					<view class="bg-cyan light" id="{{index}}" bindtap = "topItem">置顶</view>
+					<view class="bg-red light" id="{{index}}" bindtap = "deleteItem">删除</view>
 				</view>
 			</view>
 		</view>
-	<button class="cu-btn round bg-mauve shadow share" bindtap="share">分享</button>
+	<image wx:if="{{friendsIndex=='self'}}" class="shadow share" src="../../images/share.png" bindtap="share">分享</image>
 </block>
 <block wx:else>
 	<view class="noData">---暂无数据---</view>

@@ -182,8 +182,15 @@ function dateToString(now) {
   var dateTime = year + "-" + month + "-" + day ;
   return dateTime;
 }  
+function makeItemTop(arr,index){
+  var item = arr.slice(index, index + 1)[0]
+  arr.splice(index, 1)
+  arr.unshift(item)
+  return arr
+}
 
 module.exports = {
+  makeItemTop,
   dateToString,
   formatTime,
   formatDate,

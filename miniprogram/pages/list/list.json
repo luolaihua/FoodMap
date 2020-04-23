@@ -3,6 +3,6 @@
     "van-cell": "@vant/weapp/cell/index",
     "van-cell-group": "@vant/weapp/cell-group/index"
   },
-  "navigationBarTitleText": "全部美食"
+  "navigationBarTitleText": "我的美食列表"
 
 }

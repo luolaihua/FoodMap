@@ -1,3 +1,7 @@
+<cu-custom bgColor="bg-gradual-orange" isBack="{{true}}">
+  <view slot="backText">返回</view>
+  <view slot="content">添加美食店铺</view>
+</cu-custom>
 <block wx:if="{{store.images.length!=0}}">
 	<swiper
 	 class="card-swiper square-dot"
@@ -13,11 +17,10 @@
 		<swiper-item
 		 wx:for="{{store.images}}"
 		 wx:key="index"
-		 class="{{cardCur==index?'cur':''}}"
-		 bindtap="tapImage"
+		 class="{{cardCur==index?'cur':''}}" id="{{item}}"  bindtap="tapImage"
 		>
 			<view class="swiper-item">
-				<image src="{{item}}" mode="aspectFill" data-url="{{item}}" />
+				<image src="{{item}}" mode="aspectFill"/>
 			</view>
 		</swiper-item>
 	</swiper>

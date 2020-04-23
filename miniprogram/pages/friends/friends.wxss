@@ -42,8 +42,3 @@
   .left{
    border-right: solid lightblue 1px;
   }
-  .share{
-    position: fixed;
-    bottom: 40rpx;
-    left: 40rpx;
-  }
