@@ -129,8 +129,8 @@ async function updateStore(stores) {
     }
   })
   wx.setStorageSync('storesArr', stores)
-  console.log(res)
-
+  console.log("更新完成",res)
+  
 }
 
 function randomSort(a, b) {

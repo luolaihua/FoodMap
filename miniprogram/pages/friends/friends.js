@@ -30,6 +30,7 @@ Page({
     var info = await userInfo.where({
       shareCode: shareCode
     }).get()
+    //TODO 更新数据时不要更新是否收藏
     friendsList[index].stores=info.data[0].stores
     wx.setStorageSync('friendsList', friendsList);
     this.setData({

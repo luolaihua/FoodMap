@@ -1,6 +1,6 @@
-<cu-custom bgColor="bg-gradual-orange" isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-orange" isCustom="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">添加美食店铺</view>
+  <view slot="content">{{store.name}}</view>
 </cu-custom>
 <block wx:if="{{store.images.length!=0}}">
 	<swiper
@@ -63,10 +63,7 @@
 		<text class="notes-title">个人点评：</text>
 		<text  class="notes-content"selectable="{{true}}" >{{store.notes}}</text>
 	</view>
-
 </view>
-<block>
+	<image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{store.thumbs_up==0?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
 
-	<!--	<button class='button delete_item' bindtap='deleteItem'>删除店铺</button>-->
-</block>
 

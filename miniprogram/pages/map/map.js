@@ -46,6 +46,9 @@ Page({
   tapMap(e){
    // console.log(e)
     this.close();
+    this.setData({
+      isPopping: false
+    })
   },
   //去添加页面
   toAdd(e) {
