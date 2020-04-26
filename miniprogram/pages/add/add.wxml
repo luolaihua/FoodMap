@@ -48,10 +48,13 @@
 		/>
 		<view class="bar--text">{{ rateValue }}</view>
 	</view>
+	<!--	-->
 	<view class="cu-form-group align-start">
 		<view class="title">商铺点评:</view>
 		<textarea placeholder='你为大家推荐什么菜呢？' bindinput="inputNotes" name="notes" value="{{notes}}" />
-	</view>
+	</view>	
+
+
 	<view class="cu-form-group">
 		<view class="title">关键词:</view>
 		<block wx:for="{{tagList}}" wx:key="index">
@@ -89,8 +92,7 @@
 	-->
 
 
-
-
+<!---->
 	<view class="cu-bar bg-white margin-top">
 		<view class="action">
 			图片上传(小于1M)
@@ -110,7 +112,10 @@
 
 	</view>
 	
-	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
+
+
+
+	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存至本地</van-button>
 
 
 

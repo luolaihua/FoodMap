@@ -64,6 +64,6 @@
 		<text  class="notes-content"selectable="{{true}}" >{{store.notes}}</text>
 	</view>
 </view>
-	<image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{store.thumbs_up==0?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
+<image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{store.thumbs_up==0?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
 
 

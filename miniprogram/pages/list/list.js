@@ -22,7 +22,58 @@ Page({
     shareCode: '',
     isDataFromOthers: '0',
     action: 'viewSelf',
-    friendsIndex: 'self'
+    friendsIndex: 'self',
+    shareIndexList: [],
+    isShowModal: false,
+    isInstantShare: false
+  },
+  shareItems() {
+    const db = wx.cloud.database()
+    var shareIndexList = this.data.shareIndexList
+    var stores = this.data.storesArr
+    var shareList = []
+    for (let index = 0; index < shareIndexList.length; index++) {
+      shareList.push(stores[shareIndexList[index]])
+    }
+    var instantShareCode = myApi.getRandomCode(8)
+    db.collection('instantShare').add({
+      // data 字段表示需新增的 JSON 数据
+      data: {
+        instantShareCode: instantShareCode,
+        createTime: myApi.formatTime(new Date()),
+        stores: shareList,
+        shareCount: 6
+      },
+      success: function (res) {
+        // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+        console.log(res)
+        wx.showModal({
+          title: '即时美食分享码',
+          content: instantShareCode,
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+              wx.setClipboardData({
+                data: instantShareCode,
+              });
+            }
+          },
+        });
+      },
+      fail: console.error,
+      complete: console.log
+    })
+
+    console.log(shareList)
+  },
+  chooseItem(e) {
+    this.setData({
+      shareIndexList: e.detail.value
+    })
   },
   topItem: function (e) {
     var index = e.currentTarget.id
@@ -37,12 +88,28 @@ Page({
     })
   },
   deleteItem: function (e) {
-    var index = e.currentTarget.id
+    var index = Number(e.currentTarget.id)
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
     var friendsList = wx.getStorageSync('friendsList');
-    stores.splice(index, 1)
+
     //如果是自身数据就更新到云端，如果是他人数据就更新本地
+    //如果删除的条目为收藏的店铺，需要把店铺取消收藏
+    var id = stores[index].id + ''
+    var starStoreIdList = wx.getStorageSync("starStoreIdList")
+    if (starStoreIdList != '') {
+      var idIndex = starStoreIdList.indexOf(id)
+      //如果要删除的店铺为收藏进来的，
+      if (idIndex != -1) {
+        //先把id列表的的id删除
+        starStoreIdList.splice(idIndex, 1)
+        wx.setStorageSync('starStoreIdList', starStoreIdList);
+        //
+      }
+    }
+
+
+    stores.splice(index, 1)
     if (friendsIndex == 'self') {
       myApi.updateStore(stores)
     } else {
@@ -84,9 +151,30 @@ Page({
       friendsIndex
     })
   },
+  hideModal(e) {
+    this.setData({
+      isShowModal: false
+    })
+  },
   share() {
-    var shareCode = wx.getStorageSync('shareCode')
+    this.setData({
+      isShowModal: true
+    })
 
+
+  },
+  instantShare() {
+    this.setData({
+      isShowModal: false,
+      isInstantShare: true
+    })
+  },
+  foreverShare() {
+    this.setData({
+      isShowModal: false,
+      isInstantShare: false
+    })
+    var shareCode = wx.getStorageSync('shareCode')
     wx.showModal({
       title: '您的美食分享码',
       content: shareCode,
@@ -103,6 +191,7 @@ Page({
         }
       },
     });
+
   },
   backToMap() {
     wx.navigateBack({
@@ -120,7 +209,7 @@ Page({
   clearSearch() {
     this.setData({
       stores: this.data.storesArr,
-      defaultSearchValue:''
+      defaultSearchValue: ''
     })
   },
   storeSearch: function (e) {

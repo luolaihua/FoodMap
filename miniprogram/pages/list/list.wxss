@@ -57,3 +57,7 @@
 .left{
  border-right: solid lightblue 1px;
 }
+.item-box{
+  display: flex;
+  flex-direction: row;
+}

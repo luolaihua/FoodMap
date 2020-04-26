@@ -1,10 +1,10 @@
 // miniprogram/pages/friends/friends.js
 const db = wx.cloud.database()
-const store = db.collection('store');
 const userInfo = db.collection('userInfo');
+const instantShare = db.collection('instantShare')
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
-
+const _ = db.command
 Page({
 
   /**
@@ -16,6 +16,7 @@ Page({
     isShowInputCode: false,
     defaultImage: imgUrl.head,
     modalName: '',
+    isInstantShare:false
 
   },
   //从云端根据分享码再获取一遍数据
@@ -26,12 +27,28 @@ Page({
     });
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
+    var storesLocal = friendsList[index].stores
     var shareCode = friendsList[index].shareCode
     var info = await userInfo.where({
       shareCode: shareCode
     }).get()
-    //TODO 更新数据时不要更新是否收藏
-    friendsList[index].stores=info.data[0].stores
+    var storesLocal = friendsList[index].stores
+    var storesCloud = info.data[0].stores
+    //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
+    var starStoreIdList = wx.getStorageSync("starStoreIdList")
+    if (starStoreIdList != '') {
+      for (let index = 0; index < storesCloud.length; index++) {
+        //console.log(starStoreIdList.indexOf(storesCloud[index].id+''))
+        //原始的id为number类型,存到starStoreIdList里面的是string类型，一开始indexOf不起作用，需要转换数据类型
+        if (starStoreIdList.indexOf(storesCloud[index].id + '') != -1) {
+          storesCloud[index].thumbs_up = 0
+        }
+      }
+    }
+
+    console.log(storesCloud)
+    console.log(storesLocal)
+    friendsList[index].stores = storesCloud
     wx.setStorageSync('friendsList', friendsList);
     this.setData({
       friendsList
@@ -42,14 +59,14 @@ Page({
       });
     })
   },
-  topItem(e){
+  topItem(e) {
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
-    friendsList = myApi.makeItemTop(friendsList,index)
+    friendsList = myApi.makeItemTop(friendsList, index)
     wx.setStorageSync('friendsList', friendsList);
     this.setData({
       friendsList
-    },() => {
+    }, () => {
       wx.showToast({
         title: '置顶成功',
         icon: 'success',
@@ -63,7 +80,7 @@ Page({
     wx.setStorageSync('friendsList', friendsList);
     this.setData({
       friendsList
-    },() => {
+    }, () => {
       wx.showToast({
         title: '删除成功',
         icon: 'success',
@@ -105,8 +122,9 @@ Page({
   },
   async confirmCode() {
     var shareCode = this.data.shareCode
-    //先判断分享码格式是否符合规范
-    if (shareCode.length != 6) {
+    //先判断分享码格式是否符合规范,6位表示永久分享，8位是即时分享
+    //TODO 设置分享次数
+    if (shareCode.length != 6 && shareCode.length != 8) {
       wx.showToast({
         title: '分享码错误，请重新输入',
         icon: 'none',
@@ -133,11 +151,31 @@ Page({
       })
       return
     }
-    console.log(shareCodesFromList)
-    console.log(friendsList)
-    var info = await userInfo.where({
+    // console.log(shareCodesFromList)
+    // console.log(friendsList)
+
+    if(shareCode.length == 6){
+          var info = await userInfo.where({
       shareCode: shareCode
     }).get()
+    }else{
+      var info = await instantShare.where({
+        instantShareCode: shareCode
+      }).get()
+
+      //更新分享次数
+      instantShare.where({
+        instantShareCode: shareCode
+      }).update({
+        data: {
+          shareCount: _.inc(-1)
+        },
+      }).then(res=>{
+          console.log(res)
+      })
+
+    }
+
     console.log(info)
     if (info.data.length != 0) {
       var storesArr = info.data[0].stores
@@ -169,7 +207,7 @@ Page({
       });
     }
     this.setData({
-      shareCode:''
+      shareCode: ''
     })
   },
   /**
@@ -177,6 +215,7 @@ Page({
    */
   onLoad: function (options) {
     var friendsList = wx.getStorageSync('friendsList');
+    //console.log(friendsList)
     if (friendsList == '') {
       friendsList = []
     }

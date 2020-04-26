@@ -30,8 +30,6 @@ Page({
     colorList:["#f2826a","#7232dd","#1cbbb4"],
     isShow: true,
   },
-  //TODO 个性化maker图标
-  //TODO 个性化标题栏
   chooseIcon(e){
     var index =Number(e.currentTarget.id) 
     this.setData({

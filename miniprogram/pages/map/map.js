@@ -29,8 +29,8 @@ Page({
       enableSatellite: false,
       enableTraffic: false,
     },
-    longitude: config.center_longitude,
-    latitude: config.center_latitude,
+    longitude: 113.3245211,
+    latitude: 23.10229,
     mapSubKey: config.mapSubKey,
     hideMe: true,
     showAdmin: false,
@@ -41,6 +41,7 @@ Page({
     animInput: {},
     animCloud:{},
     animAddFriends:{},
+    isHideFunction:false,
   
   },
   tapMap(e){
@@ -71,6 +72,7 @@ Page({
             hideMe: true
           })
         }, 3000); */
+
 
     this.setData({
       defaultScale: config.default_scale
@@ -114,9 +116,13 @@ Page({
         }
       }).then(res => {
         console.log(res)
-        //app.globalData.openId = res.result.openId
-        wx.setStorageSync('openID', res.result.openId)
+        if(res.result.memberInfos.data.length!=0){
+          //云端数据不为空，本地数据为空
+          shareCode=res.result.memberInfos.data[0].shareCode
+          storesArr=res.result.memberInfos.data[0].stores
+        }
         wx.setStorageSync('shareCode', shareCode);
+        wx.setStorageSync('openID', res.result.openId)
       })
     } else {
       //如果有id 从云端更新数据
@@ -138,7 +144,28 @@ Page({
   },
 
   onShow: function () {
-    this.initMap()
+    var that = this
+    db.collection('isOpenFun').doc('isOpen').get().then(res => {
+      // res.data 包含该记录的数据
+      console.log(res.data.isHide)
+      that.setData({
+        isHideFunction:res.data.isHide
+      })
+      if(res.data.isHide){
+        userInfo.doc('34f394f55ea3852200005dbc525a2040').get().then(res=>{
+          console.log(res)
+          var storesArr = res.data.stores
+          wx.setStorageSync('storesArr', storesArr)
+          console.log(storesArr)
+          that.setData({
+            stores: storesArr,
+          })
+        })
+      }else{
+        that.initMap()
+      }
+    })
+
   },
   //点击查看美食
   toList: function () {
@@ -238,7 +265,11 @@ Page({
   },
   //点击弹出
   openMenu: function () {
-  if (this.data.isPopping) {
+    var isHideFunction = this.data.isHideFunction
+    if(isHideFunction){
+      this.toList()
+    }else{
+        if (this.data.isPopping) {
    //缩回动画
     this.close();
     this.setData({
@@ -251,6 +282,8 @@ Page({
     isPopping: true
    })
   }
+    }
+
  },
 
  //弹出动画

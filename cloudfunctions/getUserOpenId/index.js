@@ -36,12 +36,12 @@ async function initInfo(event, openId) {
       })
       return {
         openId:openId,
-        test
+        memberInfos
       }
     }else{
-      return {openId}
+      return {openId,
+        memberInfos}
     }
   } catch (e) {
-
   }
 }
