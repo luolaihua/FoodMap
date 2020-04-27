@@ -16,7 +16,7 @@ Page({
     isShowInputCode: false,
     defaultImage: imgUrl.head,
     modalName: '',
-    isInstantShare:false
+    isInstantShare: false
 
   },
   //从云端根据分享码再获取一遍数据
@@ -29,35 +29,45 @@ Page({
     var friendsList = this.data.friendsList
     var storesLocal = friendsList[index].stores
     var shareCode = friendsList[index].shareCode
-    var info = await userInfo.where({
-      shareCode: shareCode
-    }).get()
-    var storesLocal = friendsList[index].stores
-    var storesCloud = info.data[0].stores
-    //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
-    var starStoreIdList = wx.getStorageSync("starStoreIdList")
-    if (starStoreIdList != '') {
-      for (let index = 0; index < storesCloud.length; index++) {
-        //console.log(starStoreIdList.indexOf(storesCloud[index].id+''))
-        //原始的id为number类型,存到starStoreIdList里面的是string类型，一开始indexOf不起作用，需要转换数据类型
-        if (starStoreIdList.indexOf(storesCloud[index].id + '') != -1) {
-          storesCloud[index].thumbs_up = 0
+    try {
+      var info = await userInfo.where({
+        shareCode: shareCode
+      }).get()
+      //console.log(info)
+      var storesLocal = friendsList[index].stores
+      var storesCloud = info.data[0].stores
+      //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
+      var starStoreIdList = wx.getStorageSync("starStoreIdList")
+      if (starStoreIdList != '') {
+        for (let index = 0; index < storesCloud.length; index++) {
+          //console.log(starStoreIdList.indexOf(storesCloud[index].id+''))
+          //原始的id为number类型,存到starStoreIdList里面的是string类型，一开始indexOf不起作用，需要转换数据类型
+          if (starStoreIdList.indexOf(storesCloud[index].id + '') != -1) {
+            storesCloud[index].thumbs_up = 0
+          }
+          // console.log(storesCloud)
+          // console.log(storesLocal)
+          friendsList[index].stores = storesCloud
+          wx.setStorageSync('friendsList', friendsList);
+          this.setData({
+            friendsList
+          }, () => {
+            wx.navigateTo({
+              url: '../list/list?friendsIndex=' + index,
+            });
+          })
         }
       }
+    } catch (e) {
+
+    } finally {
+      wx.hideLoading({
+        complete: (res) => {},
+      })
     }
 
-    console.log(storesCloud)
-    console.log(storesLocal)
-    friendsList[index].stores = storesCloud
-    wx.setStorageSync('friendsList', friendsList);
-    this.setData({
-      friendsList
-    }, () => {
-      wx.hideLoading();
-      wx.navigateTo({
-        url: '../list/list?friendsIndex=' + index,
-      });
-    })
+
+
   },
   topItem(e) {
     var index = e.currentTarget.id
@@ -154,11 +164,11 @@ Page({
     // console.log(shareCodesFromList)
     // console.log(friendsList)
 
-    if(shareCode.length == 6){
-          var info = await userInfo.where({
-      shareCode: shareCode
-    }).get()
-    }else{
+    if (shareCode.length == 6) {
+      var info = await userInfo.where({
+        shareCode: shareCode
+      }).get()
+    } else {
       var info = await instantShare.where({
         instantShareCode: shareCode
       }).get()
@@ -170,8 +180,8 @@ Page({
         data: {
           shareCount: _.inc(-1)
         },
-      }).then(res=>{
-          console.log(res)
+      }).then(res => {
+        console.log(res)
       })
 
     }

@@ -34,7 +34,7 @@
 			<view class="text-grey text-xs">{{item.stores.length}}</view>
 		</view>
 		<view class="move">
-			<view class="bg-olive light" id="{{index}}" bindtap = "updateItem">更新</view>		
+			<view wx:if="{{item.shareCode.length==6}}" class="bg-olive light" id="{{index}}" bindtap = "updateItem">更新</view>		
 			<view class="bg-cyan light" id="{{index}}" bindtap = "topItem">置顶</view>
 			<view class="bg-red light" id="{{index}}" bindtap = "deleteItem">删除</view>
 		</view>

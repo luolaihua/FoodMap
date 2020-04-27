@@ -47,34 +47,7 @@
 		},
 		"miniprogram": {
 			"current": 3,
-			"list": [
-				{
-					"id": -1,
-					"name": "全部内容",
-					"pathName": "pages/list/list",
-					"query": ""
-				},
-				{
-					"id": 1,
-					"name": "商铺详情",
-					"pathName": "pages/info/info",
-					"query": "id=XE0cj8DR1TiNzjpY",
-					"scene": null
-				},
-				{
-					"id": -1,
-					"name": "新增数据",
-					"pathName": "pages/add/add",
-					"query": ""
-				},
-				{
-					"id": -1,
-					"name": "搜索页面",
-					"pathName": "pages/search/search",
-					"query": "",
-					"scene": null
-				}
-			]
+			"list": []
 		}
 	}
 }

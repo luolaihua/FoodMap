@@ -230,9 +230,6 @@ component_1.VantComponent({
         scrollIntoView: function () {
             var _this = this;
             var _a = this.data, currentIndex = _a.currentIndex, scrollable = _a.scrollable;
-            if(currentIndex==null){
-                currentIndex=0
-            }
             if (!scrollable) {
                 return;
             }

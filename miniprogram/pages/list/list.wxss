@@ -61,3 +61,19 @@
   display: flex;
   flex-direction: row;
 }
+
+/*居中--弹性--竖向--中间*/
+.middle-flex-column-center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/*居中--弹性--横向--中间*/
+.middle-flex-row-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}

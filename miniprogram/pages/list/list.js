@@ -5,6 +5,13 @@ const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
 //TODO 动态分享码 分享指定内容 
+wx.getImageInfo({
+  src: 'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/temp/temp.png?sign=230f4cf50331f9dab36ad82f2fae289e&t=1588000364',
+  success (res) {
+    console.log(res)
+    console.log(res.path)
+  }
+})
 Page({
 
   /**
@@ -25,9 +32,102 @@ Page({
     friendsIndex: 'self',
     shareIndexList: [],
     isShowModal: false,
-    isInstantShare: false
+    isInstantShare: false,
+    isChooseAll: false,
+    //画布--------------------------------
+    canvasWidth: 400,
+    canvasHeight: 650,
+    showCanvasFlag: true,
+
+    colorArr: [
+      '#EE534F',
+      '#FF7F50',
+      '#FFC928',
+      '#66BB6A',
+      '#42A5F6',
+      '#5C6BC0',
+      '#AA47BC',
+      '#EC407A',
+      '#FFB6C1',
+      '#FFA827'
+    ],
+    fontArr: ['italic', 'oblique', 'normal'],
+    sizeArr: [12, 14, 16, 18, 20, 22, 24, 26, 28],
+    QrCodeUrl: '../../images/QrCode.png',
+    posterUrl: '',
+    isShowPoster: false,
+
   },
+  /**
+   * 关闭保存海报图片的框
+   */
+  closePosterImage: function () {
+    this.setData({
+      isShowPoster: false,
+    });
+  },
+
+  /**
+   * 保存海报图片
+   */
+  savePosterImage: function () {
+    var that = this;
+    var filePath = that.data.posterUrl;
+    wx.saveImageToPhotosAlbum({
+      filePath: filePath,
+      success: function (res) {
+        wx.showToast({
+          title: '保存图片成功！',
+          icon: 'none',
+          duration: 1000,
+          mask: true,
+        })
+      }
+    })
+  },
+  /**
+   * 生成海报
+   */
+  createPoster() {
+    wx.showLoading({
+      title: '正在生成中',
+    })
+    var that = this;
+    var storesArr = this.data.storesArr
+    var textArr = []
+    storesArr.forEach(item => {
+      textArr.push(item.name)
+      console.log(item.keywords)
+      if (item.keywords != "") {
+        textArr = textArr.concat(item.keywords.split(','))
+      }
+    })
+    console.log(textArr)
+    myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, that.data.QrCodeUrl);
+    setTimeout(function () {
+      wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: that.data.canvasWidth,
+        height: that.data.canvasHeight,
+        canvasId: 'shareCanvas',
+        success: function (res) {
+          console.log(res.tempFilePath);
+
+          that.setData({
+            showCanvasFlag: false,
+            isShowPoster: true,
+            posterUrl: res.tempFilePath,
+          })
+
+          wx.hideLoading();
+        }
+      })
+    }, 2000)
+  },
+  //点击分享按钮,生成分享码分享
   shareItems() {
+    var that = this
     const db = wx.cloud.database()
     var shareIndexList = this.data.shareIndexList
     var stores = this.data.storesArr
@@ -57,6 +157,7 @@ Page({
           confirmColor: '#3CC51F',
           success: (result) => {
             if (result.confirm) {
+              that.cancelChoose()
               wx.setClipboardData({
                 data: instantShareCode,
               });
@@ -70,7 +171,29 @@ Page({
 
     console.log(shareList)
   },
+  chooseAllItem() {
+    var shareIndexList = []
+
+    function getAllIndex(item, index) {
+      shareIndexList.push(index)
+    }
+    this.data.stores.forEach(getAllIndex);
+    console.log(shareIndexList)
+    this.setData({
+      shareIndexList,
+      isChooseAll: true
+    })
+
+  },
+  cancelChoose() {
+    this.setData({
+      isInstantShare: false,
+      isChooseAll: false,
+      shareIndexList: []
+    })
+  },
   chooseItem(e) {
+    console.log(e)
     this.setData({
       shareIndexList: e.detail.value
     })
@@ -83,6 +206,8 @@ Page({
     if (friendsIndex == 'self') {
       myApi.updateStore(stores)
     }
+    // console.log(stores)
+    // console.log(this.data.storesArr)
     this.setData({
       stores
     })
@@ -116,6 +241,8 @@ Page({
       friendsList[friendsIndex].stores = stores
       wx.setStorageSync('friendsList', friendsList);
     }
+    // console.log(stores)
+    // console.log(this.data.storesArr)
     this.setData({
       stores
     })
@@ -136,9 +263,7 @@ Page({
       storesArr = friendsList[friendsIndex].stores
       wx.setNavigationBarTitle({
         title: '好友的美食列表',
-        success: (result) => {
-
-        },
+        success: (result) => {},
         fail: () => {},
         complete: () => {}
       });
@@ -160,8 +285,6 @@ Page({
     this.setData({
       isShowModal: true
     })
-
-
   },
   instantShare() {
     this.setData({
@@ -224,6 +347,62 @@ Page({
       stores: storesArr.filter(search)
     })
   },
+  /**
+   * 保存海报图片
+   */
+  /*   savePosterImage: function () {
+      let that = this
+      wx.saveImageToPhotosAlbum({
+        filePath: that.data.posterImageUrl,
+        success(result) {
+          console.log(result)
+          wx.showModal({
+            title: '提示',
+            content: '二维码海报已存入手机相册，赶快分享到朋友圈吧',
+            showCancel: false,
+            success: function (res) {
+              that.setData({
+                isShowPosterModal: false,
+                isShow: false
+              })
+            }
+          })
+        },
+        fail: function (err) {
+          console.log(err);
+          if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
+            console.log("再次发起授权");
+            wx.showModal({
+              title: '用户未授权',
+              content: '如需保存海报图片到相册，需获取授权.是否在授权管理中选中“保存到相册”?',
+              showCancel: true,
+              success: function (res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                  wx.openSetting({
+                    success: function success(res) {
+                      console.log('打开设置', res.authSetting);
+                      wx.openSetting({
+                        success(settingdata) {
+                          console.log(settingdata)
+                          if (settingdata.authSetting['scope.writePhotosAlbum']) {
+                            console.log('获取保存到相册权限成功');
+                          } else {
+                            console.log('获取保存到相册权限失败');
+                          }
+                        }
+                      })
+
+                    }
+                  });
+                }
+              }
+            })
+          }
+        }
+      });
+    }, */
+
   // ListTouch触摸开始
   ListTouchStart(e) {
     this.setData({

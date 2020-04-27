@@ -188,8 +188,127 @@ function makeItemTop(arr,index){
   arr.unshift(item)
   return arr
 }
+ /**
+  * 生成海报
+  * 
+  * @param {*画布ID名} canvasName 
+  * @param {*标题} title 
+  * @param {*内容数组} textArr 
+  * @param {*字体颜色数组} colorArr 
+  * @param {*字体样式数组} fontArr 
+  * @param {*字体大小数组} sizeArr 
+  * @param {*总数量} num 
+  * @param {*一行数量--最大为5} rowNum 
+  * @param {*同行中词的距离} distance 
+  * @param {*第二行与第一行隔多少距离} spacing 
+  * @param {*画布宽度} canvasWidth 
+  * @param {*画布高度} canvasHeight 
+  * @param {*中间宽度} midWidth 
+  * @param {*中间高度} midHeight 
+  * @param {*二维码图片路径} imgUrl 
+  */
+ function makePosterImageCanvas (canvasName, title, textArr, colorArr, fontArr, sizeArr, num, rowNum, distance, spacing, canvasWidth, canvasHeight, midWidth, midHeight, imgUrl) {
+  var that = this;
+  var contentArr = [];
+  for (var a = 0; a < num; a++) {
+    var neirong = arrayRandomTakeOne(textArr); //内容
+    contentArr.push(neirong);
+  }
+  //console.log(contentArr);
+
+  const ctx = wx.createCanvasContext(canvasName)
+  ctx.clearRect(0, 0, canvasWidth, canvasHeight) //清除画布区域内容
+  ctx.setFillStyle('white') //填充背景色--白色
+  ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+
+  var daxiaoArr = [];
+  for (var i = 0; i < contentArr.length; i++) {
+    var hang = parseInt(i / rowNum) + 1; //第几行
+    var hangDj = i % rowNum; //每行第几
+    var yanse = arrayRandomTakeOne(colorArr); //颜色
+    var ziti = arrayRandomTakeOne(fontArr); //字体
+    var daxiao = arrayRandomTakeOne(sizeArr); //大小
+    daxiaoArr.push(daxiao);
+    //console.log(yanse, ziti, daxiao);
+
+    var rowStart = 0; //水平起点
+    var columnStart = hang * spacing; //竖直起点
+
+    if (hangDj == 0) {
+      rowStart = 0;
+    } else if (hangDj > 0) {
+      for (var e = 1; e < hangDj + 1; e++) {
+        rowStart = rowStart + contentArr[i - e].length * daxiaoArr[i - e];
+      }
+      rowStart = rowStart + distance * hangDj;
+    }
+    //console.log('起点', rowStart);
+
+    ctx.fillStyle = yanse; //字体颜色
+    ctx.font = ziti + ' small-caps normal ' + daxiao + 'px Arial';
+    ctx.fillText(contentArr[i], rowStart, columnStart)
+  }
+
+  ctx.setFillStyle('white') //填充背景色--白色
+  ctx.fillRect((canvasWidth - midWidth) / 2, (canvasHeight - midHeight) / 2, midWidth, midHeight)
+
+  var titleArr = [];
+  for (var n = 0; n < title.length; n++) {
+    titleArr.push(title[n]);
+  }
+  //console.log(titleArr);
+
+  var titleHeight = midHeight - 10 - midWidth;
+  var titleDaxiao = parseInt(titleHeight / title.length);
+  //console.log(titleHeight, titleDaxiao);
+
+  titleDaxiao = titleDaxiao > 50 ? 50 : titleDaxiao;
+
+  for (var m = 0; m < titleArr.length; m++) {
+    ctx.fillStyle = '#000000'; //字体颜色
+    ctx.font = 'normal small-caps normal ' + titleDaxiao + 'px Arial';
+    ctx.setTextAlign('center')
+    ctx.fillText(titleArr[m], canvasWidth / 2, (canvasHeight - midHeight) / 2 + 5 + titleDaxiao * (m + 1))
+  }
+
+  ctx.drawImage(imgUrl, (canvasWidth - midWidth) / 2 + 5, canvasHeight - (midWidth + (canvasHeight - midHeight) / 2), midWidth - 10, midWidth - 10) //二维码
+  /* ctx.draw(false,function(){
+     wx.canvasToTempFilePath({
+        x: 0,
+        y: 0,
+        width: data.canvasWidth,
+        height: data.canvasHeight,
+        canvasId: 'shareCanvas',
+        success: function (res) {
+           console.log(res.tempFilePath);
+
+           setData({
+              showCanvasFlag: false,
+              isShowPoster: true,
+              posterUrl: res.tempFilePath,
+           })
+           wx.hideLoading();
+        }
+     })
+  }) */
+  wx.drawCanvas({
+    canvasId: canvasName,
+    actions: ctx.getActions()
+  })
+}
+/**
+ * 数组随机取出一个数
+ * @param {*} array 
+ */
+function arrayRandomTakeOne(array) {
+  var index = Math.floor((Math.random() * array.length + 1) - 1);
+  return array[index];
+}
+
 
 module.exports = {
+  makePosterImageCanvas,
+  arrayRandomTakeOne,
   makeItemTop,
   dateToString,
   formatTime,

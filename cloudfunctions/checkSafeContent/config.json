@@ -3,7 +3,8 @@
     "openapi": [
       "security.msgSecCheck",
       "security.imgSecCheck",
-      "img.aiCrop"
+      "img.aiCrop",
+      "wxacode.getUnlimited"
     ]
   }
 }
