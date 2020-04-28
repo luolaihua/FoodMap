@@ -65,26 +65,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-        //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
-        if (options.scene) {
-         var  test = decodeURIComponent(options.scene);
-         wx.showModal({
-           title: test,
-           content: options.toString(),
-           showCancel: true,
-           cancelText: '取消',
-           cancelColor: '#000000',
-           confirmText: '确定',
-           confirmColor: '#3CC51F',
-           success: (result) => {
-             if(result.confirm){
-               
-             }
-           },
-           fail: ()=>{},
-           complete: ()=>{}
-         });
-        }
     var that = this
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
@@ -165,18 +145,20 @@ Page({
 
   onShow: function () {
     var that = this
+
     db.collection('isOpenFun').doc('isOpen').get().then(res => {
       // res.data 包含该记录的数据
-      console.log('Hide Function ?',res.data.isHide)
+     // console.log('Hide Function ?',res.data.isHide)
       that.setData({
         isHideFunction:res.data.isHide
       })
+      wx.setStorageSync('isHideFunction',res.data.isHide)
       if(res.data.isHide){
         userInfo.doc('34f394f55ea3852200005dbc525a2040').get().then(res=>{
-          console.log(res)
+         // console.log(res)
           var storesArr = res.data.stores
           wx.setStorageSync('storesArr', storesArr)
-          console.log(storesArr)
+          //console.log(storesArr)
           that.setData({
             stores: storesArr,
           })

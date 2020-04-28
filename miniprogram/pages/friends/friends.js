@@ -16,7 +16,8 @@ Page({
     isShowInputCode: false,
     defaultImage: imgUrl.head,
     modalName: '',
-    isInstantShare: false
+    isInstantShare: false,
+    isBack:true
 
   },
   //从云端根据分享码再获取一遍数据
@@ -130,6 +131,9 @@ Page({
       shareCode: e.detail.value
     })
   },
+  /**
+   * 通过分享码先云端获取数据
+   */
   async confirmCode() {
     var shareCode = this.data.shareCode
     //先判断分享码格式是否符合规范,6位表示永久分享，8位是即时分享
@@ -146,6 +150,9 @@ Page({
       title: '加载中',
     });
     var friendsList = this.data.friendsList
+
+
+
     //需要判断当前分享码是否已经存在列表中,先取出所有分享码
     var shareCodesFromList = []
     friendsList.forEach(item => {
@@ -164,15 +171,17 @@ Page({
     // console.log(shareCodesFromList)
     // console.log(friendsList)
 
+
     if (shareCode.length == 6) {
+      //如果是永久分享
       var info = await userInfo.where({
         shareCode: shareCode
       }).get()
     } else {
+      //如果是即时分享
       var info = await instantShare.where({
         instantShareCode: shareCode
       }).get()
-
       //更新分享次数
       instantShare.where({
         instantShareCode: shareCode
@@ -186,7 +195,8 @@ Page({
 
     }
 
-    console.log(info)
+    console.log('getShareData', info)
+    //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
       var storesArr = info.data[0].stores
       var friendInfo = {
@@ -200,8 +210,21 @@ Page({
         isShowInputCode: false
       }, () => {
         wx.hideLoading();
-        wx.navigateTo({
-          url: '../list/list?friendsIndex=' + (friendsList.length - 1),
+        wx.showModal({
+          title: '获取美食店铺',
+          content: '好友美食店铺已获取，是否查看',
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+              wx.navigateTo({
+                url: '../list/list?friendsIndex=' + (friendsList.length - 1),
+              });
+            }
+          },
         });
       })
     } else {
@@ -224,14 +247,38 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    //判断是否为首页
+    var curPages =  getCurrentPages();
+
+    if(curPages.length==1){
+      this.setData({
+        isBack:false
+      })
+    }
+
+    
+    var that = this
     var friendsList = wx.getStorageSync('friendsList');
     //console.log(friendsList)
     if (friendsList == '') {
       friendsList = []
     }
-    this.setData({
-      friendsList
-    })
+    //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
+    if (options.scene) {
+      var shareCode = decodeURIComponent(options.scene);
+      console.log(shareCode)
+      this.setData({
+        friendsList,
+        shareCode
+      },()=>{
+        that.confirmCode()
+      })
+    } else {
+      this.setData({
+        friendsList
+      })
+    }
+
   },
 
   /**

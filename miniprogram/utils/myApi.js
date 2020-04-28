@@ -304,9 +304,19 @@ function arrayRandomTakeOne(array) {
   var index = Math.floor((Math.random() * array.length + 1) - 1);
   return array[index];
 }
+function getQrCodeUrl(scene){
+  return wx.cloud.callFunction({
+    name: 'checkSafeContent',
+    data: {
+      requestType: 'createQrCode',
+      scene: scene
+    }
+  })
+}
 
 
 module.exports = {
+  getQrCodeUrl,
   makePosterImageCanvas,
   arrayRandomTakeOne,
   makeItemTop,

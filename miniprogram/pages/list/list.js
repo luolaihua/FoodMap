@@ -4,14 +4,6 @@ const store = db.collection('store');
 const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
-//TODO 动态分享码 分享指定内容 
-wx.getImageInfo({
-  src: 'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/temp/temp.png?sign=230f4cf50331f9dab36ad82f2fae289e&t=1588000364',
-  success (res) {
-    console.log(res)
-    console.log(res.path)
-  }
-})
 Page({
 
   /**
@@ -27,6 +19,7 @@ Page({
     defaultSearchValue: '',
     condition: 'noData',
     shareCode: '',
+    instantShareCode:'',
     isDataFromOthers: '0',
     action: 'viewSelf',
     friendsIndex: 'self',
@@ -56,7 +49,13 @@ Page({
     QrCodeUrl: '../../images/QrCode.png',
     posterUrl: '',
     isShowPoster: false,
+    isHideFunction:false
 
+  },
+  copyShareCode(){
+    wx.setClipboardData({
+      data: this.data.shareCode,
+    });
   },
   /**
    * 关闭保存海报图片的框
@@ -65,6 +64,7 @@ Page({
     this.setData({
       isShowPoster: false,
     });
+    this.cancelChoose()
   },
 
   /**
@@ -82,19 +82,21 @@ Page({
           duration: 1000,
           mask: true,
         })
+        that.closePosterImage()
+        that.cancelChoose()
       }
     })
   },
   /**
    * 生成海报
    */
-  createPoster() {
+  async createPoster(shareCode, storesArr) {
     wx.showLoading({
       title: '正在生成中',
     })
     var that = this;
-    var storesArr = this.data.storesArr
     var textArr = []
+    //生成海报文本内容
     storesArr.forEach(item => {
       textArr.push(item.name)
       console.log(item.keywords)
@@ -102,8 +104,24 @@ Page({
         textArr = textArr.concat(item.keywords.split(','))
       }
     })
-    console.log(textArr)
-    myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, that.data.QrCodeUrl);
+    //生成二维码URL
+    var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
+    // console.log(posterImageUrl)
+    var QrCodeUrl = posterImageUrl.result
+    if (QrCodeUrl == '') {
+      QrCodeUrl = this.data.QrCodeUrl
+      myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+    } else {
+      wx.getImageInfo({
+        src: posterImageUrl.result,
+        success(res) {
+          QrCodeUrl = res.path
+          myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+        }
+      })
+    }
+    // console.log(textArr)
+
     setTimeout(function () {
       wx.canvasToTempFilePath({
         x: 0,
@@ -125,12 +143,18 @@ Page({
       })
     }, 2000)
   },
-  //点击分享按钮,生成分享码分享
+  /**
+   * 点击分享按钮,生成分享码分享---即时分享
+   * stores为展示的数据---搜索会筛选数据
+   * storesArr为原有的数据，二者本是一样的，因为搜索功能需要还原数据
+   */
   shareItems() {
     var that = this
     const db = wx.cloud.database()
     var shareIndexList = this.data.shareIndexList
-    var stores = this.data.storesArr
+    //这里用的是展示的数据，也就是可以使搜索之后的数据
+    var stores = this.data.stores
+    //console.log(stores)
     var shareList = []
     for (let index = 0; index < shareIndexList.length; index++) {
       shareList.push(stores[shareIndexList[index]])
@@ -147,7 +171,11 @@ Page({
       success: function (res) {
         // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
         console.log(res)
-        wx.showModal({
+        that.createPoster(instantShareCode,shareList)
+        that.setData({
+          shareCode:instantShareCode
+        })
+/*         wx.showModal({
           title: '即时美食分享码',
           content: instantShareCode,
           showCancel: true,
@@ -163,7 +191,7 @@ Page({
               });
             }
           },
-        });
+        }); */
       },
       fail: console.error,
       complete: console.log
@@ -171,6 +199,47 @@ Page({
 
     console.log(shareList)
   },
+    /**
+   * 打开即时分享
+   */
+  instantShare() {
+    this.setData({
+      isShowModal: false,
+      isInstantShare: true
+    })
+  },
+  /**
+   * 永久分享
+   */
+  foreverShare() {
+    var shareCode = wx.getStorageSync('shareCode')
+    this.createPoster(shareCode,this.data.storesArr)
+    this.setData({
+      isShowModal: false,
+      isInstantShare: false,
+      shareCode
+    })
+/*     wx.showModal({
+      title: '您的美食分享码',
+      content: shareCode,
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if (result.confirm) {
+          wx.setClipboardData({
+            data: shareCode,
+          });
+        }
+      },
+    }); */
+
+  },
+  /**
+   * 全选
+   */
   chooseAllItem() {
     var shareIndexList = []
 
@@ -185,6 +254,9 @@ Page({
     })
 
   },
+  /**
+   * 取消选择
+   */
   cancelChoose() {
     this.setData({
       isInstantShare: false,
@@ -192,12 +264,18 @@ Page({
       shareIndexList: []
     })
   },
+  /**
+   * 点击CheckBox，挨个选择
+   */
   chooseItem(e) {
     console.log(e)
     this.setData({
       shareIndexList: e.detail.value
     })
   },
+  /**
+   * item置顶
+   */
   topItem: function (e) {
     var index = e.currentTarget.id
     var friendsIndex = this.data.friendsIndex
@@ -212,6 +290,9 @@ Page({
       stores
     })
   },
+  /**
+   * item删除
+   */
   deleteItem: function (e) {
     var index = Number(e.currentTarget.id)
     var friendsIndex = this.data.friendsIndex
@@ -251,6 +332,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+   var  isHideFunction = wx.getStorageSync('isHideFunction')
     //friendsIndex
     var friendsIndex = options.friendsIndex
     var storesArr = []
@@ -273,49 +355,27 @@ Page({
       stores: storesArr,
       storesArr,
       defaultSearchValue: '',
-      friendsIndex
+      friendsIndex,
+      isHideFunction
     })
   },
-  hideModal(e) {
+  /**
+   * 隐藏modal弹窗
+   */
+  hideShareModal(e) {
     this.setData({
       isShowModal: false
     })
   },
-  share() {
+  /**
+   * 打开modal弹窗
+   */
+  showShareModal() {
     this.setData({
       isShowModal: true
     })
   },
-  instantShare() {
-    this.setData({
-      isShowModal: false,
-      isInstantShare: true
-    })
-  },
-  foreverShare() {
-    this.setData({
-      isShowModal: false,
-      isInstantShare: false
-    })
-    var shareCode = wx.getStorageSync('shareCode')
-    wx.showModal({
-      title: '您的美食分享码',
-      content: shareCode,
-      showCancel: true,
-      cancelText: '取消',
-      cancelColor: '#000000',
-      confirmText: '确定',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        if (result.confirm) {
-          wx.setClipboardData({
-            data: shareCode,
-          });
-        }
-      },
-    });
 
-  },
   backToMap() {
     wx.navigateBack({
       delta: 1

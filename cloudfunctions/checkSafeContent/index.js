@@ -3,9 +3,8 @@ const cloud = require('wx-server-sdk')
 cloud.init()
 // 云函数入口函数
 exports.main = async (event, context) => {
-  requestType = event.requestType
   //文本内容安全检测
-  switch (requestType) {
+  switch (event.requestType) {
     case 'msgSecCheck': {
       return doMsgSecCheck(event)
     }
@@ -61,24 +60,25 @@ async function doImgSecCheck(event) {
  */
 async function createQrCode(event) {
   //let scene = 'timestamp=' + event.timestamp;
-  let result = await cloud.openapi.wxacode.getUnlimited({
-    scene: '666666666',
-    page: 'pages/map/map'
-  })
-  console.log(result)
-  if (result.errCode === 0) {
-    let upload = await cloud.uploadFile({
-      cloudPath: 'QrCode.png',
-      fileContent: result.buffer,
+  if (event.scene != '') {
+    let result = await cloud.openapi.wxacode.getUnlimited({
+      scene: event.scene,
+      page: 'pages/friends/friends'
     })
-    console.log(upload)
-    let fileList = [upload.fileID]
-    let resultUrl = await cloud.getTempFileURL({
-      fileList,
-    })
-    return resultUrl.fileList
+    console.log(result)
+    if (result.errCode === 0) {
+      let upload = await cloud.uploadFile({
+        cloudPath: 'temp/' + event.scene + '.png',
+        fileContent: result.buffer,
+      })
+      console.log(upload)
+      /*       let fileList = [upload.fileID]
+            let resultUrl = await cloud.getTempFileURL({
+              fileList,
+            }) */
+      return upload.fileID
+    }
   }
-
   return []
 
 }

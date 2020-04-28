@@ -1,16 +1,16 @@
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="backText">返回</view>
 	<view slot="content">{{friendsIndex=='self'?'我的美食列表':"好友的美食列表"}}</view>
 </cu-custom>
 <block wx:if="{{storesArr.length!=0}}">
-	<view class="cu-bar search bg-white" wx:if="{{!isInstantShare}}">
+	<view class="cu-bar search bg-white">
 		<view class='search-form round'>
 			<text class="cuIcon-search" />
 			<input type="text" placeholder="搜索美食店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" confirm-type="search" />
 			<text class="cuIcon-roundclose" bindtap="clearSearch" />
     	</view>
  	</view>
-	<view class="cu-bar bg-white" wx:else>
+	<view class="cu-bar bg-white" wx:if="{{isInstantShare}}">
 		<view class="action" bindtap = "cancelChoose">
 		<text class="text-gray">取消</text> 
 		</view>
@@ -49,7 +49,7 @@
 	<block wx:if="{{isInstantShare}}">
 		<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">分享</van-button>
 	</block>
-	<image wx:if="{{friendsIndex=='self'}}" class="shadow share" src="../../images/share.png" bindtap="createPoster"></image>
+	<image wx:if="{{friendsIndex=='self'&&!isHideFunction}}" class="shadow share" src="../../images/share.png" bindtap="showShareModal"></image>
 </block>
 
 
@@ -62,19 +62,20 @@
 	<view class="cu-dialog">
 		<view class="cu-bar bg-white justify-end">
 			<view class="content">分享给朋友</view>
-			<view class="action" bindtap="hideModal">
+			<view class="action" bindtap="hideShareModal">
 				<text class="cuIcon-close text-red"></text>
 			</view>
 		</view>
 		<view class="padding-xl">
-			分享分为即时分享和永久分享
+			分享分为即时分享和永久分享:
+			即时分享只可查看当前数据，且有分享次数限制。永久分享可动态查看您的美食店铺,无分享次数限制
 		</view>
 		<view class="cu-bar bg-white">
 			<view class="action margin-0 flex-sub " bindtap="instantShare">
-				<text class="cuIcon-we"></text>即时分享</view>
-			<view class="action margin-0 flex-sub solid-left" bindtap="hideModal">取消</view>
+				<text class="cuIcon-we text-mauve"></text>即时分享</view>
+			<view class="action margin-0 flex-sub solid-left" bindtap="hideShareModal">取消</view>
 			<view class="action margin-0 flex-sub " bindtap="foreverShare">
-				<text class="cuIcon-wefill"></text>永久分享</view>
+				<text class="cuIcon-wefill text-orange"></text>永久分享</view>
 		</view>
 	</view>
 </view>
@@ -87,7 +88,7 @@
 			<view style="width:400rpx;height:650rpx;">
 				<image style="width:100%;height:100%;" src="{{posterUrl}}"></image>
 			</view>
-			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;">保存后分享给朋友</view>
+			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;" bindtap = "copyShareCode">保存后分享给朋友</view>
 			<view style="width:600rpx;height:70rpx;" class="middle-flex-row-center">
 				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;" bindtap='closePosterImage'>关闭</button>
 				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;margin-left:30rpx;" bindtap='savePosterImage'>保存图片</button>

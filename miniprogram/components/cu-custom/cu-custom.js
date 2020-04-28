@@ -21,7 +21,7 @@ Component({
     },
     isBack: {
       type: [Boolean, String],
-      default: false
+      default: true
     },
     bgImage: {
       type: String,
