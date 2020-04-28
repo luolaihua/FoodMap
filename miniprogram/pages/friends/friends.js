@@ -17,9 +17,10 @@ Page({
     defaultImage: imgUrl.head,
     modalName: '',
     isInstantShare: false,
-    isBack:true
+    isBack: true
 
   },
+  //TODO 朋友列表应该放在云端
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
     wx.showLoading({
@@ -248,29 +249,30 @@ Page({
    */
   onLoad: function (options) {
     //判断是否为首页
-    var curPages =  getCurrentPages();
+    /*     var curPages =  getCurrentPages();
 
-    if(curPages.length==1){
-      this.setData({
-        isBack:false
-      })
-    }
+        if(curPages.length==1){
+          this.setData({
+            isBack:false
+          })
+        } */
 
-    
+
     var that = this
     var friendsList = wx.getStorageSync('friendsList');
     //console.log(friendsList)
     if (friendsList == '') {
       friendsList = []
     }
+
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
-    if (options.scene) {
-      var shareCode = decodeURIComponent(options.scene);
+    if (options.shareCode) {
+      var shareCode = options.shareCode
       console.log(shareCode)
       this.setData({
         friendsList,
         shareCode
-      },()=>{
+      }, () => {
         that.confirmCode()
       })
     } else {

@@ -50,10 +50,10 @@
 
 </map>
 <view>
- <image src="../../images/f.png" class="img-style" animation="{{animAddFriends}}" bindtap="toFriends"></image>
- <image src="../../images/add4.png" class="img-style" animation="{{animAddStore}}" bindtap="toAdd"></image>
- <image src="../../images/menu.png" class="img-style" animation="{{animToList}}" bindtap="toList"></image>
- <image src="../../images/menu.png" class="img-style" animation="{{animInput}}" bindtap="toList"></image>
+ <image src="../../images/addFriends.png" class="img-style" animation="{{animAddFriends}}" bindtap="toFriends"></image>
+ <image src="../../images/group.png" class="img-style" animation="{{animAddStore}}" bindtap="toAdd"></image>
+ <image src="../../images/user.png" class="img-style" animation="{{animToList}}" bindtap="toList"></image>
+ <image src="../../images/menu2.png" class="img-style" animation="{{animInput}}" bindtap="toList"></image>
  <image src="../../images/add4.png" class="img-style" animation="{{animCloud}}" bindtap="toAdd"></image>
  <image src="../../images/friend.png" class="img-switch-style" animation="{{animMenu}}" bindtap="openMenu"></image>
 </view>

@@ -19,7 +19,7 @@ Page({
     defaultSearchValue: '',
     condition: 'noData',
     shareCode: '',
-    instantShareCode:'',
+    instantShareCode: '',
     isDataFromOthers: '0',
     action: 'viewSelf',
     friendsIndex: 'self',
@@ -49,10 +49,9 @@ Page({
     QrCodeUrl: '../../images/QrCode.png',
     posterUrl: '',
     isShowPoster: false,
-    isHideFunction:false
 
   },
-  copyShareCode(){
+  copyShareCode() {
     wx.setClipboardData({
       data: this.data.shareCode,
     });
@@ -149,9 +148,19 @@ Page({
    * storesArr为原有的数据，二者本是一样的，因为搜索功能需要还原数据
    */
   shareItems() {
+
+    var shareIndexList = this.data.shareIndexList
+    //先检查是否一个也没有选择
+    if (shareIndexList.length == 0) {
+      wx.showToast({
+        title: '请选择选择店铺',
+        icon: 'none',
+      });
+      return
+    }
+    
     var that = this
     const db = wx.cloud.database()
-    var shareIndexList = this.data.shareIndexList
     //这里用的是展示的数据，也就是可以使搜索之后的数据
     var stores = this.data.stores
     //console.log(stores)
@@ -171,27 +180,27 @@ Page({
       success: function (res) {
         // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
         console.log(res)
-        that.createPoster(instantShareCode,shareList)
+        that.createPoster(instantShareCode, shareList)
         that.setData({
-          shareCode:instantShareCode
+          shareCode: instantShareCode
         })
-/*         wx.showModal({
-          title: '即时美食分享码',
-          content: instantShareCode,
-          showCancel: true,
-          cancelText: '取消',
-          cancelColor: '#000000',
-          confirmText: '确定',
-          confirmColor: '#3CC51F',
-          success: (result) => {
-            if (result.confirm) {
-              that.cancelChoose()
-              wx.setClipboardData({
-                data: instantShareCode,
-              });
-            }
-          },
-        }); */
+        /*         wx.showModal({
+                  title: '即时美食分享码',
+                  content: instantShareCode,
+                  showCancel: true,
+                  cancelText: '取消',
+                  cancelColor: '#000000',
+                  confirmText: '确定',
+                  confirmColor: '#3CC51F',
+                  success: (result) => {
+                    if (result.confirm) {
+                      that.cancelChoose()
+                      wx.setClipboardData({
+                        data: instantShareCode,
+                      });
+                    }
+                  },
+                }); */
       },
       fail: console.error,
       complete: console.log
@@ -199,7 +208,7 @@ Page({
 
     console.log(shareList)
   },
-    /**
+  /**
    * 打开即时分享
    */
   instantShare() {
@@ -213,28 +222,28 @@ Page({
    */
   foreverShare() {
     var shareCode = wx.getStorageSync('shareCode')
-    this.createPoster(shareCode,this.data.storesArr)
+    this.createPoster(shareCode, this.data.storesArr)
     this.setData({
       isShowModal: false,
       isInstantShare: false,
       shareCode
     })
-/*     wx.showModal({
-      title: '您的美食分享码',
-      content: shareCode,
-      showCancel: true,
-      cancelText: '取消',
-      cancelColor: '#000000',
-      confirmText: '确定',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        if (result.confirm) {
-          wx.setClipboardData({
-            data: shareCode,
-          });
-        }
-      },
-    }); */
+    /*     wx.showModal({
+          title: '您的美食分享码',
+          content: shareCode,
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+              wx.setClipboardData({
+                data: shareCode,
+              });
+            }
+          },
+        }); */
 
   },
   /**
@@ -332,7 +341,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-   var  isHideFunction = wx.getStorageSync('isHideFunction')
     //friendsIndex
     var friendsIndex = options.friendsIndex
     var storesArr = []
@@ -356,7 +364,7 @@ Page({
       storesArr,
       defaultSearchValue: '',
       friendsIndex,
-      isHideFunction
+
     })
   },
   /**

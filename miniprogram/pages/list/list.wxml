@@ -49,7 +49,7 @@
 	<block wx:if="{{isInstantShare}}">
 		<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">分享</van-button>
 	</block>
-	<image wx:if="{{friendsIndex=='self'&&!isHideFunction}}" class="shadow share" src="../../images/share.png" bindtap="showShareModal"></image>
+	<image wx:if="{{friendsIndex=='self'}}" class="shadow share" src="../../images/share.png" bindtap="showShareModal"></image>
 </block>
 
 

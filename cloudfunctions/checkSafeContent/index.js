@@ -63,7 +63,7 @@ async function createQrCode(event) {
   if (event.scene != '') {
     let result = await cloud.openapi.wxacode.getUnlimited({
       scene: event.scene,
-      page: 'pages/friends/friends'
+      page: 'pages/map/map'
     })
     console.log(result)
     if (result.errCode === 0) {
