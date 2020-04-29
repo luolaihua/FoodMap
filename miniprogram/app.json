@@ -1,8 +1,9 @@
 {
   "pages": [
+      "pages/map/map",  
       "pages/imageEdit/imageEdit",  
     "pages/userInfo/userInfo",
-    "pages/map/map",
+
     "pages/friends/friends",
     "pages/add/add",
     "pages/info/info",

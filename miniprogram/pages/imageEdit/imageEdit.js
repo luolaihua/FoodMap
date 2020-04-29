@@ -11,6 +11,7 @@ Page({
     tempPath: '',
     addImage: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/addImage2.png?sign=b0d7c542219248dd1f7d4880f30f89af&t=1588127495',
     isSuccess: false,
+    backUrl:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/back.png?sign=e57d26b9780bae4156c3d5104b2168b9&t=1588148087',
     upUrl: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/up_circle.png?sign=1b2b10d086a5dfb8f93c62dea574ecba&t=1586520908',
     downUrl: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/down_circle.png?sign=ce154123a2bed97a4d5e77a3e6a465b9&t=1586520998',
     leftUrl: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/left_circle.png?sign=5e751fdb4d15b657d3ca5b51a204825b&t=1586521012',
@@ -30,8 +31,15 @@ Page({
     limit_move: true, //是否限制移动
 
   },
+  back(){
+    myApi.vibrate()
+    wx.navigateBack({
+      delta: 1
+    });
+  },
   submit() {
     myApi.vibrate()
+    var openId = wx.getStorageSync('openID');
     this.cropper.getImg((obj) => {
       var imgSrc = obj.url
       console.log(imgSrc)
@@ -63,6 +71,13 @@ Page({
            */
           console.log("[info]:云端检测成功 ", res)
           if (res.result) {
+            wx.cloud.uploadFile({
+              filePath: imgSrc,
+              cloudPath: "userAvatar/"+openId+'.png'
+            }).then(res => {
+                console.log('avatar',res)
+            })
+            //wx.setStorageSync('avatarUrl', imgSrc)
             wx.setStorageSync('avatarUrl', imgSrc)
             wx.navigateBack({
               complete: (res) => {

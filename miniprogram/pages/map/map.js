@@ -61,11 +61,21 @@ Page({
       url: '../add/add',
     })
   },
+  toUerInfo(){
+    this.close();
+    this.setData({
+      isPopping: false
+    })
+    wx.navigateTo({
+      url: '../userInfo/userInfo',
+    })
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
     var that = this
+    this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
           this.setData({
@@ -124,15 +134,19 @@ Page({
         })
       }
     })
-
+  },
+  async initData() {
+    var that = this
     //获取openid,然后从云端获取该id的数据
     var openId = wx.getStorageSync('openID')
     var storesArr = []
+    var avatarUrl = ''
+    var nickName = ''
+    var friendsList = []
     //如果id为空
     if (openId == '') {
       //初始化
-      //TODO 用户信息上传，暂时只上传初始化时间
-      var info = {
+      var info = { 
         nickName:'',
         avatarUrl:'',
         createTime: myApi.formatTime(new Date())
@@ -151,8 +165,10 @@ Page({
           //云端数据不为空，本地数据为空
           shareCode = res.result.memberInfos.data[0].shareCode
           storesArr = res.result.memberInfos.data[0].stores
+          friendsList = res.result.memberInfos.data[0].friendsList
+          nickName = res.result.memberInfos.data[0].info.nickName
+          avatarUrl = res.result.memberInfos.data[0].info.avatarUrl 
         }
-        wx.setStorageSync('shareCode', shareCode);
         wx.setStorageSync('openID', res.result.openId)
       })
     } else {
@@ -164,10 +180,18 @@ Page({
       console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
+        nickName = info.data[0].info.nickName
+        avatarUrl = info.data[0].info.avatarUrl
+        shareCode = info.data[0].shareCode
+        friendsList = info.data[0].friendsList
         //wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
     }
+    wx.setStorageSync('shareCode', shareCode);
+    wx.setStorageSync('nickName', nickName);
+    wx.setStorageSync('avatarUrl', avatarUrl);
     wx.setStorageSync('storesArr', storesArr)
+    wx.setStorageSync('friendsList', friendsList)
     console.log(storesArr)
     this.setData({
       stores: storesArr,

@@ -10,7 +10,8 @@
         <image mode="aspectFit" catchtouchstart='enlarge' catchtouchend='end' src="{{zoomOutUrl}}" data-type="enlarge"></image>
         <image mode="aspectFit" catchtouchstart='narrow' catchtouchend='end' src="{{zoomInUrl}}" data-type="narrow"></image>
         <image mode="aspectFit" catchtouchstart='rotate' catchtouchend='end' src="{{rotateUrl}}" data-type="rotate"></image>
-        <image mode="aspectFit" bindtap='submit' src="{{okUrl}}">确定</image>
+        <image mode="aspectFit" bindtap='back' src="{{backUrl}}">确定</image>
+          <image mode="aspectFit" bindtap='submit' src="{{okUrl}}">确定</image>
         <!-- <text style='color:white;margin-right:5rpx;'>锁定裁剪框宽 </text>
 	<switch checked='{{disable_width?true:false}}' bindchange="switchChangeDisableWidth" />
 	<text style='color:white;margin-right:5rpx;'>锁定裁剪框高 </text>

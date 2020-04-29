@@ -1,4 +1,6 @@
 /* miniprogram/pages/friends/friends.wxss */
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 .input-box{
     height: 30vh;
     width: 80vw;

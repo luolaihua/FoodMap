@@ -1,3 +1,5 @@
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 .search_input{
   background-color: #eee;
   margin:5px;

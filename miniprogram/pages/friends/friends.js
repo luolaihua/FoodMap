@@ -200,9 +200,13 @@ Page({
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
       var storesArr = info.data[0].stores
+      var nickName = info.data[0].info.nickName
+      var avatarUrl = info.data[0].info.avatarUrl
       var friendInfo = {
         shareCode: shareCode,
-        stores: storesArr
+        stores: storesArr,
+        avatarUrl:avatarUrl,
+        nickName:nickName
       }
       friendsList.push(friendInfo)
       wx.setStorageSync('friendsList', friendsList);

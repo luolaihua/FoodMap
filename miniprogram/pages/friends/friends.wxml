@@ -21,10 +21,10 @@
 <view class="cu-list menu-avatar">
 	<view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{friendsList}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
 		<view  bind:tap="toList" id="{{index}}" class="cu-avatar round lg">
-			<image class="cu-avatar round lg" src="{{defaultImage}}" mode="aspectFill"></image>
+			<image class="cu-avatar round lg" src="{{item.avatarUrl}}" mode="aspectFill"></image>
 		</view>
 		<view class="content" bind:tap="toList" id="{{index}}">
-			<view class="text-black">{{item.shareCode}}</view>
+			<view class="text-black">{{item.nickName}}</view>
 			<view class="text-gray text-sm">
 				<text class="cuIcon-command text-orange" ></text>
 				{{item.shareCode}}

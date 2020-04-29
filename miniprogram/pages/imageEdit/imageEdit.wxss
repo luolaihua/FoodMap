@@ -1,5 +1,4 @@
 /* miniprogram/pages/imageEdit/imageEdit.wxss */
-/* miniprogram/pages/imageEdit/imageEdit.wxss */
 .addImage{
   display: flex;
   justify-content: center;
@@ -32,7 +31,7 @@ page{
 width: 8vw;
 height: 8vw;
   z-index:2;
-  margin:0 1vw;
+  margin:0 0.8vw;
 }
 image:first-child,image:last-child{
   width: 10vw;

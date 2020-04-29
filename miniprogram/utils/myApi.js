@@ -1,12 +1,14 @@
 const db = wx.cloud.database()
 const app = getApp()
-function vibrate(){
-  if(app.globalData.isVibrate){
+
+function vibrate() {
+  if (app.globalData.isVibrate) {
     wx.vibrateShort({
       complete: (res) => {},
     })
   }
 }
+
 function checkMsgSec(content) {
   return wx.cloud.callFunction({
     name: 'checkSafeContent',
@@ -129,24 +131,47 @@ async function doMsgSecCheck(content) {
  */
 async function checkImgAndMsg(avatarUrl, nickName) {
   //安全检测
-  var res1 = await doImgSecCheck(avatarUrl,'cloud')
+  var res1 = await doImgSecCheck(avatarUrl, 'cloud')
   var res2 = await doMsgSecCheck(nickName)
   return res1 && res2
 }
 
-async function updateStore(stores) {
+async function updateUserInfo(data, type) {
   const userInfo = db.collection('userInfo')
   var openId = wx.getStorageSync('openID');
   //更新数据
-  console.log(openId, "-->", stores)
+  var updateData = {}
+  switch (type) {
+    case 'stores':
+      updateData.stores = data
+      wx.setStorageSync('storesArr', data)
+      break;
+    case 'nickName':
+      updateData = {
+        info:{
+          nickName:data
+        }
+      }
+      wx.setStorageSync('nickName', data)
+      break;
+    case 'avatarUrl':
+      updateData = {
+        info:{
+          avatarUrl:data
+        }
+      }
+      wx.setStorageSync('avatarUrl', data)
+      break;
+    default:
+      break;
+  }
+  console.log(openId, "-->", type, data)
   var res = await userInfo.where({
     openId: openId
   }).update({
-    data: {
-      stores: stores
-    }
+    data: updateData
   })
-  wx.setStorageSync('storesArr', stores)
+
   console.log("更新完成", res)
 
 }
@@ -353,7 +378,7 @@ module.exports = {
   formatDate,
   getRandomCode,
   randomSort,
-  updateStore,
+  updateUserInfo,
   doImgSecCheck,
   doMsgSecCheck,
   checkMsgSec,

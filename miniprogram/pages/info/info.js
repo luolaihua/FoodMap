@@ -63,7 +63,7 @@ Page({
     }
 
     //更新我的店铺
-    myApi.updateStore(myStores)
+    myApi.updateUserInfo(myStores,'stores')
     //更新朋友列表
     friendsList[friendsIndex].stores[storeIndex] = store
     wx.setStorageSync('friendsList', friendsList);

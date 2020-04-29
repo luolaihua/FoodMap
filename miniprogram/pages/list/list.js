@@ -291,7 +291,7 @@ Page({
     var stores = this.data.stores
     stores = myApi.makeItemTop(stores, index)
     if (friendsIndex == 'self') {
-      myApi.updateStore(stores)
+      myApi.updateUserInfo(stores,'stores')
     }
     // console.log(stores)
     // console.log(this.data.storesArr)
@@ -326,7 +326,7 @@ Page({
 
     stores.splice(index, 1)
     if (friendsIndex == 'self') {
-      myApi.updateStore(stores)
+      myApi.updateUserInfo(stores,'stores')
     } else {
       friendsList[friendsIndex].stores = stores
       wx.setStorageSync('friendsList', friendsList);

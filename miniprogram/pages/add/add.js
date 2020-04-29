@@ -263,7 +263,7 @@ Page({
     }
     //更新数据
     stores.push(storeData)
-   await myApi.updateStore(stores)
+   await myApi.updateUserInfo(stores,'stores')
    wx.showToast({
     title: '创建成功！',
     icon: 'success',

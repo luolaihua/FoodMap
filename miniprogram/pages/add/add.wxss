@@ -1,3 +1,5 @@
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 page{
   background-color: #eee;
 }

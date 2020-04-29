@@ -36,7 +36,8 @@ Page({
     wx.showToast({
       title: '设置成功',
     });
-    wx.setStorageSync('nickName', nickName)
+    myApi.updateUserInfo(nickName,'nickName')
+    //wx.setStorageSync('nickName', nickName)
   }else{
     wx.showToast({
       title: '昵称不符合安全规范',

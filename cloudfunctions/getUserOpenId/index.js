@@ -8,11 +8,13 @@ const _ = db.command
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   let openId = wxContext.OPENID
-  switch(event.action){
+  switch (event.action) {
     case 'initInfo':
-     return initInfo(event,openId)
-      default :
-      return {openId}
+      return initInfo(event, openId)
+    default:
+      return {
+        openId
+      }
   }
 
 
@@ -26,22 +28,24 @@ async function initInfo(event, openId) {
     }).get();
     //初始化
     if (memberInfos.data.length === 0) {
-    let test= await db.collection('userInfo').add({
+      let test = await db.collection('userInfo').add({
         data: {
           info: event.info,
           stores: [],
+          friendsList:[],
           openId: openId,
-          shareCode:event.shareCode
+          shareCode: event.shareCode
         }
       })
       return {
-        openId:openId,
+        openId: openId,
         memberInfos
       }
-    }else{
-      return {openId,
-        memberInfos}
+    } else {
+      return {
+        openId,
+        memberInfos
+      }
     }
-  } catch (e) {
-  }
+  } catch (e) {}
 }

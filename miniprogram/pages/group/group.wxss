@@ -1,1 +1,3 @@
 /* miniprogram/pages/group/group.wxss */
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";

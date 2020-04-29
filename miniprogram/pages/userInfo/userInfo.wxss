@@ -1,5 +1,6 @@
 /* miniprogram/pages/userInfo/userInfo.wxss */
-
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 .modules_box ,.btn-box{
   display: flex;
   justify-content: flex-start;
