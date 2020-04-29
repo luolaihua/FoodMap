@@ -104,6 +104,12 @@ App({
       },
     ]
   },
+  data() {
+    return {
+      backgroundHeight: '',
+      statusBarHeight: ''
+    }
+  },
     /**
    * 小程序主动更新
    */

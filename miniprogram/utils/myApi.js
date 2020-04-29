@@ -1,5 +1,12 @@
 const db = wx.cloud.database()
-
+const app = getApp()
+function vibrate(){
+  if(app.globalData.isVibrate){
+    wx.vibrateShort({
+      complete: (res) => {},
+    })
+  }
+}
 function checkMsgSec(content) {
   return wx.cloud.callFunction({
     name: 'checkSafeContent',
@@ -115,6 +122,17 @@ async function doMsgSecCheck(content) {
   }
 
 }
+/**
+ * 安全检测头像和网名
+ * @param {头像链接} avatarUrl 
+ * @param {网名} nickName 
+ */
+async function checkImgAndMsg(avatarUrl, nickName) {
+  //安全检测
+  var res1 = await doImgSecCheck(avatarUrl,'cloud')
+  var res2 = await doMsgSecCheck(nickName)
+  return res1 && res2
+}
 
 async function updateStore(stores) {
   const userInfo = db.collection('userInfo')
@@ -129,22 +147,24 @@ async function updateStore(stores) {
     }
   })
   wx.setStorageSync('storesArr', stores)
-  console.log("更新完成",res)
-  
+  console.log("更新完成", res)
+
 }
 
 function randomSort(a, b) {
   return Math.random() > 0.5 ? -1 : 1
 }
+
 function getRandomCode(num) {
   var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   var code = "";
   for (var i = 0; i < num; i++) {
-      var id = parseInt(Math.random() * 61);
-      code += chars[id];
+    var id = parseInt(Math.random() * 61);
+    code += chars[id];
   }
   return code;
-} 
+}
+
 function formatTime(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
@@ -159,55 +179,58 @@ function formatTime(date) {
 }
 
 function formatDate(date) {
-    var year = date.getFullYear()
-    var month = date.getMonth() + 1
-    var day = date.getDate()
+  var year = date.getFullYear()
+  var month = date.getMonth() + 1
+  var day = date.getDate()
 
-    return [year, month, day].map(formatNumber).join('-');
+  return [year, month, day].map(formatNumber).join('-');
 }
+
 function formatNumber(n) {
   n = n.toString()
   return n[1] ? n : '0' + n
 }
+
 function dateToString(now) {
   var year = now.getFullYear();
   var month = (now.getMonth() + 1).toString();
   var day = (now.getDate()).toString();
   if (month.length == 1) {
-      month = "0" + month;
+    month = "0" + month;
   }
   if (day.length == 1) {
-      day = "0" + day;
+    day = "0" + day;
   }
-  var dateTime = year + "-" + month + "-" + day ;
+  var dateTime = year + "-" + month + "-" + day;
   return dateTime;
-}  
-function makeItemTop(arr,index){
+}
+
+function makeItemTop(arr, index) {
   var item = arr.slice(index, index + 1)[0]
   arr.splice(index, 1)
   arr.unshift(item)
   return arr
 }
- /**
-  * 生成海报
-  * 
-  * @param {*画布ID名} canvasName 
-  * @param {*标题} title 
-  * @param {*内容数组} textArr 
-  * @param {*字体颜色数组} colorArr 
-  * @param {*字体样式数组} fontArr 
-  * @param {*字体大小数组} sizeArr 
-  * @param {*总数量} num 
-  * @param {*一行数量--最大为5} rowNum 
-  * @param {*同行中词的距离} distance 
-  * @param {*第二行与第一行隔多少距离} spacing 
-  * @param {*画布宽度} canvasWidth 
-  * @param {*画布高度} canvasHeight 
-  * @param {*中间宽度} midWidth 
-  * @param {*中间高度} midHeight 
-  * @param {*二维码图片路径} imgUrl 
-  */
- function makePosterImageCanvas (canvasName, title, textArr, colorArr, fontArr, sizeArr, num, rowNum, distance, spacing, canvasWidth, canvasHeight, midWidth, midHeight, imgUrl) {
+/**
+ * 生成海报
+ * 
+ * @param {*画布ID名} canvasName 
+ * @param {*标题} title 
+ * @param {*内容数组} textArr 
+ * @param {*字体颜色数组} colorArr 
+ * @param {*字体样式数组} fontArr 
+ * @param {*字体大小数组} sizeArr 
+ * @param {*总数量} num 
+ * @param {*一行数量--最大为5} rowNum 
+ * @param {*同行中词的距离} distance 
+ * @param {*第二行与第一行隔多少距离} spacing 
+ * @param {*画布宽度} canvasWidth 
+ * @param {*画布高度} canvasHeight 
+ * @param {*中间宽度} midWidth 
+ * @param {*中间高度} midHeight 
+ * @param {*二维码图片路径} imgUrl 
+ */
+function makePosterImageCanvas(canvasName, title, textArr, colorArr, fontArr, sizeArr, num, rowNum, distance, spacing, canvasWidth, canvasHeight, midWidth, midHeight, imgUrl) {
   var that = this;
   var contentArr = [];
   for (var a = 0; a < num; a++) {
@@ -304,7 +327,8 @@ function arrayRandomTakeOne(array) {
   var index = Math.floor((Math.random() * array.length + 1) - 1);
   return array[index];
 }
-function getQrCodeUrl(scene){
+
+function getQrCodeUrl(scene) {
   return wx.cloud.callFunction({
     name: 'checkSafeContent',
     data: {
@@ -315,7 +339,11 @@ function getQrCodeUrl(scene){
 }
 
 
+
+
 module.exports = {
+  vibrate,
+  checkImgAndMsg,
   getQrCodeUrl,
   makePosterImageCanvas,
   arrayRandomTakeOne,

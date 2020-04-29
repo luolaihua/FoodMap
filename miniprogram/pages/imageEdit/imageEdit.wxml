@@ -1,0 +1,43 @@
+<!--miniprogram/pages/imageEdit/imageEdit.wxml-->
+<scroll-view style="height:100vh" scroll-y="{{true}}">
+    <image-cropper id="image-cropper" bindload="cropperload" bindimageload="loadimage" bindtapcut="clickcut" limit_move="{{limit_move}}" disable_rotate="{{disable_rotate}}" width="{{width}}" height="{{height}}" imgSrc="{{src}}" angle="{{angle}}" disable_width="{{disable_width}}" max_width="{{max_width}}" max_height="{{max_height}}" disable_height="{{disable_height}}" disable_ratio="{{disable_ratio}}" />
+    <view class='bottom'>
+        <image mode="aspectFit" catchtap='upload' src="{{addImageUrl}}">上传</image>
+        <image mode="aspectFit" catchtouchstart='top' catchtouchend='end' src="{{upUrl}}" data-type="top">上</image>
+        <image mode="aspectFit" catchtouchstart='bottom' catchtouchend='end' src="{{downUrl}}" data-type="bottom"></image>
+        <image mode="aspectFit" catchtouchstart='left' catchtouchend='end' src="{{leftUrl}}" data-type="left"></image>
+        <image mode="aspectFit" catchtouchstart='right' catchtouchend='end' src="{{rightUrl}}" data-type="right"></image>
+        <image mode="aspectFit" catchtouchstart='enlarge' catchtouchend='end' src="{{zoomOutUrl}}" data-type="enlarge"></image>
+        <image mode="aspectFit" catchtouchstart='narrow' catchtouchend='end' src="{{zoomInUrl}}" data-type="narrow"></image>
+        <image mode="aspectFit" catchtouchstart='rotate' catchtouchend='end' src="{{rotateUrl}}" data-type="rotate"></image>
+        <image mode="aspectFit" bindtap='submit' src="{{okUrl}}">确定</image>
+        <!-- <text style='color:white;margin-right:5rpx;'>锁定裁剪框宽 </text>
+	<switch checked='{{disable_width?true:false}}' bindchange="switchChangeDisableWidth" />
+	<text style='color:white;margin-right:5rpx;'>锁定裁剪框高 </text>
+	<switch checked='{{disable_height?true:false}}' bindchange="switchChangeDisableHeight" />
+
+	<text style='color:white;margin-right:5rpx;'>锁定比例</text>
+	<switch checked='{{disable_ratio?true:false}}' bindchange="switchChangeDisableRatio" />
+	<text/>
+	<text style='color:white;margin-right:5rpx;'>锁定旋转 </text>
+	<switch checked='{{disable_rotate?true:false}}' bindchange="switchChangeDisableRotate" />
+	<text style='color:white;margin-right:5rpx;'>限制移动 </text>
+	<switch checked='{{limit_move?true:false}}' bindchange="switchChangeLimitMove" /> -->
+    </view>
+</scroll-view>
+
+
+
+
+<!--
+<view wx:if="{{!isSuccess}}" class="addImage" hover-class="none" hover-stop-propagation="false" bindtap="chooseImage">
+   <image src="{{addImage}}" mode="aspectFit"/> 
+</view>
+
+ <view  wx:else class="showImage" hover-class="none" hover-stop-propagation="false" bindtap = "save">
+  <canvas canvas-id="aiCrop" style="width:300px;height:300px;"></canvas>  
+</view>
+ <button bindtap = "save" type="primary">选择图片</button>
+ <button bindtap = "chooseImage" type="primary">重新选择</button>
+-->
+

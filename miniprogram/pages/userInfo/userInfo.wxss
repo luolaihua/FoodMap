@@ -1,1 +1,91 @@
 /* miniprogram/pages/userInfo/userInfo.wxss */
+
+.modules_box ,.btn-box{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 20px);
+  height: 60px;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  background-color: #ffffff;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  box-sizing: border-box;
+}
+.btn-box{
+    justify-content: space-between;
+}
+
+.modules_icon_box {
+  height: 60px;
+  width: 60px;
+}
+
+.modules_icon {
+  border-radius: 10%;
+  width: 30px;
+  height: 30px;
+  margin: 15px;
+}
+.modules_icon_small {
+  width: 25px;
+  height: 25px;
+  margin: 15px;
+}
+.avatar {
+  border-radius: 50%;
+  width: 8vh;
+  height: 8vh;
+  margin: 3vh;
+}
+.userInfo{
+  width: 100vw;
+  height: 20vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.nickName{
+  height: 4vh;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.nickName input{
+
+  width: 140rpx;
+  margin-right:10rpx;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.editName{
+  border-radius: 50%;
+  width: 2vh;
+  height: 2vh;
+}
+
+.modules_title_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+  line-height: 60px;
+  width: calc(100% - 120px);
+  font-size: 14px;
+  color: #7a7a7a;
+}
+
+.modules_switch_box {
+  display: flex;
+  height: 60px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+}

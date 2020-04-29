@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "裁剪图片",
+  "navigationBarBackgroundColor": "#000",
+  "navigationBarTextStyle": "white",
+  "usingComponents": {
+    "image-cropper": "../../components/image-cropper/image-cropper"
+  }
+}

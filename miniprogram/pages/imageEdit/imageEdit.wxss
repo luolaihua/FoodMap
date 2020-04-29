@@ -1,0 +1,40 @@
+/* miniprogram/pages/imageEdit/imageEdit.wxss */
+/* miniprogram/pages/imageEdit/imageEdit.wxss */
+.addImage{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20vh ;
+}
+.addImage image{
+width: 40vw;
+height: 40vw;
+}
+.showImage{
+  margin:0 auto;
+  height: auto;
+  width: 100vw;
+}
+page{
+  background:rgb(14, 13, 13);
+}
+.bottom{
+  position: absolute;
+  width:100%;
+  bottom:20rpx;
+  display: flex;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  flex-wrap:wrap;
+}
+.bottom image{
+width: 8vw;
+height: 8vw;
+  z-index:2;
+  margin:0 1vw;
+}
+image:first-child,image:last-child{
+  width: 10vw;
+  height: 10vw;
+}

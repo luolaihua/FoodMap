@@ -1,4 +1,9 @@
 module.exports={
+    touch:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/touch.png?sign=0dabd4533c47ddbcc6f1ac4b1f3b399f&t=1588120391',
+    feedbackUrl:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/feedback.png?sign=6670976380dd70c893bf39debdd27bc0&t=1587110487',
+    human:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/animalsPic/human.png?sign=f1be6b14b63398f1293a42dc626ab3a8&t=1585308592',
+    bigWheel_edit:"https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/icon_list_revise_60.png?sign=04ee8b51cf3a71ce115b9fb4a93cd746&t=1583817816",
+    setting_touchUrl: 'cloud://luo-r5nle.6c75-luo-r5nle-1301210100/images/touch.png',
     share:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/share.jpg?sign=479134b3df44e9f87a9074baaf4f6872&t=1587473747',
     head:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/head.jpg?sign=b5bcb8a2d68a4d21202c0263effb2cc9&t=1587473774',
     foodIconList:[

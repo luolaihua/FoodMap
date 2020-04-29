@@ -133,7 +133,9 @@ Page({
       //初始化
       //TODO 用户信息上传，暂时只上传初始化时间
       var info = {
-        time: myApi.formatTime(new Date())
+        nickName:'',
+        avatarUrl:'',
+        createTime: myApi.formatTime(new Date())
       }
       var shareCode = myApi.getRandomCode(6)
       await wx.cloud.callFunction({
