@@ -73,6 +73,7 @@ Page({
     });
   },
   //读取照片之后
+  //TODO 跳转到裁剪页面
   async afterRead(event) {
     var that = this
     var imgList = this.data.imgList
@@ -124,7 +125,7 @@ Page({
     if(storesArr==''){
       storesArr==[]
     }
-    var openId = wx.getStorageSync('openID')
+    var openId = wx.getStorageSync('openId')
     console.log(storesArr)
     this.setData({
       stores: storesArr,

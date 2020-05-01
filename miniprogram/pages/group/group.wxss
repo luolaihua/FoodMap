@@ -1,3 +1,9 @@
 /* miniprogram/pages/group/group.wxss */
 @import "../../style/colorui.wxss";
 @import "../../style/icon.wxss";
+.createGroup{
+
+    position: fixed;
+    bottom: 100rpx;
+    right: 100rpx;
+}

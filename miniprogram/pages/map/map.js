@@ -4,7 +4,6 @@ const db = wx.cloud.database()
 const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
-//TODO 海报功能
 //TODO 食堂美食推荐
 
 Page({
@@ -52,24 +51,44 @@ Page({
     })
   },
   //去添加页面
-  toAdd(e) {
+  toFunctionPages(e) {
     this.close();
     this.setData({
       isPopping: false
     })
-    wx.navigateTo({
-      url: '../add/add',
-    })
+    switch (e.currentTarget.id) {
+      case 'toAdd':
+        wx.navigateTo({
+          url: '../add/add',
+        })
+        break;
+      case 'toGroup':
+        wx.navigateTo({
+          url: '../group/group',
+        })
+        break;
+      case 'toFriends':
+        wx.navigateTo({
+          url: '../friends/friends',
+        })
+        break;
+      case 'toList':
+        //点击查看美食
+        wx.navigateTo({
+          url: '../list/list?friendsIndex=self',
+        })
+        break;
+      case 'toUerInfo':
+        wx.navigateTo({
+          url: '../userInfo/userInfo',
+        })
+        break;
+      default:
+        break;
+    }
+
   },
-  toUerInfo(){
-    this.close();
-    this.setData({
-      isPopping: false
-    })
-    wx.navigateTo({
-      url: '../userInfo/userInfo',
-    })
-  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -97,12 +116,12 @@ Page({
           success: (result) => {
             if (result.confirm) {
               wx.navigateTo({
-                url: '../friends/friends?shareCode='+scene,
-                success: (result)=>{
-                  
+                url: '../friends/friends?shareCode=' + scene,
+                success: (result) => {
+
                 },
-                fail: ()=>{},
-                complete: ()=>{}
+                fail: () => {},
+                complete: () => {}
               });
             }
           },
@@ -138,17 +157,18 @@ Page({
   async initData() {
     var that = this
     //获取openid,然后从云端获取该id的数据
-    var openId = wx.getStorageSync('openID')
+    var openId = wx.getStorageSync('openId')
     var storesArr = []
     var avatarUrl = ''
     var nickName = ''
     var friendsList = []
+    var My_GroupsList = []
     //如果id为空
     if (openId == '') {
       //初始化
-      var info = { 
-        nickName:'',
-        avatarUrl:'',
+      var info = {
+        nickName: '',
+        avatarUrl: '',
         createTime: myApi.formatTime(new Date())
       }
       var shareCode = myApi.getRandomCode(6)
@@ -166,10 +186,11 @@ Page({
           shareCode = res.result.memberInfos.data[0].shareCode
           storesArr = res.result.memberInfos.data[0].stores
           friendsList = res.result.memberInfos.data[0].friendsList
+          My_GroupsList = res.result.memberInfos.data[0].My_GroupsList
           nickName = res.result.memberInfos.data[0].info.nickName
-          avatarUrl = res.result.memberInfos.data[0].info.avatarUrl 
+          avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
         }
-        wx.setStorageSync('openID', res.result.openId)
+        wx.setStorageSync('openId', res.result.openId)
       })
     } else {
       //如果有id 从云端更新数据
@@ -184,6 +205,7 @@ Page({
         avatarUrl = info.data[0].info.avatarUrl
         shareCode = info.data[0].shareCode
         friendsList = info.data[0].friendsList
+        My_GroupsList = info.data[0].My_GroupsList
         //wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
     }
@@ -192,7 +214,8 @@ Page({
     wx.setStorageSync('avatarUrl', avatarUrl);
     wx.setStorageSync('storesArr', storesArr)
     wx.setStorageSync('friendsList', friendsList)
-    console.log(storesArr)
+    wx.setStorageSync('My_GroupsList', My_GroupsList)
+    //console.log(storesArr)
     this.setData({
       stores: storesArr,
     })
@@ -224,27 +247,8 @@ Page({
         }) */
 
   },
-  //点击查看美食
-  toList: function () {
-    this.close();
-    this.setData({
-      isPopping: false
-    })
-    wx.navigateTo({
-      url: '../list/list?friendsIndex=self',
-    })
-  },
-  //长按查看美食
-  toFriends: function () {
-    this.close();
-    this.setData({
-      isPopping: false
-    })
-    wx.navigateTo({
-      url: '../friends/friends',
-    })
-  },
-  //TODO 获取用户信息 暂时不用
+
+  //T获取用户信息 暂时不用
   /*   getUserInfo: function (e) {
 
       if (e.detail.userInfo) {
@@ -262,7 +266,7 @@ Page({
           }).then(res => {
             console.log(res)
             app.globalData.openId = res.result.openId
-            wx.setStorageSync('openID', res.result.openId)
+            wx.setStorageSync('openId', res.result.openId)
           })
         }
         wx.navigateTo({
@@ -309,7 +313,7 @@ Page({
           data: res.result.openid,
           success: res => {
             wx.showToast({
-              title: 'openID已复制',
+              title: 'openId已复制',
             })
           }
         })

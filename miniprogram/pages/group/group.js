@@ -5,9 +5,21 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    TabCur: 0,
+    tabList:['创建的美食圈子','加入的美食圈子'],
+    My_GroupsList:[]
   },
-
+  tabSelect(e) {
+    this.setData({
+      TabCur: e.currentTarget.dataset.id,
+      scrollLeft: (e.currentTarget.dataset.id-1)*60
+    })
+  },
+  toCreateGroup(){
+    wx.navigateTo({
+      url: '../group/createGroup/createGroup',
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -26,7 +38,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var My_GroupsList = wx.getStorageSync('My_GroupsList');
+    this.setData({
+      My_GroupsList
+    })
   },
 
   /**

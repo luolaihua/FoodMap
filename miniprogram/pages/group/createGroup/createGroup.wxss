@@ -1,0 +1,17 @@
+/* miniprogram/pages/group/createGroup/createGroup.wxss */
+@import "../../../style/colorui.wxss";
+@import "../../../style/icon.wxss";
+.avatar {
+    border-radius: 50%;
+    width: 8vh;
+    height: 8vh;
+    margin: 3vh;
+  }
+  .userInfo{
+    width: 100vw;
+    height: 20vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }

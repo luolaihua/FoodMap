@@ -158,6 +158,9 @@ Page({
       });
       return
     }
+    var nickName = wx.getStorageSync('nickName');
+    var avatarUrl = wx.getStorageSync('avatarUrl');
+
     
     var that = this
     const db = wx.cloud.database()
@@ -172,6 +175,10 @@ Page({
     db.collection('instantShare').add({
       // data 字段表示需新增的 JSON 数据
       data: {
+        info:{
+          nickName:nickName,
+          avatarUrl:avatarUrl
+        },
         instantShareCode: instantShareCode,
         createTime: myApi.formatTime(new Date()),
         stores: shareList,

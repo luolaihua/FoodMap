@@ -30,6 +30,8 @@ Page({
     disable_ratio: false, //锁定比例
     limit_move: true, //是否限制移动
 
+    action:'editUserAvatar'
+
   },
   back(){
     myApi.vibrate()
@@ -39,7 +41,9 @@ Page({
   },
   submit() {
     myApi.vibrate()
-    var openId = wx.getStorageSync('openID');
+    var action = this.data.action
+    var that = this
+    var openId = wx.getStorageSync('openId');
     this.cropper.getImg((obj) => {
       var imgSrc = obj.url
       console.log(imgSrc)
@@ -52,7 +56,7 @@ Page({
       })
       wx.cloud.uploadFile({
         filePath: imgSrc,
-        cloudPath: "temp/temp.png"
+        cloudPath: "temp/TEMP_"+openId+".png"
       }).then(res => {
         /**
          * 调用云函数
@@ -71,21 +75,16 @@ Page({
            */
           console.log("[info]:云端检测成功 ", res)
           if (res.result) {
-            wx.cloud.uploadFile({
-              filePath: imgSrc,
-              cloudPath: "userAvatar/"+openId+'.png'
-            }).then(res => {
-                console.log('avatar',res)
-            })
+            console.log(action)
+            switch(action){
+              case 'editUserAvatar':
+                that.updateUserAvatar(imgSrc,openId)
+                break
+                case 'editGroupAvatar':
+                that.setGroupAvatar(imgSrc,openId)
+                break
+            }
             //wx.setStorageSync('avatarUrl', imgSrc)
-            wx.setStorageSync('avatarUrl', imgSrc)
-            wx.navigateBack({
-              complete: (res) => {
-                wx.showToast({
-                  title: '头像设置成功',
-                })
-              },
-            })
           } else {
             wx.showToast({
               title: '图片内容未通过安全检测，请重新选择图片',
@@ -107,7 +106,49 @@ Page({
 
     });
   },
+  setGroupAvatar(imgSrc,openId){
+    //TODO 头像缓存垃圾没有清理
+    wx.cloud.uploadFile({
+      filePath: imgSrc,
+      cloudPath: "groupAvatar/AVATAR_"+new Date().getTime()+'.png'
+    }).then(res => {
+      console.log('groupAvatarUrl',res)
+       wx.setStorageSync('groupAvatarUrl', res.fileID);
+        wx.navigateBack({
+          complete: (res) => {
+            wx.showToast({
+              title: '头像设置成功',
+            })
+          },
+        })
+    })
+  },
+  updateUserAvatar(imgSrc,openId){
+    wx.cloud.uploadFile({
+      filePath: imgSrc,
+      cloudPath: "userAvatar/AVATAR_"+openId+'.png'
+    }).then(res => {
+        console.log('avatar',res)
+        myApi.updateUserInfo(res.fileID,'avatarUrl')
+        wx.setStorageSync('avatarUrl', imgSrc)
+        wx.navigateBack({
+          complete: (res) => {
+            wx.showToast({
+              title: '头像设置成功',
+            })
+          },
+        })
+    })
+  },
   onLoad: function (options) {
+    var action = options.action
+    console.log('options',options)
+    console.log('options',action)
+    if(action!=''&&action!=undefined){
+      this.setData({
+        action
+      })
+    }
     this.cropper = this.selectComponent("#image-cropper");
     this.cropper.upload(); //上传图片
   },

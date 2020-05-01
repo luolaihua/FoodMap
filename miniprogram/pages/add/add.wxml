@@ -7,7 +7,6 @@
 		<view class="title">店铺名称:</view>
 		<input placeholder='可在地图上选择' name="name" value='{{name}}' bindinput="inputName" />
 		<text class="cuIcon-locationfill text-orange" bindtap='chooseLocation'/>
-
 			</view>
 	<view class="cu-form-group" bindtap='chooseLocation'>
 		<view class="title">地址:</view>
@@ -95,7 +94,7 @@
 <!---->
 	<view class="cu-bar bg-white margin-top">
 		<view class="action">
-			图片上传(小于1M)
+			图片上传
 		</view>
 		<view class="action">
 			{{imgList.length}}/6
@@ -109,7 +108,6 @@
 		 bind:after-read="afterRead"
 		 max-size="1000000"
 		/>
-
 	</view>
 	
 

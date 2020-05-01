@@ -1,4 +1,5 @@
-
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 .contact,.star,.keywords,.notes,.per,.title {
   padding: 20rpx;
   margin-right: 20rpx;

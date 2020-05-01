@@ -75,7 +75,8 @@ Page({
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
     friendsList = myApi.makeItemTop(friendsList, index)
-    wx.setStorageSync('friendsList', friendsList);
+    myApi.updateUserInfo(friendsList, 'friendsList')
+    //wx.setStorageSync('friendsList', friendsList);
     this.setData({
       friendsList
     }, () => {
@@ -89,7 +90,8 @@ Page({
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
     friendsList.splice(index, 1)
-    wx.setStorageSync('friendsList', friendsList);
+    myApi.updateUserInfo(friendsList, 'friendsList')
+    //wx.setStorageSync('friendsList', friendsList);
     this.setData({
       friendsList
     }, () => {
@@ -151,9 +153,6 @@ Page({
       title: '加载中',
     });
     var friendsList = this.data.friendsList
-
-
-
     //需要判断当前分享码是否已经存在列表中,先取出所有分享码
     var shareCodesFromList = []
     friendsList.forEach(item => {
@@ -179,7 +178,7 @@ Page({
         shareCode: shareCode
       }).get()
     } else {
-      //如果是即时分享
+      //如果是即时分享，不存入好友列表
       var info = await instantShare.where({
         instantShareCode: shareCode
       }).get()
@@ -205,10 +204,11 @@ Page({
       var friendInfo = {
         shareCode: shareCode,
         stores: storesArr,
-        avatarUrl:avatarUrl,
-        nickName:nickName
+        avatarUrl: avatarUrl,
+        nickName: nickName
       }
       friendsList.push(friendInfo)
+      myApi.updateUserInfo(friendsList, 'friendsList')
       wx.setStorageSync('friendsList', friendsList);
       this.setData({
         friendsList,
@@ -252,16 +252,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    //判断是否为首页
-    /*     var curPages =  getCurrentPages();
-
-        if(curPages.length==1){
-          this.setData({
-            isBack:false
-          })
-        } */
-
-
     var that = this
     var friendsList = wx.getStorageSync('friendsList');
     //console.log(friendsList)

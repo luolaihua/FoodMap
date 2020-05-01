@@ -126,8 +126,8 @@ async function doMsgSecCheck(content) {
 }
 /**
  * 安全检测头像和网名
- * @param {头像链接} avatarUrl 
- * @param {网名} nickName 
+ * @param {*头像链接} avatarUrl 
+ * @param {*网名} nickName 
  */
 async function checkImgAndMsg(avatarUrl, nickName) {
   //安全检测
@@ -135,10 +135,14 @@ async function checkImgAndMsg(avatarUrl, nickName) {
   var res2 = await doMsgSecCheck(nickName)
   return res1 && res2
 }
-
+/**
+ * 
+ * @param {*需要更新的数据} data 
+ * @param {*数据的类型} type 
+ */
 async function updateUserInfo(data, type) {
   const userInfo = db.collection('userInfo')
-  var openId = wx.getStorageSync('openID');
+  var openId = wx.getStorageSync('openId');
   //更新数据
   var updateData = {}
   switch (type) {
@@ -148,20 +152,33 @@ async function updateUserInfo(data, type) {
       break;
     case 'nickName':
       updateData = {
-        info:{
-          nickName:data
+        info: {
+          nickName: data
         }
       }
       wx.setStorageSync('nickName', data)
       break;
     case 'avatarUrl':
+      var res = await wx.cloud.getTempFileURL({
+        fileList: [data],
+      })
+      console.log(res)
       updateData = {
-        info:{
-          avatarUrl:data
+        info: {
+          avatarUrl: res.fileList[0].tempFileURL
         }
       }
-      wx.setStorageSync('avatarUrl', data)
+      //用fileID做图片图片的链接缓存不会更新，不妥
+      //wx.setStorageSync('avatarUrl', data)
       break;
+    case 'friendsList':
+      updateData.friendsList = data
+      wx.setStorageSync('friendsList', data)
+      break;
+    case 'My_GroupsList':
+      updateData.My_GroupsList = data
+      wx.setStorageSync('My_GroupsList', data)
+      break
     default:
       break;
   }

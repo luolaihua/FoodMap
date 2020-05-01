@@ -33,6 +33,8 @@ async function initInfo(event, openId) {
           info: event.info,
           stores: [],
           friendsList:[],
+          My_GroupsList:[],
+          Joined_GroupsList:[],
           openId: openId,
           shareCode: event.shareCode
         }

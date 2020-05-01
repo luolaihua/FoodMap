@@ -83,7 +83,7 @@ Page({
     //安全检测
     myApi.checkImgAndMsg(avatarUrl, nickName).then(res => {
       wx.hideLoading();
-      //根据是否安全获取openId还是将openID置空
+      //根据是否安全获取openId还是将openId置空
      // myApi.getOpenId(res)
       console.log(res)
       //如果是安全的，就存入
