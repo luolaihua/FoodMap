@@ -50,7 +50,7 @@ Page({
       isPopping: false
     })
   },
-  //去添加页面
+  //去五个功能页面
   toFunctionPages(e) {
     this.close();
     this.setData({
@@ -59,7 +59,7 @@ Page({
     switch (e.currentTarget.id) {
       case 'toAdd':
         wx.navigateTo({
-          url: '../add/add',
+          url: '../add/add?requestType=Mine',
         })
         break;
       case 'toGroup':
@@ -186,15 +186,16 @@ Page({
           shareCode = res.result.memberInfos.data[0].shareCode
           storesArr = res.result.memberInfos.data[0].stores
           friendsList = res.result.memberInfos.data[0].friendsList
-          My_GroupsList = res.result.memberInfos.data[0].My_GroupsList
           nickName = res.result.memberInfos.data[0].info.nickName
           avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
         }
+        myApi.getGroupsList(res.result.openId)
         wx.setStorageSync('openId', res.result.openId)
       })
     } else {
       //如果有id 从云端更新数据
       console.log(openId)
+      myApi.getGroupsList(openId)
       var info = await userInfo.where({
         openId: openId
       }).get()
@@ -205,7 +206,6 @@ Page({
         avatarUrl = info.data[0].info.avatarUrl
         shareCode = info.data[0].shareCode
         friendsList = info.data[0].friendsList
-        My_GroupsList = info.data[0].My_GroupsList
         //wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
     }
@@ -214,7 +214,6 @@ Page({
     wx.setStorageSync('avatarUrl', avatarUrl);
     wx.setStorageSync('storesArr', storesArr)
     wx.setStorageSync('friendsList', friendsList)
-    wx.setStorageSync('My_GroupsList', My_GroupsList)
     //console.log(storesArr)
     this.setData({
       stores: storesArr,

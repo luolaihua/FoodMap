@@ -1,10 +1,13 @@
 // miniprogram/pages/group/group.js
+const myApi = require('../../utils/myApi')
+const db = wx.cloud.database()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    modalName: '',
     TabCur: 0,
     tabList:['创建的美食圈子','加入的美食圈子'],
     My_GroupsList:[]
@@ -19,6 +22,60 @@ Page({
     wx.navigateTo({
       url: '../group/createGroup/createGroup',
     });
+  },
+  toShowGroup(e){
+    var index = e.currentTarget.id
+    wx.navigateTo({
+      url: '../group/showGroup/showGroup?type=my&index='+index,
+    });
+  },
+    /**
+   * item置顶---先不做
+   */
+/*   topItem: function (e) {
+    var index = e.currentTarget.id
+    var My_GroupsList = this.data.My_GroupsList
+    My_GroupsList = myApi.makeItemTop(My_GroupsList, index)
+    myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
+    this.setData({
+      My_GroupsList
+    })
+  }, */
+  /**
+   * item删除
+   */
+  deleteItem: function (e) {
+    var that = this
+    const groupsList = db.collection('groupsList')
+    wx.showModal({
+      title: '是否删除',
+      content: '删除后不可恢复，请确认',
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if(result.confirm){
+          var index =Number(e.currentTarget.id) 
+          var My_GroupsList = that.data.My_GroupsList
+          var id = My_GroupsList[index]._id
+          My_GroupsList.splice(index, 1)
+          wx.setStorageSync('My_GroupsList', My_GroupsList);
+          groupsList.where({
+            _id: id
+          }).remove().then(res=>{
+            console.log(res)
+          })
+          that.setData({
+            My_GroupsList
+          })
+        }
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
+
   },
   /**
    * 生命周期函数--监听页面加载
@@ -77,5 +134,34 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+    // ListTouch触摸开始
+    ListTouchStart(e) {
+      this.setData({
+        ListTouchStart: e.touches[0].pageX
+      })
+    },
+  
+    // ListTouch计算方向
+    ListTouchMove(e) {
+      this.setData({
+        ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
+      })
+    },
+  
+    // ListTouch计算滚动
+    ListTouchEnd(e) {
+      if (this.data.ListTouchDirection == 'left') {
+        this.setData({
+          modalName: e.currentTarget.dataset.target
+        })
+      } else {
+        this.setData({
+          modalName: null
+        })
+      }
+      this.setData({
+        ListTouchDirection: null
+      })
+    }
 })

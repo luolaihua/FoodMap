@@ -4,15 +4,15 @@ const db = wx.cloud.database()
 const store = db.collection('store');
 const userInfo = db.collection('userInfo')
 const imgUrl = require('../../utils/imgUrl')
-var tabList=['火锅', '奶茶', '烧烤', '串串', '水果','自助', '海鲜','烤鸭', '烤鸡', '烤鱼','小吃', '烧饼','早点','水饺', '馄饨', '面条', '香锅', '拌饭', '麻辣烫', '黄焖鸡']
+var tabList = ['火锅', '奶茶', '烧烤', '串串', '水果', '自助', '海鲜', '烤鸭', '烤鸡', '烤鱼', '小吃', '烧饼', '早点', '水饺', '馄饨', '面条', '香锅', '拌饭', '麻辣烫', '黄焖鸡']
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    foodIconUrl:"/images/food.png",
-    foodIconList:imgUrl.foodIconLocal,
+    foodIconUrl: "/images/food.png",
+    foodIconList: imgUrl.foodIconLocal,
     rateValue: 3.0,
     imgList: [],
     images: [],
@@ -23,33 +23,34 @@ Page({
     name: '',
     stores: [],
     openId: '',
-    notes:'',
+    notes: '',
     price_per: 50,
     tabList: [],
-    tagList:[],
-    colorList:["#f2826a","#7232dd","#1cbbb4"],
+    tagList: [],
+    colorList: ["#f2826a", "#7232dd", "#1cbbb4"],
     isShow: true,
+    requestType: 'Mine'
   },
-  chooseIcon(e){
-    var index =Number(e.currentTarget.id) 
+  chooseIcon(e) {
+    var index = Number(e.currentTarget.id)
     this.setData({
-      foodIconUrl:this.data.foodIconList[index]
+      foodIconUrl: this.data.foodIconList[index]
     })
   },
-  inputNotes(e){
+  inputNotes(e) {
     this.setData({
-      notes:e.detail.value
+      notes: e.detail.value
     })
   },
-  inputName(e){
+  inputName(e) {
     this.setData({
-      name:e.detail.value
+      name: e.detail.value
     })
   },
   tagClose: function (e) {
     var index = Number(e.currentTarget.id)
     var tagList = this.data.tagList
-    tagList.splice(index,1)
+    tagList.splice(index, 1)
     this.setData({
       tagList
     })
@@ -58,7 +59,7 @@ Page({
     var index = e.currentTarget.id
     var tagList = this.data.tagList
     var tabList = this.data.tabList
-    if(tagList.length>2){
+    if (tagList.length > 2) {
       tagList.shift()
     }
     tagList.push(tabList[index])
@@ -121,16 +122,36 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    var storesArr = wx.getStorageSync('storesArr')
-    if(storesArr==''){
-      storesArr==[]
+    var requestType = options.requestType
+    var storesArr
+    console.log(requestType)
+    switch (requestType) {
+      case 'Mine':
+        storesArr = wx.getStorageSync('storesArr')
+        if (storesArr == '') {
+          storesArr == []
+        }
+        break;
+      case 'MyGroup':
+        //TODO Tomorrow Will Be Better !
+        var My_GroupsList = wx.getStorageSync('My_GroupsList')
+        storesArr = My_GroupsList
+        if (storesArr == '') {
+          storesArr == []
+        }
+        break;
+
+      default:
+        break;
     }
+
     var openId = wx.getStorageSync('openId')
     console.log(storesArr)
     this.setData({
+      requestType,
       stores: storesArr,
       openId,
-      tabList:tabList//.sort(myApi.randomSort)
+      tabList: tabList //.sort(myApi.randomSort)
     })
   },
   chooseLocation: function (event) {
@@ -155,7 +176,7 @@ Page({
 
       wx.chooseLocation({
         success: res => {
-          name= (name==''?res.name:name)
+          name = (name == '' ? res.name : name)
           that.setData({
             address: res.address,
             latitude: res.latitude,
@@ -230,7 +251,7 @@ Page({
       })
     })
   },
-  addData:async function () {
+  addData: async function () {
     var stores = this.data.stores
     var price_per = this.data.price_per * 2
     var keywords = this.data.tagList.toString()
@@ -239,13 +260,13 @@ Page({
     var rateValue = this.data.rateValue
     var notes = this.data.notes
     var storeData = {
-      id:new Date().getTime(),
-      address:address,
-      name:name,
-      rateValue:rateValue,
+      id: new Date().getTime(),
+      address: address,
+      name: name,
+      rateValue: rateValue,
       price_per: price_per,
-      keywords:keywords,
-      notes:notes,
+      keywords: keywords,
+      notes: notes,
       thumbs_up: 1,
       iconPath: this.data.foodIconUrl,
       longitude: this.data.longitude,
@@ -258,20 +279,20 @@ Page({
         textAlign: 'center',
         borderRadius: 30,
         //borderWidth: 1,
-       // bgColor: '#ffffff'
+        // bgColor: '#ffffff'
       },
       images: this.data.images
     }
     //更新数据
     stores.push(storeData)
-   await myApi.updateUserInfo(stores,'stores')
-   wx.showToast({
-    title: '创建成功！',
-    icon: 'success',
-    success: res => {
-      wx.navigateBack({})
-    }
-  })
+    await myApi.updateUserInfo(stores, 'stores')
+    wx.showToast({
+      title: '创建成功！',
+      icon: 'success',
+      success: res => {
+        wx.navigateBack({})
+      }
+    })
   },
   DelImg(e) {
     var fileList = this.data.fileList

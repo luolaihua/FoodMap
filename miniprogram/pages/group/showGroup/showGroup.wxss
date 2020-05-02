@@ -1,0 +1,19 @@
+/* miniprogram/pages/group/showGroup/showGroup.wxss */
+@import "../../../style/colorui.wxss";
+@import "../../../style/icon.wxss";
+
+.myItem {
+    margin: 0;
+    padding: 0;
+}
+
+.add {
+    height: 14vw;
+    width: 14vw;
+    position: fixed;
+    bottom: 4vh;
+    left: 4vw;
+    z-index: 100;
+    opacity: 0.6;
+
+}

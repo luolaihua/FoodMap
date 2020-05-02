@@ -1,5 +1,7 @@
 // miniprogram/pages/group/createGroup/createGroup.js
 const myApi = require('../../../utils/myApi')
+const db = wx.cloud.database()
+const groupsList = db.collection('groupsList');
 Page({
 
   /**
@@ -30,13 +32,21 @@ Page({
         nickName:nickName,
         groupAvatarUrl: groupAvatarUrl,
         createTime:myApi.formatTime(new Date),
-        admin_openId:openId,
         membersList:[openId],
         secretKey:myApi.getRandomCode(4),
         stores:[]  
       }
+      groupsList.add({
+        // data 字段表示需新增的 JSON 数据
+        data: group
+      })
+      .then(res => {
+        console.log(res)
+      })
+      .catch(console.error)
       My_GroupsList.push(group)
-     await myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
+      wx.setStorageSync('My_GroupsList', My_GroupsList)
+     //await myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
      wx.navigateBack({
       complete: (res) => {
         wx.showToast({

@@ -27,27 +27,29 @@
 	 bindtouchend="ListTouchEnd"
 	 data-target="move-box-{{index}}"
 	>
-		<view bind:tap="toInfo" id="{{item.id}}" class="cu-avatar radius lg">
+		<view bind:tap="toShowGroup" id="{{index}}" class="cu-avatar radius lg">
 			<image
 			 class="cu-avatar radius lg"
 			 src="{{item.groupAvatarUrl}}"
 			 mode="aspectFill"
 			/>
 		</view>
-		<view class="content" bind:tap="toInfo" id="{{item.id}}">
+		<view class="content" bind:tap="toShowGroup" id="{{index}}">
 			<view class="text-black">{{item.nickName}}</view>
 				<view class="text-gray text-sm">
 					<text class="cuIcon-locationfill text-orange" />
 						{{item.secretKey}}
 				</view>
 		</view>
-		<view class="action" bind:tap="toInfo" id="{{item.id}}">
+		<view class="action" bind:tap="toShowGroup" id="{{index}}">
 			<view class="text-grey text-xs">{{item.membersList.length}}</view>
 			<view class="cuIcon-favorfill text-yellow sm"> {{item.stores.length}}</view>
 		</view>
 
 		<view class="move">
-			<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>
+		<!--
+			<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>		
+		-->
 			<view class="bg-red light" id="{{index}}" bindtap="deleteItem">删除</view>
 		</view>
 	</view>

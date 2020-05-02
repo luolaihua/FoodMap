@@ -1,4 +1,5 @@
 const db = wx.cloud.database()
+const _ = db.command
 const app = getApp()
 
 function vibrate() {
@@ -135,68 +136,21 @@ async function checkImgAndMsg(avatarUrl, nickName) {
   var res2 = await doMsgSecCheck(nickName)
   return res1 && res2
 }
+
+
 /**
- * 
- * @param {*需要更新的数据} data 
- * @param {*数据的类型} type 
+ * 用于打乱数组元素
+ * @param {*} a 
+ * @param {*} b 
  */
-async function updateUserInfo(data, type) {
-  const userInfo = db.collection('userInfo')
-  var openId = wx.getStorageSync('openId');
-  //更新数据
-  var updateData = {}
-  switch (type) {
-    case 'stores':
-      updateData.stores = data
-      wx.setStorageSync('storesArr', data)
-      break;
-    case 'nickName':
-      updateData = {
-        info: {
-          nickName: data
-        }
-      }
-      wx.setStorageSync('nickName', data)
-      break;
-    case 'avatarUrl':
-      var res = await wx.cloud.getTempFileURL({
-        fileList: [data],
-      })
-      console.log(res)
-      updateData = {
-        info: {
-          avatarUrl: res.fileList[0].tempFileURL
-        }
-      }
-      //用fileID做图片图片的链接缓存不会更新，不妥
-      //wx.setStorageSync('avatarUrl', data)
-      break;
-    case 'friendsList':
-      updateData.friendsList = data
-      wx.setStorageSync('friendsList', data)
-      break;
-    case 'My_GroupsList':
-      updateData.My_GroupsList = data
-      wx.setStorageSync('My_GroupsList', data)
-      break
-    default:
-      break;
-  }
-  console.log(openId, "-->", type, data)
-  var res = await userInfo.where({
-    openId: openId
-  }).update({
-    data: updateData
-  })
-
-  console.log("更新完成", res)
-
-}
-
 function randomSort(a, b) {
   return Math.random() > 0.5 ? -1 : 1
 }
 
+/**
+ * 获取随机码
+ * @param {*随机码的长度} num 
+ */
 function getRandomCode(num) {
   var chars = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
   var code = "";
@@ -206,7 +160,10 @@ function getRandomCode(num) {
   }
   return code;
 }
-
+/**
+ * 输出格式化时间
+ * @param {*Date对象} date 
+ */
 function formatTime(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
@@ -219,7 +176,10 @@ function formatTime(date) {
 
   return [year, month, day].map(formatNumber).join('/') + ' ' + [hour, minute, second].map(formatNumber).join(':')
 }
-
+/**
+ * 输出格式化日期
+ * @param {*Date对象} date 
+ */
 function formatDate(date) {
   var year = date.getFullYear()
   var month = date.getMonth() + 1
@@ -369,7 +329,10 @@ function arrayRandomTakeOne(array) {
   var index = Math.floor((Math.random() * array.length + 1) - 1);
   return array[index];
 }
-
+/**
+ * 生成小程序码
+ * @param {*场景值} scene 
+ */
 function getQrCodeUrl(scene) {
   return wx.cloud.callFunction({
     name: 'checkSafeContent',
@@ -379,11 +342,114 @@ function getQrCodeUrl(scene) {
     }
   })
 }
+/**
+ * 
+ * @param {*需要更新的数据} data 
+ * @param {*数据的类型} type 
+ */
+async function updateUserInfo(data, type) {
+  const userInfo = db.collection('userInfo')
+  var openId = wx.getStorageSync('openId');
+  //更新数据
+  var updateData = {}
+  switch (type) {
+    case 'stores':
+      updateData.stores = data
+      wx.setStorageSync('storesArr', data)
+      break;
+    case 'nickName':
+      updateData = {
+        info: {
+          nickName: data
+        }
+      }
+      wx.setStorageSync('nickName', data)
+      break;
+    case 'avatarUrl':
+      var res = await wx.cloud.getTempFileURL({
+        fileList: [data],
+      })
+      console.log(res)
+      updateData = {
+        info: {
+          avatarUrl: res.fileList[0].tempFileURL
+        }
+      }
+      //用fileID做图片图片的链接缓存不会更新，不妥
+      //wx.setStorageSync('avatarUrl', data)
+      break;
+    case 'friendsList':
+      updateData.friendsList = data
+      wx.setStorageSync('friendsList', data)
+      break;
+    case 'My_GroupsList':
+      updateData.My_GroupsList = data
+      wx.setStorageSync('My_GroupsList', data)
+      break
+    default:
+      break;
+  }
+  console.log(openId, "-->", type, data)
+  var res = await userInfo.where({
+    openId: openId
+  }).update({
+    data: updateData
+  })
 
+  console.log("更新完成", res)
 
+}
+/**
+ * 获取用户创建的圈子和加入的圈子
+ * @param {*} openId 
+ */
+function getGroupsList(openId){
+  db.collection('groupsList').where({
+    _openid: openId
+  }).get().then(res=>{
+    console.log('my',res.data)
+    wx.setStorageSync('My_GroupsList', res.data)
+  })
+  db.collection('groupsList').where({
+    membersList: _.all([openId])
+  }).get().then(res=>{
+    console.log('joined',res.data)
+    wx.setStorageSync('Joined_GroupsList', res.data)
+  })
+}
+/**
+ * 获取用户创建的圈子和加入的圈子
+ * @param {*} openId 
+ */
+function updateGroupsList(data, type){
+  const groupsList = db.collection('groupsList')
+  var openId = wx.getStorageSync('openId');
+  //更新数据
+  var updateData = {}
+  switch (type) {
+    case 'Joined_GroupsList':
+      updateData.stores = data
+      wx.setStorageSync('storesArr', data)
+      break;
+    case 'My_GroupsList':
+      updateData.My_GroupsList = data
+      wx.setStorageSync('My_GroupsList', data)
+      break
+    default:
+      break;
+  }
+  console.log(openId, "-->", type, data)
+  var res =  userInfo.update({
+    data: updateData
+  })
+
+  console.log("更新完成", res)
+}
 
 
 module.exports = {
+  updateGroupsList,
+  getGroupsList,
   vibrate,
   checkImgAndMsg,
   getQrCodeUrl,
