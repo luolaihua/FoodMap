@@ -14,42 +14,38 @@ Page({
     store: '',
     friendsIndex: 'self',
     thumbs_up: 1, //1表示未收藏，0表示已收藏
-    store_id: ''
+    store_id: '',
+    isStar: false
   },
+  //TODO 收藏的店铺id列表也要放在云端
   //收藏好友的店铺功能
   async star() {
     var myStores = wx.getStorageSync("storesArr")
     var friendsList = wx.getStorageSync('friendsList');
     var store_id = this.data.store_id
     var friendsIndex = this.data.friendsIndex
-    //当前朋友的店铺列表
-    var storesArr = friendsList[friendsIndex].stores
     //当前显示的店铺
     var store = this.data.store
-    //获取当前商铺的下标
-    var storeIndex = storesArr.findIndex(item => {
-      return item.id == store_id
-    })
-
-    //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
+    var isStar = this.data.isStar
+    //TODO 收藏时是否要更新其他表单,还是只更新收藏id列表
+    /*     //当前朋友的店铺列表
+        var storesArr = friendsList[friendsIndex].stores
+        //获取当前商铺的下标
+        var storeIndex = storesArr.findIndex(item => {
+          return item.id == store_id
+        }) */
     var starStoreIdList = wx.getStorageSync("starStoreIdList")
-    if (starStoreIdList == '') {
-      starStoreIdList = []
-    }
     //未收藏状态就收藏
-    if (store.thumbs_up == 1) {
+    if (!isStar) {
       // 压入我的店铺
       myStores.push(store)
       //置零表示已收藏
-      store.thumbs_up = 0
       starStoreIdList.push(store_id)
       wx.showToast({
         title: '已收藏',
         icon: 'success',
       });
     } else {
-      store.thumbs_up = 1
-
       //在我的店铺列表中找到当前收藏的店铺，删除
       var index = myStores.findIndex(item => {
         return item.id == store_id
@@ -61,17 +57,16 @@ Page({
         icon: 'success',
       });
     }
-
+    //wx.setStorageSync('starStoreIdList', starStoreIdList);
     //更新我的店铺
-    myApi.updateUserInfo(myStores,'stores')
+    myApi.updateUserInfo(myStores, 'stores')
+    myApi.updateUserInfo(starStoreIdList, 'starStoreIdList')
     //更新朋友列表
-    friendsList[friendsIndex].stores[storeIndex] = store
-    wx.setStorageSync('friendsList', friendsList);
-    //更新收藏id列表
-    wx.setStorageSync('starStoreIdList', starStoreIdList);
-
+    //friendsList[friendsIndex].stores[storeIndex] = store
+    //myApi.updateUserInfo(friendsList, 'friendsList')
+    //wx.setStorageSync('friendsList', friendsList);
     this.setData({
-      store: store
+      isStar: !isStar
     })
   },
 
@@ -90,36 +85,54 @@ Page({
    */
   onLoad: function (options) {
     console.log(options)
+    var that = this
     var storesArr = wx.getStorageSync('storesArr')
     var friendsIndex = options.friendsIndex
     var store_id = options.id
-    if (friendsIndex != 'self') {
-      var friendsList = wx.getStorageSync('friendsList')
-      //获取朋友的所有店铺
-      storesArr = friendsList[friendsIndex].stores
+
+    switch (friendsIndex) {
+      case 'self':
+        //根据id在店铺列表中找到指定的店铺
+        var store = storesArr.find(item => {
+          return item.id == store_id
+        })
+        break;
+      case 'MyGroup':
+        var groupId = options.groupId
+        var My_GroupsList = wx.getStorageSync('My_GroupsList');
+        //通过groupId找到是哪个圈子
+        var index = My_GroupsList.findIndex(item => {
+          return item._id == groupId
+        })
+        //获取这个圈子的所有店铺
+        var group = My_GroupsList[index]
+        storesArr = group.stores
+        //根据id在店铺列表中找到指定的店铺
+        var store = storesArr.find(item => {
+          return item.id == store_id
+        })
+        break
+      case 'JoinedGroup':
+        break
+
+      default:
+        //从好友列表过来的
+        var friendsList = wx.getStorageSync('friendsList')
+        //获取朋友的所有店铺
+        storesArr = friendsList[friendsIndex].stores
+        //根据id在店铺列表中找到指定的店铺
+        var store = storesArr.find(item => {
+          return item.id == store_id
+        })
+        break;
     }
-    //根据id在店铺列表中找到指定的店铺
-    var store = storesArr.find(item => {
-      return item.id == store_id
-    })
-    if (friendsIndex != 'self') {
-      //判断在收藏店铺id列表中是否有当前店铺id存在
-      //判断是否收藏了主要是看收藏id列表中是否存在此id
-      var starStoreIdList = wx.getStorageSync("starStoreIdList")
-      var idIndex = starStoreIdList.indexOf(store_id + '')
-      console.log(idIndex)
-      //如果存在,说明被收藏了
-      if (idIndex == -1) {
-        store.thumbs_up = 1
-      } else {
-        store.thumbs_up = 0
-      }
-    }
+    //判断在收藏店铺id列表中是否有当前店铺id存在
+    //判断是否收藏了主要是看收藏id列表中是否存在此id
+    that.isStar(store_id)
 
 
     // 切割逗号
     let keywords_array = store.keywords.split(',')
-    console.log(store.thumbs_up)
     this.setData({
       keywords_array,
       store: store,
@@ -127,6 +140,24 @@ Page({
       store_id
     })
 
+  },
+  isStar(store_id) {
+    //判断在收藏店铺id列表中是否有当前店铺id存在
+    //判断是否收藏了主要是看收藏id列表中是否存在此id
+    var starStoreIdList = wx.getStorageSync("starStoreIdList")
+    var idIndex = starStoreIdList.indexOf(store_id + '')
+    var isStar
+    //如果存在,说明被收藏了
+    if (idIndex == -1) {
+      isStar = false
+      console.log('未收藏')
+    } else {
+      isStar = true
+      console.log('已收藏')
+    }
+    this.setData({
+      isStar
+    })
   },
   tapImage: function (e) {
     wx.previewImage({

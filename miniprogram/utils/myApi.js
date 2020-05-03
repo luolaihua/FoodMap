@@ -382,6 +382,10 @@ async function updateUserInfo(data, type) {
       updateData.friendsList = data
       wx.setStorageSync('friendsList', data)
       break;
+    case 'starStoreIdList':
+      updateData.starStoreIdList = data
+      wx.setStorageSync('starStoreIdList', data)
+      break;
     case 'My_GroupsList':
       updateData.My_GroupsList = data
       wx.setStorageSync('My_GroupsList', data)
@@ -403,47 +407,55 @@ async function updateUserInfo(data, type) {
  * 获取用户创建的圈子和加入的圈子
  * @param {*} openId 
  */
-function getGroupsList(openId){
+function getGroupsList(openId) {
   db.collection('groupsList').where({
     _openid: openId
-  }).get().then(res=>{
-    console.log('my',res.data)
+  }).get().then(res => {
+    console.log('my', res.data)
     wx.setStorageSync('My_GroupsList', res.data)
   })
   db.collection('groupsList').where({
     membersList: _.all([openId])
-  }).get().then(res=>{
-    console.log('joined',res.data)
+  }).get().then(res => {
+    console.log('joined', res.data)
     wx.setStorageSync('Joined_GroupsList', res.data)
   })
 }
 /**
- * 获取用户创建的圈子和加入的圈子
- * @param {*} openId 
+ * 更新圈子数据
+ * @param {*需要更新的数据} data 
+ * @param {*数据类型} type 
+ * @param {*集合的id} id 
  */
-function updateGroupsList(data, type){
+async function updateGroupsList(data, type, id) {
   const groupsList = db.collection('groupsList')
-  var openId = wx.getStorageSync('openId');
+  // var openId = wx.getStorageSync('openId');
+  /*   var My_GroupsList = wx.getStorageSync('My_GroupsList')
+    var index = My_GroupsList.findIndex(item=>{
+      return item._id==id
+     }) */
+
   //更新数据
   var updateData = {}
   switch (type) {
-    case 'Joined_GroupsList':
+    case 'stores':
       updateData.stores = data
-      wx.setStorageSync('storesArr', data)
+      // My_GroupsList[index].stores=data
+      // wx.setStorageSync('storesArr', data)
       break;
-    case 'My_GroupsList':
-      updateData.My_GroupsList = data
-      wx.setStorageSync('My_GroupsList', data)
-      break
     default:
       break;
   }
-  console.log(openId, "-->", type, data)
-  var res =  userInfo.update({
+  // console.log(openId, "-->", type, data)
+  var res = await groupsList.where({
+    _id: id
+  }).update({
     data: updateData
   })
 
-  console.log("更新完成", res)
+  var openId = wx.getStorageSync('openId')
+  getGroupsList(openId)
+  console.log("更新完成GroupsList", res)
 }
 
 

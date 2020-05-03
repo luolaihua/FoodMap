@@ -161,7 +161,7 @@ Page({
     var nickName = wx.getStorageSync('nickName');
     var avatarUrl = wx.getStorageSync('avatarUrl');
 
-    
+
     var that = this
     const db = wx.cloud.database()
     //这里用的是展示的数据，也就是可以使搜索之后的数据
@@ -175,9 +175,9 @@ Page({
     db.collection('instantShare').add({
       // data 字段表示需新增的 JSON 数据
       data: {
-        info:{
-          nickName:nickName,
-          avatarUrl:avatarUrl
+        info: {
+          nickName: nickName,
+          avatarUrl: avatarUrl
         },
         instantShareCode: instantShareCode,
         createTime: myApi.formatTime(new Date()),
@@ -298,7 +298,7 @@ Page({
     var stores = this.data.stores
     stores = myApi.makeItemTop(stores, index)
     if (friendsIndex == 'self') {
-      myApi.updateUserInfo(stores,'stores')
+      myApi.updateUserInfo(stores, 'stores')
     }
     // console.log(stores)
     // console.log(this.data.storesArr)
@@ -316,27 +316,30 @@ Page({
     var friendsList = wx.getStorageSync('friendsList');
 
     //如果是自身数据就更新到云端，如果是他人数据就更新本地
-    //如果删除的条目为收藏的店铺，需要把店铺取消收藏
-    var id = stores[index].id + ''
-    var starStoreIdList = wx.getStorageSync("starStoreIdList")
-    if (starStoreIdList != '') {
-      var idIndex = starStoreIdList.indexOf(id)
-      //如果要删除的店铺为收藏进来的，
-      if (idIndex != -1) {
-        //先把id列表的的id删除
-        starStoreIdList.splice(idIndex, 1)
-        wx.setStorageSync('starStoreIdList', starStoreIdList);
-        //
-      }
-    }
-
-
-    stores.splice(index, 1)
+   
     if (friendsIndex == 'self') {
-      myApi.updateUserInfo(stores,'stores')
+      //如果删除的条目为收藏的店铺，需要把店铺取消收藏
+      //console.log(stores[index])
+      var id = stores[index].id + ''
+      var starStoreIdList = wx.getStorageSync("starStoreIdList")
+      if (starStoreIdList.length != 0) {
+        var idIndex = starStoreIdList.indexOf(id)
+        //如果要删除的店铺为收藏进来的，
+        if (idIndex != -1) {
+          //先把id列表的的id删除
+          starStoreIdList.splice(idIndex, 1)
+          myApi.updateUserInfo(starStoreIdList, 'starStoreIdList')
+          //wx.setStorageSync('starStoreIdList', starStoreIdList);
+          //
+        }
+      }
+      stores.splice(index, 1)
+      myApi.updateUserInfo(stores, 'stores')
     } else {
+      stores.splice(index, 1)
       friendsList[friendsIndex].stores = stores
-      wx.setStorageSync('friendsList', friendsList);
+      myApi.updateUserInfo(friendsList, 'friendsList')
+      //wx.setStorageSync('friendsList', friendsList);
     }
     // console.log(stores)
     // console.log(this.data.storesArr)

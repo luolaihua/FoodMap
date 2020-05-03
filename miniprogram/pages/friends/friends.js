@@ -209,7 +209,7 @@ Page({
       }
       friendsList.push(friendInfo)
       myApi.updateUserInfo(friendsList, 'friendsList')
-      wx.setStorageSync('friendsList', friendsList);
+      //wx.setStorageSync('friendsList', friendsList);
       this.setData({
         friendsList,
         isShowInputCode: false

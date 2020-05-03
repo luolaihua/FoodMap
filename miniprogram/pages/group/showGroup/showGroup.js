@@ -1,45 +1,107 @@
 // miniprogram/pages/group/showGroup/showGroup.js
+const myApi = require('../../../utils/myApi')
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    groupName:'',
-    groupIndex:'0',
-    groupType:'my',
-    groupList :[],
-    group:{}
+    groupName: '',
+    groupId: '',
+    groupType: 'my',
+    GroupsList: [],
+    group: {},
+    type: 'my',
+    isStar: true
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var index  = options.index
+    var groupId = options.groupId
     var type = options.type
-    var groupList =[]
-    index =0
-    type = 'my'
-    if(type=='my'){
-       groupList = wx.getStorageSync('My_GroupsList');
-    }else{
-      groupList = wx.getStorageSync('Joined_GroupsList');
-    }
+    var GroupsList = []
+    var group = []
    
-    console.log(options)
+    //console.log(options)
+    type = 'my'
+/*     if (type == 'my') {
+      GroupsList = wx.getStorageSync('My_GroupsList');
+      var index = GroupsList.findIndex(item => {
+        return item._id == groupId
+      })
+      group = GroupsList[index]
+      for (let index = 0; index < group.stores.length; index++) {
+       
+        var id = group.stores[index].id+''
+        console.log(id)
+        if(starStoreIdList.indexOf(group.stores[index].id+'')!=-1){
+          group.stores[index].isStar=true
+        }else{
+          group.stores[index].isStar=false
+        }
+        
+      }
+    } else {
+      GroupsList = wx.getStorageSync('Joined_GroupsList');
+    } */
+    console.log(group.stores)
     this.setData({
-      groupList,
-      groupIndex:index,
-      group:groupList[index]
+      GroupsList,
+      groupId,
+      group,
+      type
     })
 
 
   },
-  toAdd(){
+  toAdd() {
     wx.navigateTo({
-      url: '../../add/add?requestType=MyGroup'
+      url: '../../add/add?requestType=MyGroup&groupId=' + this.data.groupId
     });
+  },
+  toInfo(e) {
+    wx.navigateTo({
+      url: '../../info/info?groupId=' + this.data.groupId + '&id=' + e.currentTarget.id + '&friendsIndex=MyGroup',
+      success: (result) => {
+
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+  },
+  deleteItem(e) {
+    var index = e.currentTarget.dataset.index
+    var groupId = this.data.groupId
+    var group = this.data.group
+    var that = this
+
+    wx.showModal({
+      title: '是否删除？',
+      content: group.stores[index].name,
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if (result.confirm) {
+          group.stores.splice(index, 1)
+          myApi.updateGroupsList(group.stores, 'stores', groupId)
+          wx.showToast({
+            title: '删除成功',
+            duration: 800,
+          });
+          that.setData({
+            group
+          })
+        }
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+    console.log(e)
   },
 
   /**
@@ -53,7 +115,32 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    var GroupsList = []
+    var group = []
+    var starStoreIdList= wx.getStorageSync('starStoreIdList');
+    if (this.data.type == 'my') {
+      GroupsList = wx.getStorageSync('My_GroupsList');
+      var index = GroupsList.findIndex(item => {
+        return item._id == this.data.groupId
+      })
+      group = GroupsList[index]
+      for (let index = 0; index < group.stores.length; index++) {
+       
+        if(starStoreIdList.indexOf(group.stores[index].id+'')!=-1){
+          group.stores[index].isStar=true
+        }else{
+          group.stores[index].isStar=false
+        }
+        
+      }
+    } else {
+      GroupsList = wx.getStorageSync('Joined_GroupsList');
+    }
+    // console.log(group)
+    this.setData({
+      GroupsList,
+      group,
+    })
   },
 
   /**

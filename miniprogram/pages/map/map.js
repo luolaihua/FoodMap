@@ -93,7 +93,6 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    var that = this
     this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
@@ -163,6 +162,7 @@ Page({
     var nickName = ''
     var friendsList = []
     var My_GroupsList = []
+    var starStoreIdList=[]
     //如果id为空
     if (openId == '') {
       //初始化
@@ -186,6 +186,7 @@ Page({
           shareCode = res.result.memberInfos.data[0].shareCode
           storesArr = res.result.memberInfos.data[0].stores
           friendsList = res.result.memberInfos.data[0].friendsList
+          starStoreIdList=res.result.memberInfos.data[0].starStoreIdList
           nickName = res.result.memberInfos.data[0].info.nickName
           avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
         }
@@ -206,6 +207,7 @@ Page({
         avatarUrl = info.data[0].info.avatarUrl
         shareCode = info.data[0].shareCode
         friendsList = info.data[0].friendsList
+        starStoreIdList = info.data[0].starStoreIdList
         //wx.setStorageSync('shareCode', info.data[0].shareCode);
       }
     }
@@ -214,6 +216,8 @@ Page({
     wx.setStorageSync('avatarUrl', avatarUrl);
     wx.setStorageSync('storesArr', storesArr)
     wx.setStorageSync('friendsList', friendsList)
+    wx.setStorageSync('starStoreIdList', starStoreIdList)
+
     //console.log(storesArr)
     this.setData({
       stores: storesArr,

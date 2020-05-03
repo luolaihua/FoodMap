@@ -29,7 +29,8 @@ Page({
     tagList: [],
     colorList: ["#f2826a", "#7232dd", "#1cbbb4"],
     isShow: true,
-    requestType: 'Mine'
+    requestType: 'Mine',
+    groupId:''
   },
   chooseIcon(e) {
     var index = Number(e.currentTarget.id)
@@ -123,8 +124,9 @@ Page({
    */
   onLoad: async function (options) {
     var requestType = options.requestType
+    var groupId =options.groupId
     var storesArr
-    console.log(requestType)
+    console.log('options',options)
     switch (requestType) {
       case 'Mine':
         storesArr = wx.getStorageSync('storesArr')
@@ -133,12 +135,11 @@ Page({
         }
         break;
       case 'MyGroup':
-        //TODO Tomorrow Will Be Better !
         var My_GroupsList = wx.getStorageSync('My_GroupsList')
-        storesArr = My_GroupsList
-        if (storesArr == '') {
-          storesArr == []
-        }
+        var index = My_GroupsList.findIndex(item=>{
+          return item._id==groupId
+         })
+        storesArr = My_GroupsList[index].stores
         break;
 
       default:
@@ -146,8 +147,9 @@ Page({
     }
 
     var openId = wx.getStorageSync('openId')
-    console.log(storesArr)
+    console.log('已存在店铺：',storesArr)
     this.setData({
+      groupId,
       requestType,
       stores: storesArr,
       openId,
@@ -233,7 +235,7 @@ Page({
     const uploadTask = items.map(item => this.uploadPhoto(item.src))
 
     Promise.all(uploadTask).then(result => {
-      console.log(result)
+      //console.log(result)
 
       let urls = [];
       for (const file of result) {
@@ -252,6 +254,7 @@ Page({
     })
   },
   addData: async function () {
+    var requestType = this.data.requestType
     var stores = this.data.stores
     var price_per = this.data.price_per * 2
     var keywords = this.data.tagList.toString()
@@ -259,8 +262,13 @@ Page({
     var address = this.data.address
     var rateValue = this.data.rateValue
     var notes = this.data.notes
+    var date = new Date()
+    
     var storeData = {
-      id: new Date().getTime(),
+      id: date.getTime(),
+      creatorName:wx.getStorageSync('nickName'),
+      creatorAvatar:wx.getStorageSync('avatarUrl'),
+      createTime: myApi.formatTime(date),
       address: address,
       name: name,
       rateValue: rateValue,
@@ -268,6 +276,7 @@ Page({
       keywords: keywords,
       notes: notes,
       thumbs_up: 1,
+      isStar:false,
       iconPath: this.data.foodIconUrl,
       longitude: this.data.longitude,
       latitude: this.data.latitude,
@@ -285,14 +294,36 @@ Page({
     }
     //更新数据
     stores.push(storeData)
-    await myApi.updateUserInfo(stores, 'stores')
-    wx.showToast({
-      title: '创建成功！',
-      icon: 'success',
-      success: res => {
-        wx.navigateBack({})
-      }
-    })
+    //判断是添加到哪里
+    switch (requestType) {
+      case 'Mine':
+        await myApi.updateUserInfo(stores, 'stores')
+        wx.showToast({
+          title: '创建成功！',
+          icon: 'success',
+          success: res => {
+            wx.navigateBack({})
+          }
+        })
+        break;
+      case 'MyGroup':
+        await myApi.updateGroupsList(stores, 'stores',this.data.groupId)
+        setTimeout(() => {
+          wx.showToast({
+          title: '创建成功！',
+          icon: 'success',
+          success: res => {
+            wx.navigateBack({})
+          }
+        })
+    }, 500);
+        break;
+
+      default:
+        break;
+    }
+
+
   },
   DelImg(e) {
     var fileList = this.data.fileList

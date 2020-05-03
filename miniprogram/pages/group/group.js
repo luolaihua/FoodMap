@@ -25,8 +25,9 @@ Page({
   },
   toShowGroup(e){
     var index = e.currentTarget.id
+    var groupId = this.data.My_GroupsList[index]._id
     wx.navigateTo({
-      url: '../group/showGroup/showGroup?type=my&index='+index,
+      url: '../group/showGroup/showGroup?type=my&groupId='+groupId,
     });
   },
     /**
@@ -96,6 +97,8 @@ Page({
    */
   onShow: function () {
     var My_GroupsList = wx.getStorageSync('My_GroupsList');
+    var openId = wx.getStorageSync('openId')
+    myApi.getGroupsList(openId)
     this.setData({
       My_GroupsList
     })
