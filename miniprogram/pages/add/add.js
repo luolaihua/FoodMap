@@ -30,7 +30,7 @@ Page({
     colorList: ["#f2826a", "#7232dd", "#1cbbb4"],
     isShow: true,
     requestType: 'Mine',
-    groupId:''
+    groupId: ''
   },
   chooseIcon(e) {
     var index = Number(e.currentTarget.id)
@@ -124,9 +124,9 @@ Page({
    */
   onLoad: async function (options) {
     var requestType = options.requestType
-    var groupId =options.groupId
+    var groupId = options.groupId
     var storesArr
-    console.log('options',options)
+    console.log('options', options)
     switch (requestType) {
       case 'Mine':
         storesArr = wx.getStorageSync('storesArr')
@@ -136,18 +136,27 @@ Page({
         break;
       case 'MyGroup':
         var My_GroupsList = wx.getStorageSync('My_GroupsList')
-        var index = My_GroupsList.findIndex(item=>{
-          return item._id==groupId
-         })
+        var index = My_GroupsList.findIndex(item => {
+          return item._id == groupId
+        })
         storesArr = My_GroupsList[index].stores
         break;
-
+      case 'JoinedGroup':
+        //Joined_GroupsList-->groupId-->group-->store_id-->store
+        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+        //通过groupId找到是哪个圈子
+        var index = Joined_GroupsList.findIndex(item => {
+          return item._id == groupId
+        })
+        //获取这个圈子的所有店铺
+        storesArr = Joined_GroupsList[index].stores
+        break
       default:
         break;
     }
 
     var openId = wx.getStorageSync('openId')
-    console.log('已存在店铺：',storesArr)
+    console.log('已存在店铺：', storesArr)
     this.setData({
       groupId,
       requestType,
@@ -263,11 +272,11 @@ Page({
     var rateValue = this.data.rateValue
     var notes = this.data.notes
     var date = new Date()
-    
+
     var storeData = {
       id: date.getTime(),
-      creatorName:wx.getStorageSync('nickName'),
-      creatorAvatar:wx.getStorageSync('avatarUrl'),
+      creatorName: wx.getStorageSync('nickName'),
+      creatorAvatar: wx.getStorageSync('avatarUrl'),
       createTime: myApi.formatTime(date),
       address: address,
       name: name,
@@ -276,7 +285,7 @@ Page({
       keywords: keywords,
       notes: notes,
       thumbs_up: 1,
-      isStar:false,
+      isStar: false,
       iconPath: this.data.foodIconUrl,
       longitude: this.data.longitude,
       latitude: this.data.latitude,
@@ -306,20 +315,29 @@ Page({
           }
         })
         break;
-      case 'MyGroup':
-        await myApi.updateGroupsList(stores, 'stores',this.data.groupId)
+/*       case 'MyGroup':
+        await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
         setTimeout(() => {
           wx.showToast({
-          title: '创建成功！',
-          icon: 'success',
-          success: res => {
-            wx.navigateBack({})
-          }
-        })
-    }, 500);
-        break;
-
+            title: '创建成功！',
+            icon: 'success',
+            success: res => {
+              wx.navigateBack({})
+            }
+          })
+        }, 500);
+        break; */
       default:
+        await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
+        setTimeout(() => {
+          wx.showToast({
+            title: '创建成功！',
+            icon: 'success',
+            success: res => {
+              wx.navigateBack({})
+            }
+          })
+        }, 500);
         break;
     }
 

@@ -88,12 +88,9 @@ Page({
       console.log(res)
       //如果是安全的，就存入
       if (res) {
-        wx.setStorageSync('nickName', nickName)
-        wx.setStorageSync('avatarUrl', avatarUrl)
-        that.setData({
-          nickName,
-          avatarUrl
-        })
+        // wx.setStorageSync('nickName', nickName)
+        // wx.setStorageSync('avatarUrl', avatarUrl)
+
       } else {
         wx.showModal({
           title: '内容安全检测',
@@ -109,11 +106,15 @@ Page({
           fail: ()=>{},
           complete: ()=>{}
         });
-        that.setData({
-          nickName:'互联网冲浪选手',
-          avatarUrl:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
-        })
+        nickName = '互联网冲浪选手'
+        avatarUrl='https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
       }
+      that.setData({
+        nickName,
+        avatarUrl
+      })
+      myApi.updateUserInfo(nickName,'nickName')
+      myApi.updateUserInfo(avatarUrl,'avatarUrl')
     })
 
   },
@@ -158,6 +159,7 @@ Page({
     
     var nickName = wx.getStorageSync('nickName')
     var avatarUrl =  wx.getStorageSync('avatarUrl')
+    console.log(avatarUrl)
     var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
     if (isVibrate_setting === '') {
       wx.setStorageSync('isVibrate_setting', false)

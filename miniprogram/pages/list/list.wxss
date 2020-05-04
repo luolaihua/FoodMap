@@ -79,3 +79,6 @@
   align-items: center;
   justify-content: center;
 }
+.posterText{
+  border-bottom: solid 1px #1078e7;
+}

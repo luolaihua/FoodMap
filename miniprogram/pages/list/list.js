@@ -10,6 +10,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    groupId: '',
+    isAddItemToGroup: false,
     modalName: '',
     defaultImage: imgUrl.head,
     numbers: 0,
@@ -147,9 +149,11 @@ Page({
    * stores为展示的数据---搜索会筛选数据
    * storesArr为原有的数据，二者本是一样的，因为搜索功能需要还原数据
    */
-  shareItems() {
-
+  async shareItems() {
+    var that = this
     var shareIndexList = this.data.shareIndexList
+    var groupId = this.data.groupId
+    var friendsIndex = this.data.friendsIndex
     //先检查是否一个也没有选择
     if (shareIndexList.length == 0) {
       wx.showToast({
@@ -158,12 +162,6 @@ Page({
       });
       return
     }
-    var nickName = wx.getStorageSync('nickName');
-    var avatarUrl = wx.getStorageSync('avatarUrl');
-
-
-    var that = this
-    const db = wx.cloud.database()
     //这里用的是展示的数据，也就是可以使搜索之后的数据
     var stores = this.data.stores
     //console.log(stores)
@@ -171,49 +169,107 @@ Page({
     for (let index = 0; index < shareIndexList.length; index++) {
       shareList.push(stores[shareIndexList[index]])
     }
-    var instantShareCode = myApi.getRandomCode(8)
-    db.collection('instantShare').add({
-      // data 字段表示需新增的 JSON 数据
-      data: {
-        info: {
-          nickName: nickName,
-          avatarUrl: avatarUrl
-        },
-        instantShareCode: instantShareCode,
-        createTime: myApi.formatTime(new Date()),
-        stores: shareList,
-        shareCount: 6
-      },
-      success: function (res) {
-        // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-        console.log(res)
-        that.createPoster(instantShareCode, shareList)
-        that.setData({
-          shareCode: instantShareCode
-        })
-        /*         wx.showModal({
-                  title: '即时美食分享码',
-                  content: instantShareCode,
-                  showCancel: true,
-                  cancelText: '取消',
-                  cancelColor: '#000000',
-                  confirmText: '确定',
-                  confirmColor: '#3CC51F',
-                  success: (result) => {
-                    if (result.confirm) {
-                      that.cancelChoose()
-                      wx.setClipboardData({
-                        data: instantShareCode,
-                      });
-                    }
-                  },
-                }); */
-      },
-      fail: console.error,
-      complete: console.log
-    })
+    console.log('shareList', shareList)
 
-    console.log(shareList)
+
+    switch (friendsIndex) {
+      case 'MyGroup':
+        //My_GroupsList-->groupId-->group-->stores
+        var My_GroupsList = wx.getStorageSync('My_GroupsList');
+        //通过groupId找到是哪个圈子
+        var group = My_GroupsList.find(item => {
+          return item._id == groupId
+        })
+        //获取这个圈子的所有店铺
+        var stores = group.stores
+        stores = stores.concat(shareList)
+        console.log(stores)
+
+        await myApi.updateGroupsList(stores, 'stores', groupId)
+        setTimeout(() => {
+          wx.showToast({
+            title: '添加成功！',
+            icon: 'success',
+            success: res => {
+              wx.navigateBack({})
+            }
+          })
+        }, 500);
+        break;
+      case 'JoinedGroup':
+        //My_GroupsList-->groupId-->group-->stores
+        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+        //通过groupId找到是哪个圈子
+        var group = Joined_GroupsList.find(item => {
+          return item._id == groupId
+        })
+        //获取这个圈子的所有店铺
+        var stores = group.stores
+        stores = stores.concat(shareList)
+        console.log(stores)
+
+        await myApi.updateGroupsList(stores, 'stores', groupId)
+        setTimeout(() => {
+          wx.showToast({
+            title: '添加成功！',
+            icon: 'success',
+            success: res => {
+              wx.navigateBack({})
+            }
+          })
+        }, 500);
+        break;
+      default:
+        var nickName = wx.getStorageSync('nickName');
+        var avatarUrl = wx.getStorageSync('avatarUrl');
+        var instantShareCode = myApi.getRandomCode(8)
+        db.collection('instantShare').add({
+          // data 字段表示需新增的 JSON 数据
+          data: {
+            info: {
+              nickName: nickName,
+              avatarUrl: avatarUrl
+            },
+            instantShareCode: instantShareCode,
+            createTime: myApi.formatTime(new Date()),
+            stores: shareList,
+            shareCount: 6
+          },
+          success: function (res) {
+            // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+            console.log(res)
+            that.createPoster(instantShareCode, shareList)
+            that.setData({
+              shareCode: instantShareCode
+            })
+            /*         wx.showModal({
+                      title: '即时美食分享码',
+                      content: instantShareCode,
+                      showCancel: true,
+                      cancelText: '取消',
+                      cancelColor: '#000000',
+                      confirmText: '确定',
+                      confirmColor: '#3CC51F',
+                      success: (result) => {
+                        if (result.confirm) {
+                          that.cancelChoose()
+                          wx.setClipboardData({
+                            data: instantShareCode,
+                          });
+                        }
+                      },
+                    }); */
+          },
+          fail: console.error,
+          complete: console.log
+        })
+        break;
+    }
+
+
+
+
+
   },
   /**
    * 打开即时分享
@@ -316,7 +372,7 @@ Page({
     var friendsList = wx.getStorageSync('friendsList');
 
     //如果是自身数据就更新到云端，如果是他人数据就更新本地
-   
+
     if (friendsIndex == 'self') {
       //如果删除的条目为收藏的店铺，需要把店铺取消收藏
       //console.log(stores[index])
@@ -354,26 +410,41 @@ Page({
     //friendsIndex
     var friendsIndex = options.friendsIndex
     var storesArr = []
-
-    //console.log(friendsIndex)
-    if (friendsIndex == 'self') {
-      storesArr = wx.getStorageSync('storesArr')
-    } else {
-      var friendsList = wx.getStorageSync('friendsList')
-      storesArr = friendsList[friendsIndex].stores
-      wx.setNavigationBarTitle({
-        title: '好友的美食列表',
-        success: (result) => {},
-        fail: () => {},
-        complete: () => {}
-      });
+    var isAddItemToGroup = false
+    var groupId = options.groupId
+    switch (friendsIndex) {
+      case 'self':
+        storesArr = wx.getStorageSync('storesArr')
+        break;
+      case 'MyGroup':
+        isAddItemToGroup = true
+        storesArr = wx.getStorageSync('storesArr')
+        break;
+      case 'JoinedGroup':
+        isAddItemToGroup = true
+        storesArr = wx.getStorageSync('storesArr')
+        break;
+      default:
+        var friendsList = wx.getStorageSync('friendsList')
+        storesArr = friendsList[friendsIndex].stores
+        break;
     }
+
+    console.log(friendsIndex)
+    /*     if (friendsIndex == 'self') {
+          storesArr = wx.getStorageSync('storesArr')
+        } else {
+          var friendsList = wx.getStorageSync('friendsList')
+          storesArr = friendsList[friendsIndex].stores
+        } */
 
     this.setData({
       stores: storesArr,
       storesArr,
       defaultSearchValue: '',
       friendsIndex,
+      isAddItemToGroup,
+      groupId
 
     })
   },

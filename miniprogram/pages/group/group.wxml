@@ -1,7 +1,7 @@
 <!--miniprogram/pages/group/group.wxml-->
 <cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="backText">返回</view>
-	<view slot="content">个性化设置</view>
+	<view slot="content">美食圈子</view>
 </cu-custom>
 <scroll-view scroll-x class="bg-white nav">
 	<view class="flex text-center">
@@ -19,7 +19,7 @@
 
 <view class="cu-list menu-avatar">
 	<view
-	 wx:for="{{My_GroupsList}}"
+	 wx:for="{{GroupsList}}"
 	 wx:key="_id"
 	 class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}"
 	 bindtouchstart="ListTouchStart"
@@ -50,12 +50,27 @@
 		<!--
 			<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>		
 		-->
-			<view class="bg-red light" id="{{index}}" bindtap="deleteItem">删除</view>
+			<view class="bg-red light" id="{{index}}" bindtap="deleteItem">{{TabCur==0?'删除':'退出'}}</view>
 		</view>
 	</view>
 </view>
 
 <view class="createGroup">
-	<van-button round color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="toCreateGroup">创建圈子</van-button>
+	<van-button round color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="toCreateGroup">{{TabCur==0?'创建圈子':'加入圈子'}}</van-button>
 </view>
+
+<block wx:if="{{isShowInputCode}}">
+	<view class="input-box shadow">
+		<input
+		 class="inputCode"
+		 value="{{shareCode}}"
+		 placeholder="请输入秘钥"
+		 bindinput="inputCode"
+		/>
+		<view class="button-box">
+			<view class="left right" bindtap="cancel">取消</view>
+			<view class="right" bindtap="confirmCode">确认</view>
+		</view>
+	</view>
+</block>
 

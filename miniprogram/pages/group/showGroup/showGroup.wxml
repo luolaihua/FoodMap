@@ -34,4 +34,4 @@
 
 
 
-<image  class="shadow add" src="../../../images/add3.png" bindtap="toAdd"></image>
+<image  class="shadow add" src="../../../images/add3.png" bindtap="toAdd" bind:longpress="toAddList"></image>

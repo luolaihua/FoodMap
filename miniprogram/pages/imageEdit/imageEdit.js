@@ -126,11 +126,11 @@ Page({
   updateUserAvatar(imgSrc,openId){
     wx.cloud.uploadFile({
       filePath: imgSrc,
-      cloudPath: "userAvatar/AVATAR_"+openId+'.png'
+      cloudPath: "userAvatar/AVATAR_"+new Date().getTime()+'.png'
     }).then(res => {
         console.log('avatar',res)
         myApi.updateUserInfo(res.fileID,'avatarUrl')
-        wx.setStorageSync('avatarUrl', imgSrc)
+       // wx.setStorageSync('avatarUrl', imgSrc)
         wx.navigateBack({
           complete: (res) => {
             wx.showToast({

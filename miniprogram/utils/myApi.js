@@ -365,7 +365,7 @@ async function updateUserInfo(data, type) {
       }
       wx.setStorageSync('nickName', data)
       break;
-    case 'avatarUrl':
+/*     case 'avatarUrl':
       var res = await wx.cloud.getTempFileURL({
         fileList: [data],
       })
@@ -376,7 +376,15 @@ async function updateUserInfo(data, type) {
         }
       }
       //用fileID做图片图片的链接缓存不会更新，不妥
-      //wx.setStorageSync('avatarUrl', data)
+      wx.setStorageSync('avatarUrl', res.fileList[0].tempFileURL)
+      break; */
+    case 'avatarUrl':
+      updateData = {
+        info: {
+          avatarUrl: data
+        }
+      }
+      wx.setStorageSync('avatarUrl', data)
       break;
     case 'friendsList':
       updateData.friendsList = data

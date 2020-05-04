@@ -98,6 +98,7 @@ Page({
         })
         break;
       case 'MyGroup':
+        //My_GroupsList-->groupId-->group-->store_id-->store
         var groupId = options.groupId
         var My_GroupsList = wx.getStorageSync('My_GroupsList');
         //通过groupId找到是哪个圈子
@@ -113,6 +114,20 @@ Page({
         })
         break
       case 'JoinedGroup':
+        //Joined_GroupsList-->groupId-->group-->store_id-->store
+        var groupId = options.groupId
+        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+        //通过groupId找到是哪个圈子
+        var index = Joined_GroupsList.findIndex(item => {
+          return item._id == groupId
+        })
+        //获取这个圈子的所有店铺
+        var group = Joined_GroupsList[index]
+        storesArr = group.stores
+        //根据id在店铺列表中找到指定的店铺
+        var store = storesArr.find(item => {
+          return item.id == store_id
+        })
         break
 
       default:

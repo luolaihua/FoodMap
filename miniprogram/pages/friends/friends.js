@@ -106,16 +106,7 @@ Page({
       isShowInputCode: !this.data.isShowInputCode
     })
   },
-  cancel() {
-    this.setData({
-      isShowInputCode: false
-    })
-    if (this.data.friendsList.length == 0) {
-      wx.navigateBack({
-        delta: 1
-      });
-    }
-  },
+
   toList(e) {
     wx.showLoading({
       title: '加载中',
@@ -133,6 +124,16 @@ Page({
     this.setData({
       shareCode: e.detail.value
     })
+  },
+  cancel() {
+    this.setData({
+      isShowInputCode: false
+    })
+    if (this.data.friendsList.length == 0) {
+      wx.navigateBack({
+        delta: 1
+      });
+    }
   },
   /**
    * 通过分享码先云端获取数据
