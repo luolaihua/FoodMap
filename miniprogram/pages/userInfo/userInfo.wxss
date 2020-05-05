@@ -12,8 +12,11 @@
   margin-right: 10px;
   background-color: #ffffff;
   border-radius: 6px;
-  border: 1px solid transparent;
+  border: 1px solid #cfcece;
   box-sizing: border-box;
+}
+button{
+  border: solid 1px white;
 }
 .btn-box{
     justify-content: space-between;

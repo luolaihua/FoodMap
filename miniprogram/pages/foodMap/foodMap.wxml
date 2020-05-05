@@ -1,0 +1,56 @@
+<!--miniprogram/pages/foodMap/foodMap.wxml-->
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
+	<view slot="backText">返回</view>
+	<view slot="content">美食圈子</view>
+</cu-custom>
+<map
+ id="map"
+ scale="{{defaultScale}}"
+ longitude='{{longitude}}'
+ latitude='{{latitude}}'
+ style='height:{{mapHeight}}px;width:100vw'
+ markers="{{stores}}"
+ subkey="{{mapSubKey}}"
+ bindtap="tapMap"
+ bindcallouttap="onMarkerTap"
+ enable-3D="{{settingList[0].value}}"
+ enable-satellite="{{settingList[1].value}}"
+ enable-traffic="{{settingList[2].value}}"
+ show-location="{{settingList[3].value}}"
+ enable-overlooking="{{settingList[4].value}}"
+ show-compass="{{settingList[5].value}}"
+ show-scale="{{settingList[6].value}}"
+/>
+<view>
+	<image src="../../images/map.png" class="img-switch-style" bindtap="openPopup" />
+</view>
+<van-popup
+ show="{{ show }}"
+ round
+ close-on-click-overlay="true"
+ position="left"
+ custom-style="height:1000rpx"
+ bind:close="onClose"
+ closeable="true"
+>
+	<view class="cu-bar bg-white">
+		<view class="action sub-title">
+			<text class="text-xl text-bold text-blue">地图设置</text>
+			<text class="text-ABC text-blue">setting</text>
+			<!-- last-child选择器-->
+		</view>
+	</view>
+	<block wx:for="{{settingList}}" wx:key="index">
+		<view class="cu-form-group">
+			<view class="title">{{item.name}}</view>
+			<switch
+			 class="olive sm"
+			 data-index="{{index}}"
+			 checked="{{item.value}}"
+			 bindchange="switchChange"
+			/>
+		</view>
+	</block>
+
+</van-popup>
+

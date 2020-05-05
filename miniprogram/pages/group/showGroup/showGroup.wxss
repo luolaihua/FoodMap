@@ -7,7 +7,7 @@
     padding: 0;
 }
 
-.add {
+.add, .showMap{
     height: 14vw;
     width: 14vw;
     position: fixed;
@@ -15,5 +15,7 @@
     right: 4vw;
     z-index: 100;
     opacity: 0.6;
-
+}
+.showMap{
+    right: 20vw;
 }

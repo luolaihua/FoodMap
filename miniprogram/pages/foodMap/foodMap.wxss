@@ -1,0 +1,16 @@
+/* miniprogram/pages/foodMap/foodMap.wxss */
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
+.img-switch-style,.img-style {
+  height: 14vw;
+  width: 14vw;
+  position: fixed;
+  bottom: 6vh;
+  right: 43vw;
+  z-index: 100;
+ }
+ .mapSetting{
+    position: sticky;
+    top: 0;
+ }
+  

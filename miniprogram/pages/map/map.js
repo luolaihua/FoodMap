@@ -41,6 +41,7 @@ Page({
     animCloud: {},
     animAddFriends: {},
     isHideFunction: false,
+    stores: []
 
   },
   tapMap(e) {
@@ -162,7 +163,7 @@ Page({
     var nickName = ''
     var friendsList = []
     var My_GroupsList = []
-    var starStoreIdList=[]
+    var starStoreIdList = []
     //如果id为空
     if (openId == '') {
       //初始化
@@ -186,7 +187,7 @@ Page({
           shareCode = res.result.memberInfos.data[0].shareCode
           storesArr = res.result.memberInfos.data[0].stores
           friendsList = res.result.memberInfos.data[0].friendsList
-          starStoreIdList=res.result.memberInfos.data[0].starStoreIdList
+          starStoreIdList = res.result.memberInfos.data[0].starStoreIdList
           nickName = res.result.memberInfos.data[0].info.nickName
           avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
         }
@@ -250,46 +251,6 @@ Page({
         }) */
 
   },
-
-  //T获取用户信息 暂时不用
-  /*   getUserInfo: function (e) {
-
-      if (e.detail.userInfo) {
-        var info = e.detail.userInfo
-        var userInfo = wx.getStorageSync('userInfo')
-        if (userInfo == '' || userInfo == undefined) {
-          wx.setStorageSync('userInfo', info)
-          //console.log(info)
-          wx.cloud.callFunction({
-            name: "getUserOpenId",
-            data: {
-              action: 'initInfo',
-              info: info
-            }
-          }).then(res => {
-            console.log(res)
-            app.globalData.openId = res.result.openId
-            wx.setStorageSync('openId', res.result.openId)
-          })
-        }
-        wx.navigateTo({
-          url: '../add/add',
-        })
-      } else {
-        // 处理未授权的场景
-        wx.showModal({
-          title: '授权失败',
-          content: '您尚未授权获取您的用户信息，是否开启授权界面？',
-          success: res => {
-            if (res.confirm) {
-              wx.openSetting({})
-            }
-          }
-        })
-      }
-
-
-    }, */
   /**
    * 用户点击右上角分享
    */
@@ -303,8 +264,21 @@ Page({
   //点击地图maker
   onMarkerTap: function (event) {
     console.log(event)
+    var storeId = event.markerId
+    var stores = this.data.stores
+    //根据id在店铺列表中找到指定的店铺
+    var store = stores.find(item => {
+      return item.id == storeId
+    })
+
     wx.navigateTo({
-      url: '../info/info?id=' + event.markerId + '&friendsIndex=self',
+      url: '../info/info?friendsIndex=self',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: store
+        })
+      }
     })
   },
   //获取openid

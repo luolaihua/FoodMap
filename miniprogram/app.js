@@ -14,6 +14,7 @@ App({
     }
     wx.getSystemInfo({
       success: e => {
+        console.log(e)
         this.globalData.StatusBar = e.statusBarHeight;
         let capsule = wx.getMenuButtonBoundingClientRect();
 		if (capsule) {
@@ -21,7 +22,8 @@ App({
 			this.globalData.CustomBar = capsule.bottom + capsule.top - e.statusBarHeight;
 		} else {
 			this.globalData.CustomBar = e.statusBarHeight + 50;
-		}
+    }
+    this.globalData.MapHeight = e.screenHeight-this.globalData.CustomBar
       }
     })
     this.updateManager();

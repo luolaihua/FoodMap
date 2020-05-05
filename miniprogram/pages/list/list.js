@@ -472,9 +472,17 @@ Page({
   },
   toInfo(e) {
     var id = e.currentTarget.id
-    console.log(this.data.friendsIndex)
+    var index = e.currentTarget.dataset.index
+    var store = this.data.storesArr[index]
+    //console.log(this.data.friendsIndex)
     wx.navigateTo({
       url: '../info/info?id=' + id + '&friendsIndex=' + this.data.friendsIndex,
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: store
+        })
+      }
     });
   },
 

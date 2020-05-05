@@ -17,6 +17,7 @@ Page({
     secretKey: '',
     openId: ''
   },
+  //TODO 通过二维码分享圈子
   inputCode(e) {
     this.setData({
       secretKey: e.detail.value
@@ -100,8 +101,8 @@ Page({
       shareCode: ''
     })
   },
-   tabSelect(e) {
-     myApi.getGroupsList(this.data.openId)
+  tabSelect(e) {
+    myApi.getGroupsList(this.data.openId)
     wx.showLoading({
       title: '加载中',
     });
@@ -122,7 +123,7 @@ Page({
     }, 300);
 
     this.setData({
-
+      modalName: null,
       TabCur: index,
       scrollLeft: (index - 1) * 60
     })

@@ -86,74 +86,94 @@ Page({
   onLoad: function (options) {
     console.log(options)
     var that = this
-    var storesArr = wx.getStorageSync('storesArr')
+    var store_id, store
     var friendsIndex = options.friendsIndex
-    var store_id = options.id
-
-    switch (friendsIndex) {
-      case 'self':
-        //根据id在店铺列表中找到指定的店铺
-        var store = storesArr.find(item => {
-          return item.id == store_id
-        })
-        break;
-      case 'MyGroup':
-        //My_GroupsList-->groupId-->group-->store_id-->store
-        var groupId = options.groupId
-        var My_GroupsList = wx.getStorageSync('My_GroupsList');
-        //通过groupId找到是哪个圈子
-        var index = My_GroupsList.findIndex(item => {
-          return item._id == groupId
-        })
-        //获取这个圈子的所有店铺
-        var group = My_GroupsList[index]
-        storesArr = group.stores
-        //根据id在店铺列表中找到指定的店铺
-        var store = storesArr.find(item => {
-          return item.id == store_id
-        })
-        break
-      case 'JoinedGroup':
-        //Joined_GroupsList-->groupId-->group-->store_id-->store
-        var groupId = options.groupId
-        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
-        //通过groupId找到是哪个圈子
-        var index = Joined_GroupsList.findIndex(item => {
-          return item._id == groupId
-        })
-        //获取这个圈子的所有店铺
-        var group = Joined_GroupsList[index]
-        storesArr = group.stores
-        //根据id在店铺列表中找到指定的店铺
-        var store = storesArr.find(item => {
-          return item.id == store_id
-        })
-        break
-
-      default:
-        //从好友列表过来的
-        var friendsList = wx.getStorageSync('friendsList')
-        //获取朋友的所有店铺
-        storesArr = friendsList[friendsIndex].stores
-        //根据id在店铺列表中找到指定的店铺
-        var store = storesArr.find(item => {
-          return item.id == store_id
-        })
-        break;
-    }
-    //判断在收藏店铺id列表中是否有当前店铺id存在
-    //判断是否收藏了主要是看收藏id列表中是否存在此id
-    that.isStar(store_id)
-
-
-    // 切割逗号
-    let keywords_array = store.keywords.split(',')
-    this.setData({
-      keywords_array,
-      store: store,
-      friendsIndex,
-      store_id
+ //使用eventChannel来通信
+    const eventChannel = this.getOpenerEventChannel()
+    eventChannel.on('getStore', function (data) {
+     // console.log(data)
+      store = data.store
+      //console.log(store)
+      store_id = store.id+''
+      //判断在收藏店铺id列表中是否有当前店铺id存在
+      //判断是否收藏了主要是看收藏id列表中是否存在此id
+      that.isStar(store_id)
+      // 切割逗号
+      let keywords_array = store.keywords.split(',')
+      that.setData({
+        keywords_array,
+        store: store,
+        friendsIndex,
+        store_id
+      })
     })
+
+
+   
+    /*     switch (friendsIndex) {
+          case 'self':
+            //根据id在店铺列表中找到指定的店铺
+            var store = storesArr.find(item => {
+              return item.id == store_id
+            })
+            break;
+          case 'MyGroup':
+            //My_GroupsList-->groupId-->group-->store_id-->store
+            var groupId = options.groupId
+            var My_GroupsList = wx.getStorageSync('My_GroupsList');
+            //通过groupId找到是哪个圈子
+            var index = My_GroupsList.findIndex(item => {
+              return item._id == groupId
+            })
+            //获取这个圈子的所有店铺
+            var group = My_GroupsList[index]
+            storesArr = group.stores
+            //根据id在店铺列表中找到指定的店铺
+            var store = storesArr.find(item => {
+              return item.id == store_id
+            })
+            break
+          case 'JoinedGroup':
+            //Joined_GroupsList-->groupId-->group-->store_id-->store
+            var groupId = options.groupId
+            var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+            //通过groupId找到是哪个圈子
+            var index = Joined_GroupsList.findIndex(item => {
+              return item._id == groupId
+            })
+            //获取这个圈子的所有店铺
+            var group = Joined_GroupsList[index]
+            storesArr = group.stores
+            //根据id在店铺列表中找到指定的店铺
+            var store = storesArr.find(item => {
+              return item.id == store_id
+            })
+            break
+
+          default:
+            //从好友列表过来的
+            var friendsList = wx.getStorageSync('friendsList')
+            //获取朋友的所有店铺
+            storesArr = friendsList[friendsIndex].stores
+            //根据id在店铺列表中找到指定的店铺
+            var store = storesArr.find(item => {
+              return item.id == store_id
+            })
+            break;
+        } */
+    /*     //判断在收藏店铺id列表中是否有当前店铺id存在
+        //判断是否收藏了主要是看收藏id列表中是否存在此id
+        that.isStar(store_id)
+
+
+        // 切割逗号
+        let keywords_array = store.keywords.split(',')
+        this.setData({
+          keywords_array,
+          store: store,
+          friendsIndex,
+          store_id
+        }) */
 
   },
   isStar(store_id) {

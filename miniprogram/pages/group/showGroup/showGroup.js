@@ -14,7 +14,18 @@ Page({
     type: 'my',
     isStar: true
   },
-
+  toFoodMap(){
+    var stores = this.data.group.stores
+    wx.navigateTo({
+      url: '../../foodMap/foodMap',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStores', {
+          stores: stores
+        })
+      }
+    });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -96,13 +107,16 @@ Page({
     });
   },
   toInfo(e) {
+    var index = e.currentTarget.dataset.index
+    var store = this.data.group.stores[index]
     wx.navigateTo({
-      url: '../../info/info?groupId=' + this.data.groupId + '&id=' + e.currentTarget.id + '&friendsIndex=' + this.data.type,
-      success: (result) => {
-
-      },
-      fail: () => {},
-      complete: () => {}
+      url: '../../info/info?friendsIndex=' + this.data.type,
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: store
+        })
+      }
     });
   },
   deleteItem(e) {
