@@ -82,3 +82,12 @@
 .posterText{
   border-bottom: solid 1px #1078e7;
 }
+.showMap{
+  height: 14vw;
+  width: 14vw;
+  position: fixed;
+  bottom: 4vh;
+  right: 4vw;
+  z-index: 100;
+  opacity: 0.6;
+}

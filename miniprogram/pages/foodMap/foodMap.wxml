@@ -1,11 +1,11 @@
 <!--miniprogram/pages/foodMap/foodMap.wxml-->
 <cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="backText">返回</view>
-	<view slot="content">美食圈子</view>
+	<view slot="content">美食地图</view>
 </cu-custom>
 <map
  id="map"
- scale="{{defaultScale}}"
+ scale="{{scale}}"
  longitude='{{longitude}}'
  latitude='{{latitude}}'
  style='height:{{mapHeight}}px;width:100vw'
@@ -13,27 +13,31 @@
  subkey="{{mapSubKey}}"
  bindtap="tapMap"
  bindcallouttap="onMarkerTap"
- enable-3D="{{settingList[0].value}}"
- enable-satellite="{{settingList[1].value}}"
- enable-traffic="{{settingList[2].value}}"
- show-location="{{settingList[3].value}}"
- enable-overlooking="{{settingList[4].value}}"
- show-compass="{{settingList[5].value}}"
- show-scale="{{settingList[6].value}}"
+show-compass="{{settingList[0].value}}"
+ show-scale="{{settingList[1].value}}"
+ enable-3D="{{settingList[2].value}}"
+  show-location="{{settingList[3].value}}"
+ enable-traffic="{{settingList[4].value}}"
+enable-satellite="{{settingList[5].value}}"
+ enable-overlooking="{{settingList[6].value}}"
+
 />
 <view>
 	<image src="../../images/map.png" class="img-switch-style" bindtap="openPopup" />
 </view>
+	<block wx:if="{{settingList[8].value}}">
+		<image src="../../images/add.png" class="control-btn control-btn-increase" bind:touchstart="onIncreaseScale"></image>
+		<image src="../../images/sub.png" class="control-btn control-btn-decrease" bind:touchstart="onDecreaseScale"></image>
+	</block>
 <van-popup
  show="{{ show }}"
  round
  close-on-click-overlay="true"
  position="left"
- custom-style="height:1000rpx"
+ custom-style="height:1000rpx;background-color: transparent;"
  bind:close="onClose"
- closeable="true"
 >
-	<view class="cu-bar bg-white">
+	<view class="cu-bar bg-white"style="background-color: transparent;">
 		<view class="action sub-title">
 			<text class="text-xl text-bold text-blue">地图设置</text>
 			<text class="text-ABC text-blue">setting</text>
@@ -41,8 +45,8 @@
 		</view>
 	</view>
 	<block wx:for="{{settingList}}" wx:key="index">
-		<view class="cu-form-group">
-			<view class="title">{{item.name}}</view>
+		<view class="cu-form-group"style="background-color: transparent;border:none">
+			<view class="title text-orange">{{item.name}}</view>
 			<switch
 			 class="olive sm"
 			 data-index="{{index}}"

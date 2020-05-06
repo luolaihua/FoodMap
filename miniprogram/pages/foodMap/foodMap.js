@@ -24,6 +24,7 @@ Page({
       enableSatellite: false,
       enableTraffic: false,
     },
+    scale: 14,
     longitude: 113.3245211,
     latitude: 23.10229,
     mapSubKey: config.mapSubKey,
@@ -40,26 +41,26 @@ Page({
     stores: [],
     show: false,
     settingList: [{
-        name: '3D楼块',
-        value: false
+        name: '指南针',
+        value: true
       }, {
-        name: '卫星地图',
-        value: false
+        name: '比例尺',
+        value: true
+      }, {
+        name: '3D楼块',
+        value: true
+      }, {
+        name: '定位按钮',
+        value: true
       }, {
         name: '实时路况',
         value: false
       }, {
-        name: '定位按钮',
-        value: true
+        name: '卫星地图',
+        value: false
       },
       {
         name: '开启俯视',
-        value: false
-      }, {
-        name: '指南针',
-        value: false
-      }, {
-        name: '比例尺',
         value: false
       }, {
         name: '气泡窗口',
@@ -70,12 +71,95 @@ Page({
       }
     ]
   },
+  // 控制地图缩放级别
+  onIncreaseScale() {
+    let scale = this.data.scale;
+    console.log(scale)
+    if (scale == 20) {
+      wx.showToast({
+        title: '已是最大级别',
+        icon: 'none',
+      });
+      return;
+    }
+    scale++;
+    this.setData({
+      scale: scale
+    });
+/*     this.data.IncreaseScale = setInterval(() => {
+      if (scale >= 19) {
+        wx.showToast({
+          title: '已是最大级别',
+          icon: 'none',
+        });
+        return;
+      }else{
+              scale++;
+      this.setData({
+        scale: scale
+      });
+      }
+
+    }, 300) */
+  },
+  onDecreaseScale() {
+    let scale = this.data.scale;
+    console.log(scale)
+    if (scale == 3) {
+      wx.showToast({
+        title: '已是最小级别',
+        icon: 'none',
+      });
+      return;
+    } else {
+      scale--;
+      this.setData({
+        scale: scale
+      });
+    }
+
+/*     this.data.DecreaseScale = setInterval(() => {
+      if (scale <= 3) {
+        wx.showToast({
+          title: '已是最小级别',
+          icon: 'none',
+        });
+        return;
+      } else {
+        scale--;
+        this.setData({
+          scale: scale
+        });
+      }
+
+    }, 300) */
+  },
+/*   end(e) {
+    clearInterval(this.data[e.currentTarget.dataset.type]);
+  }, */
   switchChange(e) {
     var index = e.currentTarget.dataset.index
     var settingList = this.data.settingList
+    var stores = this.data.stores
     settingList[index].value = e.detail.value
+
+    //设置气泡窗口
+    if (index == 7) {
+      var display = 'BYCLICK'
+      if (e.detail.value) {
+        display = 'ALWAYS'
+      }
+      /*       for (let index = 0; index < stores.length; index++) {
+             stores[index].callout.display = display    
+            } */
+      stores.forEach(item => {
+        item.callout.display = display
+      })
+
+    }
     this.setData({
-      settingList
+      settingList,
+      stores
     })
     //console.log(e)
   },
@@ -114,17 +198,16 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    
     //使用eventChannel来通信
-    const eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('getStores', function (data) {
-      // console.log(data)
-      that.setData({
-        stores: data.stores,
-        defaultScale: config.default_scale
-      })
-      that.initMap()
-    })
+         const eventChannel = this.getOpenerEventChannel()
+        eventChannel.on('getStores', function (data) {
+          // console.log(data)
+          that.setData({
+            stores: data.stores,
+            defaultScale: config.default_scale
+          })
+          that.initMap()
+        }) 
 
   },
   initMap() {

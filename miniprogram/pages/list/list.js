@@ -53,6 +53,18 @@ Page({
     isShowPoster: false,
 
   },
+  toFoodMap(){
+    var stores = this.data.storesArr
+    wx.navigateTo({
+      url: '../foodMap/foodMap',
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStores', {
+          stores: stores
+        })
+      }
+    });
+  },
   copyShareCode() {
     wx.setClipboardData({
       data: this.data.shareCode,
@@ -286,6 +298,7 @@ Page({
   foreverShare() {
     var shareCode = wx.getStorageSync('shareCode')
     this.createPoster(shareCode, this.data.storesArr)
+
     this.setData({
       isShowModal: false,
       isInstantShare: false,
@@ -460,9 +473,46 @@ Page({
    * 打开modal弹窗
    */
   showShareModal() {
-    this.setData({
-      isShowModal: true
-    })
+    var that = this
+    wx.showModal({
+      title: '是否接收通知',
+      content: '当好友获取您的分享内容时，是否通知本人？',
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if(result.confirm){
+          wx.requestSubscribeMessage({
+            tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+            success(res) {
+              that.setData({
+                isShowModal: true
+              })
+              console.log(res)
+/*               wx.cloud.callFunction({
+                name: 'sendMessage',
+                data: {
+                  name1:wx.getStorageSync('nickName'),
+                  thing2: '你好',
+                  date3: myApi.formatTime(new Date()),
+                  thing4: '已查看',
+                  thing5: '啦啦啦啦啦啦',
+                }
+              }) */
+            }
+          })
+        }else{
+          that.setData({
+            isShowModal: true
+          })
+        }
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
+
   },
 
   backToMap() {

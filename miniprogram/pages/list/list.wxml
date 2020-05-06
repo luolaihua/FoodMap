@@ -49,6 +49,7 @@
 	<block wx:if="{{isInstantShare||isAddItemToGroup}}">
 		<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">{{isAddItemToGroup?'添加':'分享'}}</van-button>
 	</block>
+	<image  class="shadow showMap" src="../../images/map.png" bindtap="toFoodMap"></image>
 	<image wx:if="{{friendsIndex=='self'}}" class="shadow share" src="../../images/share.png" bindtap="showShareModal"></image>
 </block>
 

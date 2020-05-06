@@ -5,7 +5,7 @@ const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 //TODO 食堂美食推荐
-
+//TODO 约饭功能
 Page({
 
   /**
@@ -94,6 +94,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+wx.showToast({
+  title: ''+options.test,
+})
     this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
@@ -303,6 +306,24 @@ Page({
   },
   //点击弹出
   openMenu: function () {
+/*     wx.requestSubscribeMessage({
+      tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+      success(res) {
+        console.log(res)
+        wx.cloud.callFunction({
+          name: 'sendMessage',
+          data: {
+            name1:wx.getStorageSync('nickName'),
+            thing2: '你好',
+            date3: myApi.formatTime(new Date()),
+            thing4: '已查看',
+            thing5: '啦啦啦啦啦啦',
+
+          }
+        })
+
+      }
+    }) */
     var isHideFunction = this.data.isHideFunction
     if (isHideFunction) {
       this.toList()

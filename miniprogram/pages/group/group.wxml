@@ -37,13 +37,13 @@
 		<view class="content" bind:tap="toShowGroup" id="{{index}}">
 			<view class="text-black">{{item.nickName}}</view>
 				<view class="text-gray text-sm">
-					<text class="cuIcon-locationfill text-orange" />
+					<text class="cuIcon-command text-orange" />
 						{{item.secretKey}}
 				</view>
 		</view>
 		<view class="action" bind:tap="toShowGroup" id="{{index}}">
-			<view class="text-grey text-xs">{{item.membersList.length}}</view>
-			<view class="cuIcon-favorfill text-yellow sm"> {{item.stores.length}}</view>
+			<view class="text-grey cuIcon-group text-xs"> {{item.membersList.length}}</view>
+			<view class="cuIcon-goods text-yellow sm"> {{item.stores.length}}</view>
 		</view>
 
 		<view class="move">

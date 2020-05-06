@@ -10,7 +10,21 @@
   z-index: 100;
  }
  .mapSetting{
+    background-color: transparent;
     position: sticky;
     top: 0;
+ }
+ .control-btn {
+   position: fixed;
+   height: 6vw;
+   width: 6vw;
+   z-index: 99;
+   right: 10px;
+ }
+ .control-btn-increase {
+   bottom:50vh;
+ }
+ .control-btn-decrease {
+   bottom: 42vh;
  }
   

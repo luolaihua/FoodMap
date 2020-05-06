@@ -20,7 +20,7 @@ Page({
     isBack: true
 
   },
-  //TODO 朋友列表应该放在云端
+  //TODO 个人设置那里需要大做文章，消息设置，是否经过允许在查看
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
     wx.showLoading({
@@ -199,6 +199,17 @@ Page({
     console.log('getShareData', info)
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
+      var nickName= wx.getStorageSync('nickName')
+      wx.cloud.callFunction({
+        name: 'sendMessage',
+        data: {
+          name1:nickName,
+          thing2: '美食店铺分享',
+          date3: myApi.formatTime(new Date()),
+          thing4: '已查看',
+          thing5:nickName+ '已查看您的美食列表',
+        }
+      })
       var storesArr = info.data[0].stores
       var nickName = info.data[0].info.nickName
       var avatarUrl = info.data[0].info.avatarUrl

@@ -465,9 +465,30 @@ async function updateGroupsList(data, type, id) {
   getGroupsList(openId)
   console.log("更新完成GroupsList", res)
 }
-
+/**
+ * 请求发送订阅消息
+ */
+function requestSendMsg(){
+  wx.requestSubscribeMessage({
+    tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+    success(res) {
+      console.log(res)
+      wx.cloud.callFunction({
+        name: 'sendMessage',
+        data: {
+          name1:wx.getStorageSync('nickName'),
+          thing2: '你好',
+          date3: myApi.formatTime(new Date()),
+          thing4: '已查看',
+          thing5: '啦啦啦啦啦啦',
+        }
+      })
+    }
+  })
+}
 
 module.exports = {
+  requestSendMsg,
   updateGroupsList,
   getGroupsList,
   vibrate,

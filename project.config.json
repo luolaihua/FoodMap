@@ -25,7 +25,7 @@
 	},
 	"appid": "wxaf60970efe7d982d",
 	"projectname": "foodMap",
-	"libVersion": "2.10.4",
+	"libVersion": "2.11.0",
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
