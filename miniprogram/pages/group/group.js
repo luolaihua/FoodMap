@@ -17,7 +17,7 @@ Page({
     secretKey: '',
     openId: ''
   },
-  //TODO 通过二维码分享圈子
+  //TODO 通过二维码分享圈子+圈子设置，换头像名字
   inputCode(e) {
     this.setData({
       secretKey: e.detail.value
@@ -71,6 +71,22 @@ Page({
     console.log('getShareData', info)
     //如果数据存在,就存入圈子，把id添加入成员列表中
     if (info.data.length != 0) {
+      var nickName= wx.getStorageSync('nickName')
+      /**
+       *  用户昵称{{thing1.DATA}}
+          温馨提示{{thing2.DATA}}
+          加入方式{{thing3.DATA}}
+       */
+      var msgData = {
+        openId : info.data[0]._openid,
+        thing1: nickName,
+        thing2: nickName+'已加入您的美食圈子-'+info.data[0].nickName,
+        thing3: '填写分享秘钥加入',
+      }
+      myApi.sendMsg('newMemberToGroup',msgData)
+
+
+
       var openId = this.data.openId
       var id = info.data[0]._id
       GroupsList.push(info.data[0])
@@ -129,6 +145,7 @@ Page({
     })
   },
   toCreateGroup() {
+    myApi.requestSendMsg('newMemberToGroup')
     if (this.data.TabCur == 0) {
       wx.navigateTo({
         url: '../group/createGroup/createGroup',

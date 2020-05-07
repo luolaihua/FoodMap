@@ -94,9 +94,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-wx.showToast({
-  title: ''+options.test,
-})
+    wx.showToast({
+      title: '' + options.test,
+    })
     this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
@@ -259,7 +259,7 @@ wx.showToast({
    */
   onShareAppMessage: function () {
     return {
-      title: '我在' + config.appName + '上发现了好吃的，你也看看吧！',
+      title: '这个美食地图可以记录和分享美食，你也看看吧！',
       path: '/pages/map/map',
       imageUrl: imgUrl.share
     }
@@ -306,24 +306,24 @@ wx.showToast({
   },
   //点击弹出
   openMenu: function () {
-/*     wx.requestSubscribeMessage({
-      tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
-      success(res) {
-        console.log(res)
-        wx.cloud.callFunction({
-          name: 'sendMessage',
-          data: {
-            name1:wx.getStorageSync('nickName'),
-            thing2: '你好',
-            date3: myApi.formatTime(new Date()),
-            thing4: '已查看',
-            thing5: '啦啦啦啦啦啦',
+    /*     wx.requestSubscribeMessage({
+          tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+          success(res) {
+            console.log(res)
+            wx.cloud.callFunction({
+              name: 'sendMessage',
+              data: {
+                name1:wx.getStorageSync('nickName'),
+                thing2: '你好',
+                date3: myApi.formatTime(new Date()),
+                thing4: '已查看',
+                thing5: '啦啦啦啦啦啦',
+
+              }
+            })
 
           }
-        })
-
-      }
-    }) */
+        }) */
     var isHideFunction = this.data.isHideFunction
     if (isHideFunction) {
       this.toList()

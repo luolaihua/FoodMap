@@ -5,6 +5,7 @@ const instantShare = db.collection('instantShare')
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
 const _ = db.command
+//TODO 页面转发优化
 Page({
 
   /**
@@ -200,16 +201,24 @@ Page({
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
       var nickName= wx.getStorageSync('nickName')
-      wx.cloud.callFunction({
-        name: 'sendMessage',
-        data: {
-          name1:nickName,
-          thing2: '美食店铺分享',
-          date3: myApi.formatTime(new Date()),
-          thing4: '已查看',
-          thing5:nickName+ '已查看您的美食列表',
-        }
-      })
+      /**
+       *  邀请人{{name1.DATA}}
+          邀请项目{{thing2.DATA}}
+          时间{{date3.DATA}}
+          状态{{thing4.DATA}}
+          温馨提示{{thing5.DATA}
+       */
+      var msgData = {
+        openId : info.data[0]._openid,
+        name1: nickName,
+        thing2: '美食店铺分享',
+        date3: myApi.formatTime(new Date()),
+        thing4: '已查看',
+        thing5: nickName + '已查看您的美食列表',
+      }
+      myApi.sendMsg('viewList',msgData)
+
+
       var storesArr = info.data[0].stores
       var nickName = info.data[0].info.nickName
       var avatarUrl = info.data[0].info.avatarUrl
@@ -270,7 +279,9 @@ Page({
     if (friendsList == '') {
       friendsList = []
     }
-
+    
+    var pages = getCurrentPages()
+    console.log(pages)
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.shareCode) {
       var shareCode = options.shareCode

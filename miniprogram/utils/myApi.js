@@ -1,6 +1,11 @@
 const db = wx.cloud.database()
 const _ = db.command
 const app = getApp()
+const templateIds = {
+  viewList_id: 'UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA',
+  //新成员加入通知
+  newMembersToGroup_id: 'Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'
+}
 
 function vibrate() {
   if (app.globalData.isVibrate) {
@@ -365,19 +370,19 @@ async function updateUserInfo(data, type) {
       }
       wx.setStorageSync('nickName', data)
       break;
-/*     case 'avatarUrl':
-      var res = await wx.cloud.getTempFileURL({
-        fileList: [data],
-      })
-      console.log(res)
-      updateData = {
-        info: {
-          avatarUrl: res.fileList[0].tempFileURL
-        }
-      }
-      //用fileID做图片图片的链接缓存不会更新，不妥
-      wx.setStorageSync('avatarUrl', res.fileList[0].tempFileURL)
-      break; */
+      /*     case 'avatarUrl':
+            var res = await wx.cloud.getTempFileURL({
+              fileList: [data],
+            })
+            console.log(res)
+            updateData = {
+              info: {
+                avatarUrl: res.fileList[0].tempFileURL
+              }
+            }
+            //用fileID做图片图片的链接缓存不会更新，不妥
+            wx.setStorageSync('avatarUrl', res.fileList[0].tempFileURL)
+            break; */
     case 'avatarUrl':
       updateData = {
         info: {
@@ -468,26 +473,41 @@ async function updateGroupsList(data, type, id) {
 /**
  * 请求发送订阅消息
  */
-function requestSendMsg(){
+function requestSendMsg(type) {
+  var tmplIds = []
+  switch (type) {
+    case 'viewList':
+      tmplIds.push(templateIds.viewList_id)
+      break
+    case 'newMemberToGroup':
+      tmplIds.push(templateIds.newMembersToGroup_id)
+      break
+    case 'all':
+      tmplIds.push(templateIds.newMembersToGroup_id)
+      tmplIds.push(templateIds.viewList_id)
+      break
+  }
   wx.requestSubscribeMessage({
-    tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+    tmplIds: tmplIds,
     success(res) {
       console.log(res)
-      wx.cloud.callFunction({
-        name: 'sendMessage',
-        data: {
-          name1:wx.getStorageSync('nickName'),
-          thing2: '你好',
-          date3: myApi.formatTime(new Date()),
-          thing4: '已查看',
-          thing5: '啦啦啦啦啦啦',
-        }
-      })
+    }
+  })
+}
+
+function sendMsg(type, msgData) {
+  wx.cloud.callFunction({
+    name: 'sendMessage',
+    data: {
+      type,
+      msgData
     }
   })
 }
 
 module.exports = {
+  templateIds,
+  sendMsg,
   requestSendMsg,
   updateGroupsList,
   getGroupsList,

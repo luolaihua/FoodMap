@@ -1,8 +1,10 @@
 const app = getApp();
 const db = wx.cloud.database()
-const store = db.collection('store');
+const userInfo = db.collection('userInfo');
+const groupsList = db.collection('groupsList')
 const config = require('../../config.js');
 const myApi = require('../../utils/myApi')
+const imgUrl = require('../../utils/imgUrl')
 Page({
 
   /**
@@ -15,7 +17,11 @@ Page({
     friendsIndex: 'self',
     thumbs_up: 1, //1表示未收藏，0表示已收藏
     store_id: '',
-    isStar: false
+    isStar: false,
+    shareImage: '../../images/share.png',
+    isBack: true,
+    ID: '',
+    action: ''
   },
   //TODO 收藏的店铺id列表也要放在云端
   //收藏好友的店铺功能
@@ -83,33 +89,107 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     console.log(options)
     var that = this
     var store_id, store
-    var friendsIndex = options.friendsIndex
- //使用eventChannel来通信
-    const eventChannel = this.getOpenerEventChannel()
-    eventChannel.on('getStore', function (data) {
-     // console.log(data)
-      store = data.store
-      //console.log(store)
-      store_id = store.id+''
-      //判断在收藏店铺id列表中是否有当前店铺id存在
-      //判断是否收藏了主要是看收藏id列表中是否存在此id
+    //判断当前是否为首页
+    var pages = getCurrentPages()
+    if (pages.length == 1) {
+      var isBack = false
+      this.setData({
+        isBack
+      })
+    }
+
+    if (options.action == 'shareFromList' || options.action == 'shareFromGroup') {
+      var ID = options.ID
+      store_id = options.store_id
+      var storesArr = []
+
+      if (options.action == 'shareFromList') {
+        var info = await userInfo.where({
+          openId: ID
+        }).get()
+      }else{
+        var info = await groupsList.where({
+          _id: ID
+        }).get()
+      }
+
+
+      console.log(info)
+      if (info.data.length != 0) {
+        storesArr = info.data[0].stores
+        store = storesArr.find(item => {
+          return item.id == store_id
+        })
+      }
       that.isStar(store_id)
       // 切割逗号
       let keywords_array = store.keywords.split(',')
-      that.setData({
+      this.setData({
         keywords_array,
         store: store,
-        friendsIndex,
         store_id
       })
-    })
+    } else {
+      var friendsIndex = options.friendsIndex
+      var action = ''
+      var ID = ''
+      //使用eventChannel来通信
+      const eventChannel = this.getOpenerEventChannel()
+      eventChannel.on('getStore', function (data) {
+        // console.log(data)
+        store = data.store
+        console.log(data.groupId)
+        if (data.groupId == undefined) {
+          action = 'shareFromList'
+          ID = wx.getStorageSync('openId');
+        } else {
+          action = 'shareFromGroup'
+          ID = data.groupId
+        }
+
+        //判断在收藏店铺id列表中是否有当前店铺id存在
+        //判断是否收藏了主要是看收藏id列表中是否存在此id 
+        store_id = store.id + ''
+        that.isStar(store_id)
+        // 切割逗号
+        let keywords_array = store.keywords.split(',')
+        var shareImage = that.data.shareImage
+
+        //设置分享图片
+        if (store.images.length != 0) {
+          wx.cloud.getTempFileURL({
+            fileList: [store.images[0]],
+            success: res => {
+              console.log(res)
+              shareImage = res.fileList[0].tempFileURL
+              that.setData({
+                shareImage
+              })
+            },
+            fail: error => {
+              console.error("出现Bug了", error)
+            }
+          })
+        }
+        that.setData({
+          action,
+          shareImage,
+          keywords_array,
+          store: store,
+          friendsIndex,
+          store_id,
+          ID
+        })
+      })
+    }
 
 
-   
+
+
     /*     switch (friendsIndex) {
           case 'self':
             //根据id在店铺列表中找到指定的店铺
@@ -204,30 +284,12 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    let path = '/pages/info/info?id=' + this.data.store._id;
-    let image = "/images/share.jpg";
-    if (this.data.store.images[0]) {
-      wx.cloud.getTempFileURL({
-        fileList: [this.data.store.images[0]],
-        success: res => {
-          return {
-            title: '我在' + config.appName + '上发现了好吃的，你也看看吧！',
-            path: path,
-            imageUrl: res.fileList[0].tempFileURL
-          }
-        },
-        fail: error => {
-          console.error("出现Bug了", error)
-        }
-      })
-    } else {
-      return {
-        title: '我在' + config.appName + '上发现了好吃的，你也看看吧！',
-        path: path,
-        imageUrl: image
-      }
+    var openId = wx.getStorageSync('openId');
+    return {
+      title: '约个饭吗',
+      path: '/pages/info/info?ID=' + this.data.ID + '&store_id=' + this.data.store_id + '&action=' + this.data.action,
+      imageUrl: this.data.shareImage
     }
-
   },
   navigate: function (e) {
     wx.openLocation({

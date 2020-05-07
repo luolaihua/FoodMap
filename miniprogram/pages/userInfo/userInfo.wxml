@@ -23,7 +23,6 @@
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>
 </view>
-
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="contact">
 	<view class="modules_title_box">机器人客服</view>
 	<image class="modules_icon" mode="scaleToFill" src="{{peopleUrl}}" />

@@ -74,6 +74,14 @@ Page({
    * 关闭保存海报图片的框
    */
   closePosterImage: function () {
+    //订阅消息提醒
+/*     wx.requestSubscribeMessage({
+      tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
+      success(res) {
+        console.log(res)
+      }
+    }) */
+    myApi.requestSendMsg('viewList')
     this.setData({
       isShowPoster: false,
     });
@@ -474,7 +482,11 @@ Page({
    */
   showShareModal() {
     var that = this
-    wx.showModal({
+            that.setData({
+          isShowModal: true
+        })
+
+/*     wx.showModal({
       title: '是否接收通知',
       content: '当好友获取您的分享内容时，是否通知本人？',
       showCancel: true,
@@ -485,13 +497,13 @@ Page({
       success: (result) => {
         if(result.confirm){
           wx.requestSubscribeMessage({
-            tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
+            tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
             success(res) {
               that.setData({
                 isShowModal: true
               })
               console.log(res)
-/*               wx.cloud.callFunction({
+               wx.cloud.callFunction({
                 name: 'sendMessage',
                 data: {
                   name1:wx.getStorageSync('nickName'),
@@ -500,7 +512,7 @@ Page({
                   thing4: '已查看',
                   thing5: '啦啦啦啦啦啦',
                 }
-              }) */
+              }) 
             }
           })
         }else{
@@ -512,7 +524,7 @@ Page({
       fail: ()=>{},
       complete: ()=>{}
     });
-
+ */
   },
 
   backToMap() {
