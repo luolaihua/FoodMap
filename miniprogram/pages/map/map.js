@@ -6,6 +6,7 @@ const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 //TODO 食堂美食推荐
 //TODO 约饭功能
+//TODO 店铺再编辑
 Page({
 
   /**
@@ -94,10 +95,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    wx.showToast({
+/*     wx.showToast({
       title: '' + options.test,
-    })
-    this.initData()
+    }) */
+    //this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
           this.setData({
@@ -231,6 +232,7 @@ Page({
   onShow: function () {
     var that = this
     that.initMap()
+    this.initData()
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
           // res.data 包含该记录的数据
          // console.log('Hide Function ?',res.data.isHide)

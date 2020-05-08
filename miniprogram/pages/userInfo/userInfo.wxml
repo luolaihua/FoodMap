@@ -23,6 +23,15 @@
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>
 </view>
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../images/laba.png" />
+	</view>
+	<view class="modules_input_box">
+	<input  class="modules_input" placeholder="约饭口号" bindinput="setSlogan" maxlength="20" value="{{dateSlogan}}"/>
+	<text wx:if="{{dateSlogan!=''}}" class="cuIcon-roundclose" bindtap="clearSlogan" />
+	</view>
+</view>
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="contact">
 	<view class="modules_title_box">机器人客服</view>
 	<image class="modules_icon" mode="scaleToFill" src="{{peopleUrl}}" />

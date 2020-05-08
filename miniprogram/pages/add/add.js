@@ -14,9 +14,9 @@ Page({
     foodIconUrl: "/images/food.png",
     foodIconList: imgUrl.foodIconLocal,
     rateValue: 3.0,
-    imgList: [],
-    images: [],
-    fileList: [],
+    imgList: [], //安全检测成功的图片本地链接
+    images: [], //上传到云端后的fileID链接
+    fileList: [], //用于显示添加图片
     address: '',
     latitude: '',
     longitude: '',
@@ -25,38 +25,153 @@ Page({
     openId: '',
     notes: '',
     price_per: 50,
-    tabList: [],
+    tabList: tabList,
     tagList: [],
     colorList: ["#f2826a", "#7232dd", "#1cbbb4"],
     isShow: true,
     requestType: 'Mine',
-    groupId: ''
+    groupId: '',
+    store: {
+      id: '',
+      creatorName: '',
+      creatorAvatar: '',
+      createTime: '',
+      address: '',
+      name: '',
+      rateValue: 3,
+      price_per: 50,
+      keywords: '',
+      notes: '',
+      thumbs_up: 1,
+      isStar: false,
+      iconPath: "/images/food.png",
+      longitude: '',
+      latitude: '',
+      callout: {
+        content: '',
+        padding: 8,
+        display: 'BYCLICK',
+        fontSize: 12,
+        textAlign: 'center',
+        borderRadius: 30,
+      },
+      images: [],
+      tagList: []
+    }
   },
+  chooseLocation: function (event) {
+    var that = this
+    wx.getSetting({
+      success: res => {
+        if (!res.authSetting['scope.userLocation']) {
+          wx.authorize({
+            scope: 'scope.userLocation',
+            success: res => {
+              chooseLocation()
+            }
+          })
+        } else {
+          chooseLocation()
+        }
+      }
+    })
+
+    function chooseLocation() {
+      var name = that.data.name
+
+      wx.chooseLocation({
+        success: res => {
+          name = (name == '' ? res.name : name)
+          var store = that.data.store
+          store.name = name
+          store.callout.content = name
+          store.address = res.address
+          store.latitude = res.latitude
+          store.longitude = res.longitude
+          that.setData({
+            store
+          })
+
+          /*           that.setData({
+                      address: res.address,
+                      latitude: res.latitude,
+                      longitude: res.longitude,
+                      name
+                    }) */
+        }
+      })
+    }
+  },
+  //星星评分
+  setRateValue: function (e) {
+    var store = this.data.store
+    store.rateValue = e.detail
+    this.setData({
+      store
+    })
+    //this.data.store.rateValue = e.detail
+    /*     this.setData({
+          rateValue: e.detail
+        }) */
+  },
+  //选择个性图标
   chooseIcon(e) {
     var index = Number(e.currentTarget.id)
+    var store = this.data.store
+    store.iconPath = this.data.foodIconList[index]
     this.setData({
-      foodIconUrl: this.data.foodIconList[index]
+      store
     })
+    //this.data.store.iconPath = this.data.foodIconList[index]
+    /*     this.setData({
+          foodIconUrl: this.data.foodIconList[index]
+        }) */
   },
+  //输入点评
   inputNotes(e) {
+    var store = this.data.store
+    store.notes = e.detail.value
     this.setData({
-      notes: e.detail.value
+      store
     })
+    //this.data.store.notes = e.detail.value
+    /*     this.setData({
+          notes: e.detail.value
+        }) */
   },
+  //输入店铺名称
   inputName(e) {
+    var store = this.data.store
+    store.name = e.detail.value
+    store.callout.content = e.detail.value
+
     this.setData({
-      name: e.detail.value
+      store
     })
+    // this.data.store.name = e.detail.value
+    // this.data.store.callout.content = e.detail.value
+    //console.log(this.data.store)
+    /*     this.setData({
+          name: e.detail.value
+        }) */
   },
+  //关闭关键词标签
   tagClose: function (e) {
     var index = Number(e.currentTarget.id)
     var tagList = this.data.tagList
     tagList.splice(index, 1)
+    var store = this.data.store
+    store.tagList = tagList
     this.setData({
-      tagList
+      store
     })
+    //this.data.store.tagList = tagList
+    /*     this.setData({
+          tagList
+        }) */
   },
-  tabClick(e) {
+  //点击关键词选择
+  tagClick(e) {
     var index = e.currentTarget.id
     var tagList = this.data.tagList
     var tabList = this.data.tabList
@@ -64,18 +179,38 @@ Page({
       tagList.shift()
     }
     tagList.push(tabList[index])
+    var store = this.data.store
+    store.tagList = tagList
     this.setData({
-      tagList
+      store
     })
+    // this.data.store.tagList = tagList
+    /*     this.setData({
+          tagList
+        }) */
   },
   //price_per 人均消费
   onDrag(event) {
+    /*     var  eventChannel = this.getOpenerEventChannel()
+        eventChannel.emit('acceptDataFromOpenedPage', {data: this.data.stores}); */
+    var store = this.data.store
+    store.price_per = event.detail.value
     this.setData({
-      price_per: event.detail.value
-    });
+      store
+    })
+    //console.log(event.detail.value)
+    /*     this.setData({
+          price_per: event.detail.value
+        }); */
+  },
+  onChange(event) {
+    var store = this.data.store
+    store.price_per = event.detail
+    this.setData({
+      store
+    })
   },
   //读取照片之后
-  //TODO 跳转到裁剪页面
   async afterRead(event) {
     var that = this
     var imgList = this.data.imgList
@@ -112,96 +247,90 @@ Page({
       })
     }
   },
-  //星星评分
-  setRateValue: function (e) {
-    this.setData({
-      rateValue: e.detail
-    })
-  },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    var requestType = options.requestType
-    var groupId = options.groupId
-    var storesArr
-    console.log('options', options)
-    switch (requestType) {
-      case 'Mine':
-        storesArr = wx.getStorageSync('storesArr')
-        if (storesArr == '') {
-          storesArr == []
-        }
-        break;
-      case 'MyGroup':
-        var My_GroupsList = wx.getStorageSync('My_GroupsList')
-        var index = My_GroupsList.findIndex(item => {
-          return item._id == groupId
-        })
-        storesArr = My_GroupsList[index].stores
-        break;
-      case 'JoinedGroup':
-        //Joined_GroupsList-->groupId-->group-->store_id-->store
-        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
-        //通过groupId找到是哪个圈子
-        var index = Joined_GroupsList.findIndex(item => {
-          return item._id == groupId
-        })
-        //获取这个圈子的所有店铺
-        storesArr = Joined_GroupsList[index].stores
-        break
-      default:
-        break;
-    }
-
     var openId = wx.getStorageSync('openId')
-    console.log('已存在店铺：', storesArr)
-    this.setData({
-      groupId,
-      requestType,
-      stores: storesArr,
-      openId,
-      tabList: tabList //.sort(myApi.randomSort)
-    })
-  },
-  chooseLocation: function (event) {
+    var requestType = options.requestType
     var that = this
-    wx.getSetting({
-      success: res => {
-        if (!res.authSetting['scope.userLocation']) {
-          wx.authorize({
-            scope: 'scope.userLocation',
-            success: res => {
-              chooseLocation()
-            }
-          })
-        } else {
-          chooseLocation()
-        }
-      }
+    this.setData({
+      requestType
     })
+    console.log('options', options)
+    if (requestType == 'editStore') {
+      //使用eventChannel来通信
+      const eventChannel = this.getOpenerEventChannel()
+      eventChannel.on('getStore', function (data) {
+        // console.log(data)
+        var store = data.store
+        //console.log(store)
 
-    function chooseLocation() {
-      var name = that.data.name
+        //接着要处理图片的问题
+        var fileList = []
+        fileList = fileList.concat(store.images)
+        for (let index = 0; index < fileList.length; index++) {
+          fileList[index] = {
+            url: fileList[index],
+            status: 'done',
+            message: '完成'
+          }
 
-      wx.chooseLocation({
-        success: res => {
-          name = (name == '' ? res.name : name)
-          that.setData({
-            address: res.address,
-            latitude: res.latitude,
-            longitude: res.longitude,
-            name
-          })
         }
+        that.setData({
+          fileList,
+          store
+        })
+      })
+    } else {
+      var groupId = options.groupId
+      var storesArr
+      switch (requestType) {
+        case 'Mine':
+          storesArr = wx.getStorageSync('storesArr')
+          if (storesArr == '') {
+            storesArr == []
+          }
+          break;
+        case 'MyGroup':
+          var My_GroupsList = wx.getStorageSync('My_GroupsList')
+          var index = My_GroupsList.findIndex(item => {
+            return item._id == groupId
+          })
+          storesArr = My_GroupsList[index].stores
+          break;
+        case 'JoinedGroup':
+          //Joined_GroupsList-->groupId-->group-->store_id-->store
+          var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+          //通过groupId找到是哪个圈子
+          var index = Joined_GroupsList.findIndex(item => {
+            return item._id == groupId
+          })
+          //获取这个圈子的所有店铺
+          storesArr = Joined_GroupsList[index].stores
+          break
+        default:
+          break;
+      }
+      console.log('已存在店铺：', storesArr)
+      this.setData({
+        groupId,
+        requestType,
+        stores: storesArr,
+        openId,
+        //tabList: tabList //.sort(myApi.randomSort)
       })
     }
+
+
+
   },
+
   createItem: async function (event) {
     let that = this
-    var name = this.data.name
-    let content = this.data.notes
+    var name = this.data.store.name
+    let content = this.data.store.notes
 
     //安全检测评论内容
     if (content.length != 0) {
@@ -225,6 +354,7 @@ Page({
     }
     that.uploadData()
   },
+  //上传图片
   uploadData: function () {
     wx.showLoading({
       title: '安全检测中...',
@@ -253,6 +383,7 @@ Page({
       this.setData({
         images: urls
       }, res => {
+        wx.hideLoading();
         this.addData()
       })
     }).catch(() => {
@@ -264,60 +395,38 @@ Page({
   },
   addData: async function () {
     var requestType = this.data.requestType
-    var stores = this.data.stores
-    var price_per = this.data.price_per * 2
-    var keywords = this.data.tagList.toString()
-    var name = this.data.name
-    var address = this.data.address
-    var rateValue = this.data.rateValue
-    var notes = this.data.notes
-    var date = new Date()
+    if (requestType == 'editStore') {
+      var store = this.data.store
+      if (this.data.images.length != 0) {
+        store.images = store.images.concat(this.data.images)
+      }
+      var eventChannel1 = this.getOpenerEventChannel()
+      eventChannel1.emit('editStore', {
+        store: store
+      });
+    setTimeout(() => {
+      wx.navigateBack({
+        delta: 1
+      });
+    }, 500);
 
-    var storeData = {
-      id: date.getTime(),
-      creatorName: wx.getStorageSync('nickName'),
-      creatorAvatar: wx.getStorageSync('avatarUrl'),
-      createTime: myApi.formatTime(date),
-      address: address,
-      name: name,
-      rateValue: rateValue,
-      price_per: price_per,
-      keywords: keywords,
-      notes: notes,
-      thumbs_up: 1,
-      isStar: false,
-      iconPath: this.data.foodIconUrl,
-      longitude: this.data.longitude,
-      latitude: this.data.latitude,
-      callout: {
-        content: name,
-        padding: 8,
-        display: 'BYCLICK',
-        fontSize: 12,
-        textAlign: 'center',
-        borderRadius: 30,
-        //borderWidth: 1,
-        // bgColor: '#ffffff'
-      },
-      images: this.data.images
-    }
-    //更新数据
-    stores.push(storeData)
-    //判断是添加到哪里
-    switch (requestType) {
-      case 'Mine':
-        await myApi.updateUserInfo(stores, 'stores')
-        wx.showToast({
-          title: '创建成功！',
-          icon: 'success',
-          success: res => {
-            wx.navigateBack({})
-          }
-        })
-        break;
-/*       case 'MyGroup':
-        await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
-        setTimeout(() => {
+
+
+    } else {
+      var stores = this.data.stores
+      var date = new Date()
+      this.data.store.creatorName = wx.getStorageSync('nickName')
+      this.data.store.creatorAvatar = wx.getStorageSync('avatarUrl')
+      this.data.store.createTime = myApi.formatTime(date)
+      this.data.store.id = date.getTime()
+      this.data.store.images = this.data.images
+
+      //更新数据
+      stores.push(this.data.store)
+      //判断是添加到哪里
+      switch (requestType) {
+        case 'Mine':
+          await myApi.updateUserInfo(stores, 'stores')
           wx.showToast({
             title: '创建成功！',
             icon: 'success',
@@ -325,20 +434,33 @@ Page({
               wx.navigateBack({})
             }
           })
-        }, 500);
-        break; */
-      default:
-        await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
-        setTimeout(() => {
-          wx.showToast({
-            title: '创建成功！',
-            icon: 'success',
-            success: res => {
-              wx.navigateBack({})
-            }
-          })
-        }, 500);
-        break;
+          break;
+          /*       case 'MyGroup':
+                  await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
+                  setTimeout(() => {
+                    wx.showToast({
+                      title: '创建成功！',
+                      icon: 'success',
+                      success: res => {
+                        wx.navigateBack({})
+                      }
+                    })
+                  }, 500);
+                  break; */
+        default:
+          await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
+          setTimeout(() => {
+            wx.showToast({
+              title: '创建成功！',
+              icon: 'success',
+              success: res => {
+                wx.navigateBack({})
+              }
+            })
+          }, 500);
+          break;
+      }
+
     }
 
 
@@ -346,6 +468,10 @@ Page({
   DelImg(e) {
     var fileList = this.data.fileList
     var imgList = this.data.imgList
+    var requestType = this.data.requestType
+    var index = e.detail.index
+    var that =this
+    console.log(fileList, imgList)
     wx.showModal({
       title: '删除图片',
       content: '确定要删除这张图片？',
@@ -353,14 +479,39 @@ Page({
       confirmText: '是的',
       success: res => {
         if (res.confirm) {
-          if (fileList[e.detail.index].status == 'done') {
-            imgList.splice(e.detail.index, 1);
+          if (requestType == 'editStore') {
+            var store = this.data.store
+            var length = fileList.length-imgList.length//原来就有的图片数目
+             fileList.splice(index, 1)
+            if(index+1<=length){
+              //说明删除的是原来的照片
+             store.images.splice(index,1)
+
+            }else{
+              //删除的是新添加的
+              if (fileList[index].status == 'done') {
+                var len = index-length
+                imgList.splice(len, 1);
+              }
+            }
+            that.setData({
+              store,
+              fileList,
+              imgList
+            })
+
+
+          } else {
+            if (fileList[index].status == 'done') {
+              imgList.splice(index, 1);
+            }
+            fileList.splice(index, 1)
+            this.setData({
+              fileList,
+              imgList
+            })
           }
-          fileList.splice(e.detail.index, 1)
-          this.setData({
-            fileList,
-            imgList
-          })
+
           //console.log(fileList,imgList)
         }
       }

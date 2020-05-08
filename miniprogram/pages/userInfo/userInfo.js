@@ -9,53 +9,70 @@ Page({
    * 页面的初始数据
    */
   data: {
-    nickName:'',
-    avatarUrl:'',
-    feedBackUrl:imgUrl.feedbackUrl,
-    editUrl:imgUrl.bigWheel_edit,
-    peopleUrl:imgUrl.human,
-    touchUrl:imgUrl.touch,
+    nickName: '',
+    avatarUrl: '',
+    feedBackUrl: imgUrl.feedbackUrl,
+    editUrl: imgUrl.bigWheel_edit,
+    peopleUrl: imgUrl.human,
+    touchUrl: imgUrl.touch,
     isVibrate_setting: false,
     openId: '',
-    isEditName:false,
+    isEditName: false,
+    dateSlogan: '',
   },
-  changeAvatar:function(){
+  /**
+   * 设置约饭口号
+   */
+  setSlogan(e) {
+    var dateSlogan = e.detail.value
+    wx.setStorageSync('dateSlogan', dateSlogan);
+    this.setData({
+      dateSlogan
+    })
+  },
+  clearSlogan() { 
+    this.setData({
+      dateSlogan:''
+    })
+    wx.setStorageSync('dateSlogan', '');
+  },
+  changeAvatar: function () {
     wx.navigateTo({
       url: '../imageEdit/imageEdit',
     })
   },
- async stopEditName(e){
-   var nickName = e.detail.value
-   wx.showLoading({
-     title: '内容安全检测中',
-     mask: true,
-   });
-  var res =await myApi.doMsgSecCheck(nickName)
-  wx.hideLoading();
-  if(res){
-    wx.showToast({
-      title: '设置成功',
+  async stopEditName(e) {
+    var nickName = e.detail.value
+    wx.showLoading({
+      title: '内容安全检测中',
+      mask: true,
     });
-    myApi.updateUserInfo(nickName,'nickName')
-    //wx.setStorageSync('nickName', nickName)
-  }else{
-    wx.showToast({
-      title: '昵称不符合安全规范',
-      icon: 'none',
-    });
-    nickName=''
-  }
+    var res = await myApi.doMsgSecCheck(nickName)
+    wx.hideLoading();
+    if (res) {
+      wx.showToast({
+        title: '设置成功',
+      });
+      myApi.updateUserInfo(nickName, 'nickName')
+      //wx.setStorageSync('nickName', nickName)
+    } else {
+      wx.showToast({
+        title: '昵称不符合安全规范',
+        icon: 'none',
+      });
+      nickName = ''
+    }
     this.setData({
       nickName,
-      isEditName:false
+      isEditName: false
     })
   },
-  editName(){
+  editName() {
     this.setData({
-      isEditName:true
+      isEditName: true
     })
   },
-  changeAvatar:function(){
+  changeAvatar: function () {
     wx.navigateTo({
       url: '../imageEdit/imageEdit',
     })
@@ -84,7 +101,7 @@ Page({
     myApi.checkImgAndMsg(avatarUrl, nickName).then(res => {
       wx.hideLoading();
       //根据是否安全获取openId还是将openId置空
-     // myApi.getOpenId(res)
+      // myApi.getOpenId(res)
       console.log(res)
       //如果是安全的，就存入
       if (res) {
@@ -99,22 +116,22 @@ Page({
           confirmText: '我知道了',
           confirmColor: '#3CC51F',
           success: (result) => {
-            if(result.confirm){
-              
+            if (result.confirm) {
+
             }
           },
-          fail: ()=>{},
-          complete: ()=>{}
+          fail: () => {},
+          complete: () => {}
         });
         nickName = '互联网冲浪选手'
-        avatarUrl='https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
+        avatarUrl = 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
       }
       that.setData({
         nickName,
         avatarUrl
       })
-      myApi.updateUserInfo(nickName,'nickName')
-      myApi.updateUserInfo(avatarUrl,'avatarUrl')
+      myApi.updateUserInfo(nickName, 'nickName')
+      myApi.updateUserInfo(avatarUrl, 'avatarUrl')
     })
 
   },
@@ -141,7 +158,10 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var dateSlogan = wx.getStorageSync('dateSlogan');
+    this.setData({
+      dateSlogan
+    })
 
   },
 
@@ -156,9 +176,9 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
     var nickName = wx.getStorageSync('nickName')
-    var avatarUrl =  wx.getStorageSync('avatarUrl')
+    var avatarUrl = wx.getStorageSync('avatarUrl')
     console.log(avatarUrl)
     var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
     if (isVibrate_setting === '') {

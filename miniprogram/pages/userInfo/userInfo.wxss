@@ -15,8 +15,41 @@
   border: 1px solid #cfcece;
   box-sizing: border-box;
 }
+.modules_title_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 60px;
+  line-height: 60px;
+  width: calc(100% - 120px);
+  font-size: 14px;
+  color: #7a7a7a;
+}
+.modules_input_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  line-height: 60px;
+  width: calc(100% - 80px);
+}
+.modules_input{
+  height: 50px;
+  line-height: 50px;
+  width: 100%;
+  font-size: 18px;
+  margin-right: 20rpx;
+}
+
+.modules_switch_box {
+  display: flex;
+  height: 60px;
+  width: 40px;
+  align-items: center;
+  justify-content: center;
+}
 button{
-  border: solid 1px white;
+  border: none;
 }
 .btn-box{
     justify-content: space-between;
@@ -75,21 +108,4 @@ button{
   height: 2vh;
 }
 
-.modules_title_box {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  height: 60px;
-  line-height: 60px;
-  width: calc(100% - 120px);
-  font-size: 14px;
-  color: #7a7a7a;
-}
 
-.modules_switch_box {
-  display: flex;
-  height: 60px;
-  width: 40px;
-  align-items: center;
-  justify-content: center;
-}

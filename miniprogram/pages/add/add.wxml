@@ -1,16 +1,16 @@
 	
 <cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}" isBack="{{true}}">
   <view slot="backText">返回</view>
-  <view slot="content">添加美食店铺</view>
+  <view slot="content">添加美食</view>
 </cu-custom>
 	<view class="cu-form-group">
-		<view class="title">店铺名称:</view>
-		<input placeholder='可在地图上选择' name="name" value='{{name}}' bindinput="inputName" />
+		<view class="title">名称:</view>
+		<input placeholder='可在地图上选择' name="name" value='{{store.name}}' bindinput="inputName" />
 		<text class="cuIcon-locationfill text-orange" bindtap='chooseLocation'/>
 			</view>
 	<view class="cu-form-group" bindtap='chooseLocation'>
 		<view class="title">地址:</view>
-		<input placeholder='店铺的门牌号是？' name="address" value='{{address}}' />
+		<input placeholder='美食在哪呢' name="address" value='{{store.address}}' />
 		<text class="cuIcon-locationfill text-orange"/>
 	</view>
 	<!--
@@ -23,13 +23,16 @@
 		<view class="title">人均消费:</view>
 		<view style="width:70vw">
 			<van-slider
-				value="{{ price_per }}"
+				value="{{ store.price_per }}"
 				use-button-slot
 				step='5'
+				max='200'
+
 				bar-height='3px'
 				active-color="#ff4500"
-				bind:drag="onDrag">
-				<view class="custom-button" slot="button">¥{{ price_per*2 }}</view>
+				bind:drag="onDrag"
+				bind:change="onChange">
+				<view class="custom-button" slot="button">¥{{ store.price_per}}</view>
 			</van-slider>
 		</view>
 	</view>
@@ -37,7 +40,7 @@
 		<view class="title">推荐指数:</view>
 		<van-rate
 		 name='star'
-		 value="{{ rateValue }}"
+		 value="{{ store.rateValue }}"
 		 bind:change="setRateValue"
 		 size="{{ 25 }}"
 		 allow-half
@@ -45,25 +48,25 @@
 		 void-icon="star"
 		 gutter="8px"
 		/>
-		<view class="bar--text">{{ rateValue }}</view>
+		<view class="bar--text">{{ store.rateValue }}</view>
 	</view>
 	<!--	-->
 	<view class="cu-form-group align-start">
 		<view class="title">商铺点评:</view>
-		<textarea placeholder='你为大家推荐什么菜呢？' bindinput="inputNotes" name="notes" value="{{notes}}" />
+		<textarea placeholder='你为大家推荐什么菜呢？' bindinput="inputNotes" name="notes" value="{{store.notes}}" />
 	</view>	
 
 
 	<view class="cu-form-group">
 		<view class="title">关键词:</view>
-		<block wx:for="{{tagList}}" wx:key="index">
-			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
+		<block wx:for="{{store.tagList}}" wx:key="index">
+			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ store.tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
 		</block>
 		<van-dropdown-menu>
 			<van-dropdown-item id="item" title="">
 				<view class="keywords-box">
 					<block wx:for="{{tabList}}" wx:key="index">
-						<view class="cu-tag round bg-grey keywords-item" id="{{index}}" bindtap = "tabClick">{{item}}</view>
+						<view class="cu-tag round bg-grey keywords-item" id="{{index}}" bindtap = "tagClick">{{item}}</view>
 					</block>
 				</view>
 			</van-dropdown-item>
@@ -71,7 +74,7 @@
 	</view>
 	<view class="cu-form-group">
 		<view class="title">个性图标:</view>
-		<image style="  height:60rpx;width:60rpx" src="{{foodIconUrl}}" mode="aspectFit"></image>
+		<image style="  height:60rpx;width:60rpx" src="{{store.iconPath}}" mode="aspectFit"></image>
 		<van-dropdown-menu>
 			<van-dropdown-item id="item" title="">
 				<view class="keywords-box">
@@ -97,7 +100,7 @@
 			图片上传
 		</view>
 		<view class="action">
-			{{imgList.length}}/6
+			{{fileList.length}}/6
 		</view>
 	</view>
 	<view class="cu-form-group upImage">

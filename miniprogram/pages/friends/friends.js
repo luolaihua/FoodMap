@@ -21,7 +21,6 @@ Page({
     isBack: true
 
   },
-  //TODO 个人设置那里需要大做文章，消息设置，是否经过允许在查看
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
     wx.showLoading({
@@ -279,7 +278,7 @@ Page({
     if (friendsList == '') {
       friendsList = []
     }
-    
+
     var pages = getCurrentPages()
     console.log(pages)
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。

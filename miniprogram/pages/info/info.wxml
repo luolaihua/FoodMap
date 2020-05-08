@@ -33,7 +33,6 @@
 		<text class='cuIcon-forward text-orange'/>
 		</view>
 	</view>
-
 	<view class="star">
 		<text class="" selectable="false" space="false" decode="false">推荐指数：</text>
 		<van-rate readonly allow-half value="{{ store.rateValue }}" />
@@ -49,11 +48,11 @@
 			</view>
 		</view>
 	</view>
-	<view class="keywords" wx:if="{{keywords_array[0]!=''}}">
+	<view class="keywords" wx:if="{{store.tagList[0]!=''}}">
 		<text>关键词语：</text>
-		<view class="cu-tag bg-orange round">{{keywords_array[0]}}</view>
-		<view class="cu-tag bg-purple round" wx:if="{{keywords_array.length>1}}">{{keywords_array[1]}}</view>
-		<view class="cu-tag bg-cyan round" wx:if="{{keywords_array.length>2}}">{{keywords_array[2]}}</view>
+		<view class="cu-tag bg-orange round">{{store.tagList[0]}}</view>
+		<view class="cu-tag bg-purple round" wx:if="{{store.tagList.length>1}}">{{store.tagList[1]}}</view>
+		<view class="cu-tag bg-cyan round" wx:if="{{store.tagList.length>2}}">{{store.tagList[2]}}</view>
 	</view>
 	<view class="notes">
 		<text class="notes-title">店铺地址：</text>
@@ -66,4 +65,6 @@
 </view>
 <image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{isStar?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
 
+<button wx:if="{{isShowShareBtn}}" class='button' open-type="share">约饭</button>
+<button wx:if="{{isShowShareBtn}}" class='button2' bindtap = "toAdd">编辑</button>
 

@@ -80,3 +80,33 @@ text {
 .navigate{
   margin:20rpx 0rpx;
 }
+.cover{
+  color: #fff;
+  height: 100rpx;
+  width: 220rpx;
+  line-height: 100rpx;
+  font-size: 35rpx;
+  text-align: center;
+  position: absolute;
+  left: 100rpx;
+  bottom: 100rpx;
+  border-radius: 50rpx;
+  text-shadow: 0 1px 3px rgba(36,180,126,.4);
+}
+.button,.button2 {
+  position: fixed;
+  right: 80rpx;
+  bottom: 80rpx;
+  color: #fff;
+  height: 70rpx;
+  line-height: 70rpx;
+  width: 150rpx;
+  font-size: 35rpx;
+  text-align: center;
+  background-color: rgba(248, 105, 10, 0.6);
+  border-radius: 35rpx;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+}
+.button2{
+  right: 300rpx;
+}

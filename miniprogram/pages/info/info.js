@@ -21,9 +21,80 @@ Page({
     shareImage: '../../images/share.png',
     isBack: true,
     ID: '',
-    action: ''
+    action: '',
+    isShowShareBtn: true
   },
-  //TODO 收藏的店铺id列表也要放在云端
+  toAdd() {
+    var store = this.data.store
+    var that = this
+    wx.navigateTo({
+      url: '../add/add?requestType=editStore',
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
+        editStore: async function (data) {
+          var newStore = data.store
+          console.log(newStore)
+          that.setData({
+            store: newStore
+          })
+
+          //从本地拿数据，更新到云端
+          var ID = that.data.ID
+          var friendsIndex = that.data.friendsIndex
+         var store_id = that.data.store_id
+          var storesArr = []
+
+          if (friendsIndex == 'self') {
+            storesArr = wx.getStorageSync('storesArr');
+            var index = storesArr.findIndex(item => {
+              return item.id == store_id
+            })
+            storesArr[index] = newStore
+            myApi.updateUserInfo(storesArr,'stores')
+
+          } else {
+
+            if (friendsIndex == 'MyGroup') {
+              var GroupsList = wx.getStorageSync('My_GroupsList');
+            }else{
+              var GroupsList = wx.getStorageSync('Joined_GroupsList');
+            }
+           
+            //根据groupId找到圈子
+            var index = GroupsList.findIndex(item => {
+              return item._id == ID
+            })
+           var group = GroupsList[index]
+            storesArr = group.stores
+            var index1 = storesArr.findIndex(item => {
+              return item.id == store_id
+            })
+            storesArr[index1] = newStore
+            myApi.updateGroupsList(storesArr,'stores',ID)
+          }
+
+
+/*           console.log(info)
+          if (info.data.length != 0) {
+            storesArr = info.data[0].stores
+            store = storesArr.find(item => {
+              return item.id == store_id
+            })
+          }
+ */
+
+        }
+      },
+      success: (res) => {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: store
+        })
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+  },
   //收藏好友的店铺功能
   async star() {
     var myStores = wx.getStorageSync("storesArr")
@@ -33,7 +104,6 @@ Page({
     //当前显示的店铺
     var store = this.data.store
     var isStar = this.data.isStar
-    //TODO 收藏时是否要更新其他表单,还是只更新收藏id列表
     /*     //当前朋友的店铺列表
         var storesArr = friendsList[friendsIndex].stores
         //获取当前商铺的下标
@@ -76,10 +146,6 @@ Page({
     })
   },
 
-
-  //TODO 在地图上查看好友的美食地图
-
-
   // cardSwiper
   cardSwiper(e) {
     this.setData({
@@ -102,6 +168,7 @@ Page({
       })
     }
 
+    //判断是不是从约饭那里过来的
     if (options.action == 'shareFromList' || options.action == 'shareFromGroup') {
       var ID = options.ID
       store_id = options.store_id
@@ -111,7 +178,7 @@ Page({
         var info = await userInfo.where({
           openId: ID
         }).get()
-      }else{
+      } else {
         var info = await groupsList.where({
           _id: ID
         }).get()
@@ -126,15 +193,20 @@ Page({
         })
       }
       that.isStar(store_id)
-      // 切割逗号
-      let keywords_array = store.keywords.split(',')
       this.setData({
-        keywords_array,
         store: store,
         store_id
       })
     } else {
+      //下面是正常情况
       var friendsIndex = options.friendsIndex
+
+      //通过friendsIndex来判断是否显示约饭按钮
+      var isShowShareBtn = true
+      if (friendsIndex != 'self' && friendsIndex != 'MyGroup' && friendsIndex != 'JoinedGroup') {
+        isShowShareBtn = false
+      }
+
       var action = ''
       var ID = ''
       //使用eventChannel来通信
@@ -142,7 +214,7 @@ Page({
       eventChannel.on('getStore', function (data) {
         // console.log(data)
         store = data.store
-        console.log(data.groupId)
+        //console.log(data.groupId)
         if (data.groupId == undefined) {
           action = 'shareFromList'
           ID = wx.getStorageSync('openId');
@@ -156,9 +228,8 @@ Page({
         store_id = store.id + ''
         that.isStar(store_id)
         // 切割逗号
-        let keywords_array = store.keywords.split(',')
+        //let keywords_array = store.tagList.toString().split(',')
         var shareImage = that.data.shareImage
-
         //设置分享图片
         if (store.images.length != 0) {
           wx.cloud.getTempFileURL({
@@ -178,18 +249,14 @@ Page({
         that.setData({
           action,
           shareImage,
-          keywords_array,
           store: store,
           friendsIndex,
           store_id,
-          ID
+          ID,
+          isShowShareBtn
         })
       })
     }
-
-
-
-
     /*     switch (friendsIndex) {
           case 'self':
             //根据id在店铺列表中找到指定的店铺
@@ -284,9 +351,12 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
-    var openId = wx.getStorageSync('openId');
+    var title = wx.getStorageSync('dateSlogan');
+    if (title == '') {
+      title = '约饭吗'
+    }
     return {
-      title: '约个饭吗',
+      title: title,
       path: '/pages/info/info?ID=' + this.data.ID + '&store_id=' + this.data.store_id + '&action=' + this.data.action,
       imageUrl: this.data.shareImage
     }
