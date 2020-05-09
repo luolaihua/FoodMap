@@ -48,7 +48,7 @@
 			</view>
 		</view>
 	</view>
-	<view class="keywords" wx:if="{{store.tagList[0]!=''}}">
+	<view class="keywords" wx:if="{{store.tagList.length!=0}}">
 		<text>关键词语：</text>
 		<view class="cu-tag bg-orange round">{{store.tagList[0]}}</view>
 		<view class="cu-tag bg-purple round" wx:if="{{store.tagList.length>1}}">{{store.tagList[1]}}</view>

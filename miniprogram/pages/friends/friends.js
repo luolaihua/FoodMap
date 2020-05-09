@@ -38,7 +38,16 @@ Page({
       //console.log(info)
       var storesLocal = friendsList[index].stores
       var storesCloud = info.data[0].stores
-      //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
+      friendsList[index].stores = storesCloud
+      wx.setStorageSync('friendsList', friendsList);
+      this.setData({
+        friendsList
+      }, () => {
+        wx.navigateTo({
+          url: '../list/list?friendsIndex=' + index,
+        });
+      })
+/*       //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
       var starStoreIdList = wx.getStorageSync("starStoreIdList")
       if (starStoreIdList != '') {
         for (let index = 0; index < storesCloud.length; index++) {
@@ -59,7 +68,7 @@ Page({
             });
           })
         }
-      }
+      } */
     } catch (e) {
 
     } finally {

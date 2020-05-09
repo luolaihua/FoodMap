@@ -28,8 +28,9 @@ text {
   margin-right: 20rpx;
  }
  .notes-content{
-    border: solid 1px lightpink;
-    padding: 20rpx;
+   width: 60vw;
+   word-wrap: break-word;
+   font-size: 40rpx;
  }
 .per {
  
@@ -95,8 +96,8 @@ text {
 }
 .button,.button2 {
   position: fixed;
-  right: 80rpx;
-  bottom: 80rpx;
+  left: 40rpx;
+  bottom: 40rpx;
   color: #fff;
   height: 70rpx;
   line-height: 70rpx;
@@ -108,5 +109,6 @@ text {
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 }
 .button2{
-  right: 300rpx;
+  left: 40rpx;
+  bottom: 140rpx;
 }
