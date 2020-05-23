@@ -20,7 +20,7 @@
 		 class="{{cardCur==index?'cur':''}}" id="{{item}}"  bindtap="tapImage"
 		>
 			<view class="swiper-item">
-				<image src="{{item}}" mode="aspectFill"/>
+				<image src="{{item}}" mode="aspectFit"/>
 			</view>
 		</swiper-item>
 	</swiper>
