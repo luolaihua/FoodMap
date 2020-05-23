@@ -46,10 +46,8 @@
 			<view class="cuIcon-goods text-yellow sm"> {{item.stores.length}}</view>
 		</view>
 
-		<view class="move">
-		<!--
-			<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>		
-		-->
+		<view class="move">	
+			<view wx:if="{{TabCur==0}}" class="bg-cyan light" id="{{index}}" bindtap="shareItem">分享</view>		
 			<view class="bg-red light" id="{{index}}" bindtap="deleteItem">{{TabCur==0?'删除':'退出'}}</view>
 		</view>
 	</view>
@@ -72,5 +70,26 @@
 			<view class="right" bindtap="confirmCode">确认</view>
 		</view>
 	</view>
+</block>
+
+<!--海报部分-->
+<block wx:if="{{isShowPoster}}">
+	<view class="middle-flex-column-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.2);z-index:10000;">
+		<view class="middle-flex-column-center" style="width:600rpx;height:920rpx;background:#ffffff;border-radius:16rpx;">
+			<view style="width:400rpx;height:650rpx;">
+				<image style="width:100%;height:100%;" src="{{posterUrl}}"></image>
+			</view>
+			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;" bindtap = "copyShareCode">
+			<text class="posterText">保存后分享给朋友</text></view>
+			<view style="width:600rpx;height:70rpx;" class="middle-flex-row-center">
+				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;" bindtap='closePosterImage'>关闭</button>
+				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;margin-left:30rpx;" bindtap='savePosterImage'>保存图片</button>
+			</view>
+		</view>
+	</view>
+</block>
+
+<block>
+	<canvas canvas-id="shareCanvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;border:1px dashed black;position:fixed;left:9000px;"></canvas>
 </block>
 

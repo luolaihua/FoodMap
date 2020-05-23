@@ -33,7 +33,6 @@ Page({
     canvasWidth: 400,
     canvasHeight: 650,
     showCanvasFlag: true,
-
     colorArr: [
       '#EE534F',
       '#FF7F50',
@@ -152,13 +151,11 @@ Page({
         canvasId: 'shareCanvas',
         success: function (res) {
           console.log(res.tempFilePath);
-
           that.setData({
             showCanvasFlag: false,
             isShowPoster: true,
             posterUrl: res.tempFilePath,
           })
-
           wx.hideLoading();
         }
       })

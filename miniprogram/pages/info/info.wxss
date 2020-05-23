@@ -32,13 +32,6 @@ text {
    word-wrap: break-word;
    font-size: 40rpx;
  }
-.per {
- 
-}
-
-.address {
-  
-}
 .title-box{
   display: flex;
   flex-direction: row;
@@ -94,7 +87,7 @@ text {
   border-radius: 50rpx;
   text-shadow: 0 1px 3px rgba(36,180,126,.4);
 }
-.button,.button2 {
+.button,.button2,.button3 {
   position: fixed;
   left: 40rpx;
   bottom: 40rpx;
@@ -111,4 +104,8 @@ text {
 .button2{
   left: 40rpx;
   bottom: 140rpx;
+}
+.button3{
+  left: 40rpx;
+  bottom: 240rpx;
 }

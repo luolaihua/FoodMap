@@ -1,6 +1,7 @@
 {
   "usingComponents": {
-      "van-rate": "@vant/weapp/rate/index"
+      "van-rate": "@vant/weapp/rate/index",
+      "poster": "wxa-plugin-canvas/poster"
   },
   "navigationBarTitleText": "商铺详情"
 }

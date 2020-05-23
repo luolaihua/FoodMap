@@ -50,3 +50,22 @@
   .left{
    border-right: solid lightblue 1px;
   }
+  /* 海报*/
+  /*居中--弹性--竖向--中间*/
+.middle-flex-column-center{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/*居中--弹性--横向--中间*/
+.middle-flex-row-center{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.posterText{
+  border-bottom: solid 1px #1078e7;
+}

@@ -34,7 +34,7 @@ Page({
     latitude: 23.10229,
     mapSubKey: config.mapSubKey,
     hideMe: true,
-    isPopping: false,
+    isPopping: true,
     animMenu: {},
     animAddStore: {},
     animToList: {},
@@ -107,6 +107,7 @@ Page({
         }, 3000); */
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.scene) {
+      console.log(options.scene)
       var scene = decodeURIComponent(options.scene);
       if (scene.length == 6 || scene.length == 8) {
         wx.showModal({
@@ -127,6 +128,30 @@ Page({
                 fail: () => {},
                 complete: () => {}
               });
+            }
+          },
+          fail: () => {},
+          complete: () => {}
+        });
+      }else if(scene.length == 4){
+        wx.showModal({
+          title: '加入好友美食圈子',
+          content: '已获取好友美食圈子秘钥，是否加入？',
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if (result.confirm) {
+              wx.navigateTo({
+                url: '../group/group?secretKey=' + scene,
+                success: (result) => {
+
+                },
+                fail: () => {},
+                complete: () => {}
+              }); 
             }
           },
           fail: () => {},
@@ -283,21 +308,6 @@ Page({
       }
     })
   },
-  //获取openid
-  /*   getOpenID: function (event) {
-      wx.cloud.callFunction({
-        name: "getUserOpenId"
-      }).then(res => {
-        wx.setClipboardData({
-          data: res.result.openid,
-          success: res => {
-            wx.showToast({
-              title: 'openId已复制',
-            })
-          }
-        })
-      })
-    }, */
   hideMe: function (res) {
     this.setData({
       hideMe: true
@@ -305,24 +315,6 @@ Page({
   },
   //点击弹出
   openMenu: function () {
-    /*     wx.requestSubscribeMessage({
-          tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA'],
-          success(res) {
-            console.log(res)
-            wx.cloud.callFunction({
-              name: 'sendMessage',
-              data: {
-                name1:wx.getStorageSync('nickName'),
-                thing2: '你好',
-                date3: myApi.formatTime(new Date()),
-                thing4: '已查看',
-                thing5: '啦啦啦啦啦啦',
-
-              }
-            })
-
-          }
-        }) */
     var isHideFunction = this.data.isHideFunction
     if (isHideFunction) {
       this.toList()
@@ -343,7 +335,6 @@ Page({
     }
 
   },
-
   //弹出动画
   pop: function () {
     //plus顺时针旋转

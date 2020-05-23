@@ -67,4 +67,26 @@
 
 <button wx:if="{{isShowShareBtn}}" class='button' open-type="share">约饭</button>
 <button wx:if="{{isShowShareBtn}}" class='button2' bindtap = "toAdd">编辑</button>
+<button wx:if="{{isShowShareBtn}}" class='button3' bindtap="onCreatePoster">分享</button>
+
+<!-- 生成海报组件 -->
+<poster id="poster" hide-loading="{{false}}" preload="{{false}}" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail"></poster>
+<!-- 展示海报弹窗 -->
+<view class="cu-modal {{isShowPosterModal?'show':''}}">
+  <view class="cu-dialog">
+    <view class="cu-bar bg-white justify-end">
+      <view class='content'>海报分享</view>
+      <view class='action' bindtap='hideModal'>
+        <text class='cuIcon-close text-red'></text>
+      </view>
+    </view>
+    <view>
+      <image style='height:800rpx;' mode="aspectFit" src="{{posterImageUrl}}" bindtap="posterImageClick"></image>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class='action margin-0 flex-sub text-green solid-left' bindtap='hideModal'>取消</view>
+      <view class='action margin-0 flex-sub  solid-left' bindtap='savePosterImage'>保存本地</view>
+    </view>
+  </view>
+</view>
 
