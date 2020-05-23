@@ -29,11 +29,11 @@ Page({
       enableSatellite: false,
       enableTraffic: false,
     },
+    defaultScale:16,
     longitude: 113.3245211,
     latitude: 23.10229,
     mapSubKey: config.mapSubKey,
     hideMe: true,
-    showAdmin: false,
     isPopping: false,
     animMenu: {},
     animAddStore: {},
@@ -135,10 +135,7 @@ Page({
       }
 
     }
-
-    this.setData({
-      defaultScale: config.default_scale
-    })
+    this.openMenu()
   },
   async initMap() {
     var that = this
