@@ -25,6 +25,15 @@
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../images/key.png" />
+	</view>
+	<view class="modules_input_box">
+	<input disabled="{{true}}" class="modules_input"  value="分享码：{{shareCode}}"/>
+	<text class="cuIcon-refresh" bindtap="refreshCode" />
+	</view>
+</view>
+<view class="modules_box">
+	<view class="modules_icon_box">
 		<image class="modules_icon" mode="scaleToFill" src="{{touchUrl}}" />
 	</view>
 	<view class="modules_title_box">触摸反馈</view>

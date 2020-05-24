@@ -216,7 +216,7 @@ Page({
           shareCode: shareCode
         }
       }).then(res => {
-        console.log(res)
+        //console.log(res)
         if (res.result.memberInfos.data.length != 0) {
           //云端数据不为空，本地数据为空
           shareCode = res.result.memberInfos.data[0].shareCode
@@ -231,12 +231,12 @@ Page({
       })
     } else {
       //如果有id 从云端更新数据
-      console.log(openId)
+      //console.log(openId)
       myApi.getGroupsList(openId)
       var info = await userInfo.where({
         openId: openId
       }).get()
-      console.log(info)
+      //console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
         nickName = info.data[0].info.nickName

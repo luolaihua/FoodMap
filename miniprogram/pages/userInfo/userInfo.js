@@ -11,6 +11,7 @@ Page({
   data: {
     nickName: '',
     avatarUrl: '',
+    shareCode:'',
     feedBackUrl: imgUrl.feedbackUrl,
     editUrl: imgUrl.bigWheel_edit,
     peopleUrl: imgUrl.human,
@@ -19,6 +20,14 @@ Page({
     openId: '',
     isEditName: false,
     dateSlogan: '',
+  },
+  refreshCode(){
+    var newCode  = myApi.getRandomCode(6)
+    console.log(newCode)
+    myApi.updateUserInfo(newCode,'shareCode')
+    this.setData({
+      shareCode:newCode
+    })
   },
   /**
    * 设置约饭口号
@@ -159,8 +168,10 @@ Page({
    */
   onLoad: function (options) {
     var dateSlogan = wx.getStorageSync('dateSlogan');
+    var shareCode = wx.getStorageSync('shareCode');
     this.setData({
-      dateSlogan
+      dateSlogan,
+      shareCode
     })
 
   },
