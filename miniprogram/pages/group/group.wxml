@@ -27,7 +27,7 @@
 	 bindtouchend="ListTouchEnd"
 	 data-target="move-box-{{index}}"
 	>
-		<view bind:tap="toShowGroup" id="{{index}}" class="cu-avatar radius lg">
+		<view bind:tap="{{TabCur==0?'toEditGroup':'toShowGroup'}}" id="{{index}}" class="cu-avatar radius lg">
 			<image
 			 class="cu-avatar radius lg"
 			 src="{{item.groupAvatarUrl}}"

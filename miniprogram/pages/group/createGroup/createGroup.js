@@ -9,11 +9,25 @@ Page({
    */
   data: {
     avatarUrl: '',
-    nickName: ''
+    nickName: '',
+    //---用于编辑
+    isEdit: false,
+    group: {},
+    groupIndex:0
   },
   changeAvatar: function () {
+    var that = this
     wx.navigateTo({
       url: '../../imageEdit/imageEdit?action=editGroupAvatar',
+      events: {
+        // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据,把头像链接传过来
+        getAvatar: function(data) {
+          that.setData({
+            avatarUrl:data.avatarUrl
+          })
+         // console.log(data)
+        }
+      }
     })
   },
   inputName(e) {
@@ -27,33 +41,46 @@ Page({
     var isMsgSafe = await myApi.doMsgSecCheck(nickName)
     if (isMsgSafe) {
       var openId = wx.getStorageSync('openId');
-      var groupAvatarUrl = wx.getStorageSync('groupAvatarUrl');
-      var group = {
-        nickName:nickName,
-        groupAvatarUrl: groupAvatarUrl,
-        createTime:myApi.formatTime(new Date),
-        membersList:[openId],
-        secretKey:myApi.getRandomCode(4),
-        stores:[]  
+      var groupAvatarUrl = this.data.avatarUrl
+      //判断是编辑还是创建
+      if (this.data.isEdit) {
+        var data={}
+        data.nickName = nickName
+        data.groupAvatarUrl = groupAvatarUrl
+       await myApi.updateGroupsList(data,'name_avatar',this.data.group._id)
+       My_GroupsList[this.data.groupIndex].nickName = nickName
+       My_GroupsList[this.data.groupIndex].groupAvatarUrl = groupAvatarUrl
+       wx.setStorageSync('My_GroupsList', My_GroupsList);
+
+      } else {
+        var group = {
+          nickName: nickName,
+          groupAvatarUrl: groupAvatarUrl,
+          createTime: myApi.formatTime(new Date),
+          membersList: [openId],
+          secretKey: myApi.getRandomCode(4),
+          stores: []
+        }
+        groupsList.add({
+            // data 字段表示需新增的 JSON 数据
+            data: group
+          })
+          .then(res => {
+            console.log(res)
+          })
+          .catch(console.error)
+        My_GroupsList.push(group)
+        wx.setStorageSync('My_GroupsList', My_GroupsList)
       }
-      groupsList.add({
-        // data 字段表示需新增的 JSON 数据
-        data: group
-      })
-      .then(res => {
-        console.log(res)
-      })
-      .catch(console.error)
-      My_GroupsList.push(group)
-      wx.setStorageSync('My_GroupsList', My_GroupsList)
-     //await myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
-     wx.navigateBack({
-      complete: (res) => {
-        wx.showToast({
-          title: '创建成功',
-        })
-      },
-     });
+
+      //await myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
+      wx.navigateBack({
+        complete: (res) => {
+          wx.showToast({
+            title: '创建成功',
+          })
+        },
+      });
 
     } else {
       wx.showToast({
@@ -61,15 +88,28 @@ Page({
         icon: 'none',
       });
     }
-    console.log(isMsgSafe)
+   // console.log(isMsgSafe)
 
   },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var that = this
+    const eventChannel = this.getOpenerEventChannel()
+    // 监听getGroupData事件，获取上一页面通过eventChannel传送到当前页面的数据
+    eventChannel.on('getGroupData', function (data) {
+      console.log(data)
+      var group = data.group
+      that.setData({
+        group,
+        groupIndex:data.groupIndex,
+        avatarUrl: group.groupAvatarUrl,
+        nickName: group.nickName,
+        isEdit: true
+      })
 
-
+    })
   },
 
   /**
@@ -83,10 +123,10 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var avatarUrl = wx.getStorageSync('groupAvatarUrl');
-    this.setData({
-      avatarUrl
-    })
+    /*     var avatarUrl = wx.getStorageSync('groupAvatarUrl');
+        this.setData({
+          avatarUrl
+        }) */
   },
 
   /**

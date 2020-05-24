@@ -1,13 +1,40 @@
 <!--miniprogram/pages/group/createGroup/createGroup.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}"isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="content">创建美食圈子</view>
 </cu-custom>
-<view class="userInfo">
-	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../../images/user.png':avatarUrl}}" class="avatar" />
+<view class="userInfo bg-white">
+	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../../images/user.png':avatarUrl}}" class="avatar bg-grey light" />
 </view>
 <view class="cu-form-group">
 	<view class="title">圈子名称</view>
-	<input placeholder="美食圈子" bindinput="inputName" value="{{nickName}}"/>
+	<input placeholder="美食圈子" bindinput="inputName" value="{{nickName}}" />
 </view>
+<view class="cu-list menu " wx:if="{{isEdit}}">
 
-<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createGroup">创建</van-button>
+	<view class="cu-item ">
+		<view class="content">
+			<text class="cuIcon-friend text-grey"/>
+			<text class="text-grey">成员人数：{{group.membersList.length}}</text>
+		</view>
+	</view>
+	<view class="cu-item ">
+		<view class="content">
+			<text class="cuIcon-command text-grey"/>
+			<text class="text-grey">秘钥：{{group.secretKey}}</text>
+		</view>
+	</view>
+	<view class="cu-item ">
+		<view class="content">
+			<text class="cuIcon-time text-grey"/>
+			<text class="text-grey">创建时间：{{group.createTime}}</text>
+		</view>
+	</view>	
+</view>
+<van-button
+ round
+ size="large"
+ color="linear-gradient(to right, #4bb0ff, #6149f6)"
+ bind:click="createGroup"
+>{{isEdit?'修改':'创建'}}
+</van-button>
+

@@ -39,7 +39,10 @@ Page({
     isShowPoster: false,
 
   },
-  //TODO 店铺为空会报错
+  /**
+   * 生成分享海报
+   * @param {*} e 
+   */
   shareItem(e) {
     var id = e.currentTarget.id
     var group = this.data.GroupsList[id]
@@ -50,6 +53,9 @@ Page({
       secretKey: group.secretKey
     })
   },
+  /**
+   * 复制分享码
+   */
   copyShareCode() {
     wx.setClipboardData({
       data: this.data.secretKey,
@@ -94,6 +100,7 @@ Page({
     var textArr = []
     var shareCode = group.secretKey
     var storesArr = group.stores
+    //如果店铺为空，就用名字做内容
     if (storesArr.length == 0) {
       textArr.push(group.nickName)
     } else {
@@ -144,9 +151,6 @@ Page({
       })
     }, 2000)
   },
-
-
-
   //TODO 通过二维码分享圈子+圈子设置，换头像名字
   inputCode(e) {
     this.setData({
@@ -258,6 +262,10 @@ Page({
       shareCode: ''
     })
   },
+  /**
+   * 选择创建的美食圈还是加入的美食圈
+   * @param {*} e 
+   */
   tabSelect(e) {
     myApi.getGroupsList(this.data.openId)
     wx.showLoading({
@@ -286,8 +294,8 @@ Page({
     })
   },
   toCreateGroup() {
-    myApi.requestSendMsg('newMemberToGroup')
     if (this.data.TabCur == 0) {
+      myApi.requestSendMsg('newMemberToGroup')
       wx.navigateTo({
         url: '../group/createGroup/createGroup',
       });
@@ -296,6 +304,24 @@ Page({
         isShowInputCode: !this.data.isShowInputCode
       })
     }
+
+  },
+  toEditGroup(e) {
+    var index = e.currentTarget.id
+    var group = this.data.GroupsList[index]
+
+    wx.navigateTo({
+      url: '../group/createGroup/createGroup',
+      success: (result) => {
+        // 通过eventChannel向被打开页面传送数据
+        result.eventChannel.emit('getGroupData', {
+          group: group,
+          groupIndex:index
+        })
+      },
+      fail: () => {},
+      complete: () => {}
+    });
 
   },
   toShowGroup(e) {

@@ -5,8 +5,6 @@ const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 //TODO 食堂美食推荐
-//TODO 约饭功能
-//TODO 店铺再编辑
 Page({
 
   /**

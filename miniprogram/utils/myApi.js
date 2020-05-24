@@ -456,6 +456,10 @@ async function updateGroupsList(data, type, id) {
       // My_GroupsList[index].stores=data
       // wx.setStorageSync('storesArr', data)
       break;
+      case 'name_avatar':
+        updateData.nickName = data.nickName
+        updateData.groupAvatarUrl = data.groupAvatarUrl
+        break;
     default:
       break;
   }

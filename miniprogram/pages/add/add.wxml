@@ -116,7 +116,7 @@
 
 
 
-	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存至本地</van-button>
+	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
 
 
 

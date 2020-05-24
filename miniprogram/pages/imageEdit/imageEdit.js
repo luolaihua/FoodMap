@@ -22,7 +22,7 @@ Page({
     zoomOutUrl: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/zoomOut.png?sign=d3d4f8839cee1b710a5b81c000c27211&t=1586521720',
     rotateUrl: 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/rotate.png?sign=0fcfc5811537285156155c5e7c1b84ab&t=1586521744',
     src: '',
-    width: 250, //宽度
+    width: 300, //宽度
     height: 300, //高度
     max_width: 400,
     max_height: 400,
@@ -107,13 +107,16 @@ Page({
     });
   },
   setGroupAvatar(imgSrc,openId){
+    var that = this
     //TODO 头像缓存垃圾没有清理
     wx.cloud.uploadFile({
       filePath: imgSrc,
       cloudPath: "groupAvatar/AVATAR_"+new Date().getTime()+'.png'
     }).then(res => {
       console.log('groupAvatarUrl',res)
-       wx.setStorageSync('groupAvatarUrl', res.fileID);
+      const eventChannel = that.getOpenerEventChannel()
+      eventChannel.emit('getAvatar', {avatarUrl: res.fileID});
+      // wx.setStorageSync('groupAvatarUrl', res.fileID);
         wx.navigateBack({
           complete: (res) => {
             wx.showToast({

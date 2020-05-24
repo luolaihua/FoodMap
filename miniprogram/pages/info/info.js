@@ -218,7 +218,6 @@ Page({
       const eventChannel = this.getOpenerEventChannel()
       eventChannel.on('getStore', function (data) {
         // console.log(data)
-        //TODO 使用分享码来代替id
         store = data.store
         //console.log(data.groupId)
         if (data.groupId == undefined) {
