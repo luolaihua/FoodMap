@@ -110,13 +110,15 @@ Page({
     var index = e.currentTarget.dataset.index
     var store = this.data.group.stores[index]
     var groupId = this.data.groupId
+    var secretKey = this.data.group.secretKey
     wx.navigateTo({
       url: '../../info/info?friendsIndex=' + this.data.type,
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
         res.eventChannel.emit('getStore', {
           store: store,
-          groupId:groupId
+          groupId:groupId,
+          secretKey:secretKey
         })
       }
     });

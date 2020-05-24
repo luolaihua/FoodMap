@@ -109,6 +109,7 @@ Page({
     if (options.scene) {
       console.log(options.scene)
       var scene = decodeURIComponent(options.scene);
+      //根据长度判断是哪个，6-永久，8-即时,4-圈子;  美食详情分享： Rc3Z8f-1588951560206-List
       if (scene.length == 6 || scene.length == 8) {
         wx.showModal({
           title: '获取好友美食分享',
@@ -156,6 +157,16 @@ Page({
           },
           fail: () => {},
           complete: () => {}
+        });
+      }else{
+        var codeList = scene.split('-')
+      console.log(codeList)
+
+        var ID = codeList[0]
+        var store_id = codeList[1]
+        var action = codeList[2]
+        wx.navigateTo({
+          url: '/pages/info/info?ID=' + ID + '&store_id=' + store_id + '&action=' + action,
         });
       }
 

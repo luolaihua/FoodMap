@@ -179,11 +179,11 @@ Page({
 
       if (options.action == 'List') {
         var info = await userInfo.where({
-          openId: ID
+          shareCode: ID
         }).get()
       } else {
         var info = await groupsList.where({
-          _id: ID
+          secretKey: ID
         }).get()
       }
 
@@ -226,7 +226,8 @@ Page({
           ID = wx.getStorageSync('shareCode');
         } else {
           action = 'Group'
-          ID = data.groupId
+          //ID = data.groupId
+          ID = data.secretKey
         }
 
         //判断在收藏店铺id列表中是否有当前店铺id存在
@@ -401,10 +402,15 @@ Page({
    * 生成海报
    */
   onCreatePoster: async function () {
+    wx.showLoading({
+      title: '加载中',
+    });
     let that = this;
     if (that.data.posterImageUrl !== "") {
       that.setData({
         isShowPosterModal: true
+      },()=>{
+        wx.hideLoading();
       })
       return;
     }
@@ -418,8 +424,8 @@ Page({
     }
 
     //生成二维码URL
-    var scene = '-' + this.data.store_id + '-' + this.data.action
-    console.log(scene.length)
+    var scene =this.data.ID+ '-' + this.data.store_id + '-' + this.data.action
+    //console.log(scene.length)
     var posterImageUrl = await myApi.getQrCodeUrl(scene)
      //console.log(posterImageUrl)
     var QrCodeUrl = posterImageUrl.result
@@ -525,8 +531,8 @@ Page({
         url: imageUrl, //海报主图
       },
       {
-        width: 200,
-        height: 200,
+        width: 180,
+        height: 180,
         x: 70,
         y: 1000,
         url: QrCodeUrl, //二维码的图
@@ -540,6 +546,7 @@ Page({
     that.setData({
       posterConfig: posterConfig
     }, () => {
+      wx.hideLoading();
       Poster.create(true); //生成海报图片
     });
 
