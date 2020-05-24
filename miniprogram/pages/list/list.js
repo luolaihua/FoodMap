@@ -90,7 +90,8 @@ Page({
   /**
    * 保存海报图片
    */
-  savePosterImage: function () {
+  savePosterImage:async function () {
+  myApi.requestSendMsg('viewList')
     var that = this;
     var filePath = that.data.posterUrl;
     wx.saveImageToPhotosAlbum({
@@ -101,8 +102,11 @@ Page({
           icon: 'none',
           duration: 1000,
           mask: true,
-        })
-        that.closePosterImage()
+        }) 
+        //myApi.requestSendMsg('viewList')
+        that.setData({
+          isShowPoster: false,
+        });
         that.cancelChoose()
       }
     })
@@ -563,61 +567,6 @@ Page({
       stores: storesArr.filter(search)
     })
   },
-  /**
-   * 保存海报图片
-   */
-  /*   savePosterImage: function () {
-      let that = this
-      wx.saveImageToPhotosAlbum({
-        filePath: that.data.posterImageUrl,
-        success(result) {
-          console.log(result)
-          wx.showModal({
-            title: '提示',
-            content: '二维码海报已存入手机相册，赶快分享到朋友圈吧',
-            showCancel: false,
-            success: function (res) {
-              that.setData({
-                isShowPosterModal: false,
-                isShow: false
-              })
-            }
-          })
-        },
-        fail: function (err) {
-          console.log(err);
-          if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
-            console.log("再次发起授权");
-            wx.showModal({
-              title: '用户未授权',
-              content: '如需保存海报图片到相册，需获取授权.是否在授权管理中选中“保存到相册”?',
-              showCancel: true,
-              success: function (res) {
-                if (res.confirm) {
-                  console.log('用户点击确定')
-                  wx.openSetting({
-                    success: function success(res) {
-                      console.log('打开设置', res.authSetting);
-                      wx.openSetting({
-                        success(settingdata) {
-                          console.log(settingdata)
-                          if (settingdata.authSetting['scope.writePhotosAlbum']) {
-                            console.log('获取保存到相册权限成功');
-                          } else {
-                            console.log('获取保存到相册权限失败');
-                          }
-                        }
-                      })
-
-                    }
-                  });
-                }
-              }
-            })
-          }
-        }
-      });
-    }, */
 
   // ListTouch触摸开始
   ListTouchStart(e) {

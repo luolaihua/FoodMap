@@ -187,7 +187,8 @@ Page({
         icon: 'none',
       });
       this.setData({
-        secretKey: ''
+        secretKey: '',
+        TabCur: 1
       })
       return
     }
@@ -364,7 +365,8 @@ Page({
    */
   onLoad: function (options) {
     var secretKey = options.secretKey
-    if (secretKey != undefined || secretKey != '') {
+    //console.log(secretKey)
+    if (secretKey != undefined && secretKey != '') {
       var that = this
       this.setData({
         secretKey

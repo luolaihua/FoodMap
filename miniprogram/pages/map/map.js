@@ -374,11 +374,11 @@ Page({
       timingFunction: 'ease-out'
     })
     animMenu.rotateZ(180).step();
-    animAddStore.translate(-85, -85).rotateZ(360).opacity(1).step();
-    animToList.translate(-120, 0).rotateZ(360).opacity(1).step();
-    animationInput.translate(120, 0).rotateZ(360).opacity(1).step();
-    animationCloud.translate(85, -85).rotateZ(360).opacity(1).step();
-    animAddFriends.translate(0, -120).rotateZ(360).opacity(1).step();
+    animAddStore.translate(-85, -85).opacity(1).step();
+    animToList.translate(-120, 0).opacity(1).step();
+    animationInput.translate(120, 0).opacity(1).step();
+    animationCloud.translate(85, -85).opacity(1).step();
+    animAddFriends.translate(0, -120).opacity(1).step();
     this.setData({
       animMenu: animMenu.export(),
       animAddStore: animAddStore.export(),
@@ -416,11 +416,11 @@ Page({
       timingFunction: 'ease-out'
     })
     animMenu.rotateZ(0).step();
-    animAddStore.translate(0, 0).rotateZ(0).opacity(0).step();
-    animToList.translate(0, 0).rotateZ(0).opacity(0).step();
-    animationInput.translate(0, 0).rotateZ(0).opacity(0).step();
-    animationCloud.translate(0, 0).rotateZ(0).opacity(0).step();
-    animAddFriends.translate(0, 0).rotateZ(0).opacity(0).step();
+    animAddStore.translate(0, 0).opacity(0).step();
+    animToList.translate(0, 0).opacity(0).step();
+    animationInput.translate(0, 0).opacity(0).step();
+    animationCloud.translate(0, 0).opacity(0).step();
+    animAddFriends.translate(0, 0).opacity(0).step();
     this.setData({
       animMenu: animMenu.export(),
       animAddStore: animAddStore.export(),

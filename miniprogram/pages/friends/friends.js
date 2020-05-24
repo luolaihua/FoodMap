@@ -216,14 +216,16 @@ Page({
           状态{{thing4.DATA}}
           温馨提示{{thing5.DATA}
        */
+      //console.log(info)
       var msgData = {
-        openId : info.data[0]._openid,
+        openId : info.data[0].openId,
         name1: nickName,
         thing2: '美食店铺分享',
         date3: myApi.formatTime(new Date()),
         thing4: '已查看',
         thing5: nickName + '已查看您的美食列表',
       }
+      //console.log(msgData)
       myApi.sendMsg('viewList',msgData)
 
 
