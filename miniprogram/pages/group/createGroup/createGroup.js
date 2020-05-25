@@ -13,7 +13,7 @@ Page({
     //---用于编辑
     isEdit: false,
     group: {},
-    groupIndex:0
+    groupIndex: 0
   },
   changeAvatar: function () {
     var that = this
@@ -21,11 +21,11 @@ Page({
       url: '../../imageEdit/imageEdit?action=editGroupAvatar',
       events: {
         // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据,把头像链接传过来
-        getAvatar: function(data) {
+        getAvatar: function (data) {
           that.setData({
-            avatarUrl:data.avatarUrl
+            avatarUrl: data.avatarUrl
           })
-         // console.log(data)
+          // console.log(data)
         }
       }
     })
@@ -33,6 +33,24 @@ Page({
   inputName(e) {
     this.setData({
       nickName: e.detail.value
+    })
+  },
+  clearName() {
+    this.setData({
+      nickName: ''
+    })
+  },
+  refreshCode() {
+    var newCode = myApi.getRandomCode(4)
+    var group = this.data.group
+    group.secretKey = newCode
+    var My_GroupsList = wx.getStorageSync('My_GroupsList');
+    myApi.updateGroupsList(newCode, 'secretKey', this.data.group._id)
+    My_GroupsList[this.data.groupIndex].secretKey = newCode
+    wx.setStorageSync('My_GroupsList', My_GroupsList);
+
+    this.setData({
+      group
     })
   },
   async createGroup() {
@@ -44,13 +62,13 @@ Page({
       var groupAvatarUrl = this.data.avatarUrl
       //判断是编辑还是创建
       if (this.data.isEdit) {
-        var data={}
+        var data = {}
         data.nickName = nickName
         data.groupAvatarUrl = groupAvatarUrl
-       await myApi.updateGroupsList(data,'name_avatar',this.data.group._id)
-       My_GroupsList[this.data.groupIndex].nickName = nickName
-       My_GroupsList[this.data.groupIndex].groupAvatarUrl = groupAvatarUrl
-       wx.setStorageSync('My_GroupsList', My_GroupsList);
+        await myApi.updateGroupsList(data, 'name_avatar', this.data.group._id)
+        My_GroupsList[this.data.groupIndex].nickName = nickName
+        My_GroupsList[this.data.groupIndex].groupAvatarUrl = groupAvatarUrl
+        wx.setStorageSync('My_GroupsList', My_GroupsList);
 
       } else {
         var group = {
@@ -88,7 +106,7 @@ Page({
         icon: 'none',
       });
     }
-   // console.log(isMsgSafe)
+    // console.log(isMsgSafe)
 
   },
   /**
@@ -103,7 +121,7 @@ Page({
       var group = data.group
       that.setData({
         group,
-        groupIndex:data.groupIndex,
+        groupIndex: data.groupIndex,
         avatarUrl: group.groupAvatarUrl,
         nickName: group.nickName,
         isEdit: true

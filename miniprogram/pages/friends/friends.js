@@ -35,9 +35,9 @@ Page({
       var info = await userInfo.where({
         shareCode: shareCode
       }).get()
-      //console.log(info)
-      var storesLocal = friendsList[index].stores
-      var storesCloud = info.data[0].stores
+      console.log(info)
+     if(info.data.length!=0){
+             var storesCloud = info.data[0].stores
       friendsList[index].stores = storesCloud
       wx.setStorageSync('friendsList', friendsList);
       this.setData({
@@ -47,6 +47,21 @@ Page({
           url: '../list/list?friendsIndex=' + index,
         });
       })
+     }else{
+       wx.showToast({
+         title: '更新失败，可能是好友已更换分享码',
+         icon: 'none',
+         image: '',
+         duration: 1500,
+         mask: false,
+         success: (result)=>{
+           
+         },
+         fail: ()=>{},
+         complete: ()=>{}
+       });
+     }
+
 /*       //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
       var starStoreIdList = wx.getStorageSync("starStoreIdList")
       if (starStoreIdList != '') {
@@ -290,8 +305,8 @@ Page({
       friendsList = []
     }
 
-    var pages = getCurrentPages()
-    console.log(pages)
+    // var pages = getCurrentPages()
+    // console.log(pages)
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.shareCode) {
       var shareCode = options.shareCode

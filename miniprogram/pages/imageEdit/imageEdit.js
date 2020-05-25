@@ -131,9 +131,16 @@ Page({
       filePath: imgSrc,
       cloudPath: "userAvatar/AVATAR_"+new Date().getTime()+'.png'
     }).then(res => {
-        console.log('avatar',res)
-        myApi.updateUserInfo(res.fileID,'avatarUrl')
-       // wx.setStorageSync('avatarUrl', imgSrc)
+        //console.log('avatar',res)
+        //换去下载链接
+        wx.cloud.getTempFileURL({
+          fileList: [res.fileID],
+        }).then(res1=>{ 
+          myApi.updateUserInfo(res1.fileList[0].tempFileURL,'avatarUrl')
+        })
+        //console.log(res1)
+
+        wx.setStorageSync('avatarUrl', imgSrc)
         wx.navigateBack({
           complete: (res) => {
             wx.showToast({

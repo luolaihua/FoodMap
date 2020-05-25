@@ -464,6 +464,9 @@ async function updateGroupsList(data, type, id) {
       updateData.nickName = data.nickName
       updateData.groupAvatarUrl = data.groupAvatarUrl
       break;
+    case 'secretKey':
+      updateData.secretKey = data
+      break;
     default:
       break;
   }

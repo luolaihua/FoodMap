@@ -1,10 +1,13 @@
 /* miniprogram/pages/group/createGroup/createGroup.wxss */
 @import "../../../style/colorui.wxss";
 @import "../../../style/icon.wxss";
+page{
+  background-color: white;
+}
 .avatar {
     border-radius: 50%;
-    width: 8vh;
-    height: 8vh;
+    width: 10vh;
+    height: 10vh;
     margin: 3vh;
   }
   .userInfo{
@@ -14,4 +17,69 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+  }
+  .modules_box ,.btn-box{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    width: calc(100% - 20px);
+    height: 60px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    background-color: #ffffff;
+    border-radius: 6px;
+   
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+  }
+  .modules_title_box {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 60px;
+    line-height: 60px;
+    width: calc(100% - 120px);
+    font-size: 14px;
+    color: #7a7a7a;
+  }
+  .modules_input_box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px;
+    line-height: 60px;
+    width: calc(100% - 80px);
+  }
+  .modules_input,.modules_show{
+    height: 50px;
+    line-height: 50px;
+    width: 100%;
+    font-size: 18px;
+    margin-right: 20rpx;
+  }
+  .modules_show{
+    color: grey;
+    margin-right: 0rpx;
+  }
+  .btn-box{
+      justify-content: space-between;
+  }
+  
+  .modules_icon_box {
+    height: 60px;
+    width: 60px;
+  }
+  
+  .modules_icon {
+    border-radius: 10%;
+    width: 30px;
+    height: 30px;
+    margin: 15px;
+  }
+  .modules_icon_small {
+    width: 25px;
+    height: 25px;
+    margin: 15px;
   }

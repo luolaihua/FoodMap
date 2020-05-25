@@ -1,7 +1,8 @@
 {
   "pages": [
+     "pages/group/group",    
     "pages/map/map",     
-    "pages/group/group", 
+
     "pages/foodMap/foodMap",
     "pages/group/showGroup/showGroup",
     "pages/group/createGroup/createGroup",

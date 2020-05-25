@@ -194,6 +194,19 @@ Page({
         store = storesArr.find(item => {
           return item.id == store_id
         })
+      }else{
+        wx.showToast({
+          title: '你的好友已更换分享码',
+          icon: 'none',
+          image: '',
+          duration: 1500,
+          mask: false,
+          success: (result)=>{
+            
+          },
+          fail: ()=>{},
+          complete: ()=>{}
+        });
       }
       that.isStar(store_id)
       this.setData({
@@ -416,6 +429,7 @@ Page({
 
     var QrCodeUrl=''
     var imageUrl=this.data.shareImage
+    console.log(imageUrl)
     var avatarUrl = wx.getStorageSync('avatarUrl')
     //无则默认
     if(avatarUrl==''){
@@ -434,7 +448,7 @@ Page({
       var res1 = await wx.cloud.getTempFileURL({
         fileList: [QrCodeUrl],
       })
-      //console.log(res1.fileList)
+      //console.log(res1)
       QrCodeUrl =res1.fileList[0].tempFileURL
     }
     let posterConfig = {

@@ -5,31 +5,41 @@
 <view class="userInfo bg-white">
 	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../../images/user.png':avatarUrl}}" class="avatar bg-grey light" />
 </view>
-<view class="cu-form-group">
-	<view class="title">圈子名称</view>
-	<input placeholder="美食圈子" bindinput="inputName" value="{{nickName}}" />
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/laba.png" />
+	</view>
+	<view class="modules_input_box">
+	<input  class="modules_input" placeholder="圈子名称" bindinput="inputName" maxlength="8" value="{{nickName}}"/>
+	<text class="cuIcon-roundclose" bindtap="clearName" />
+	</view>
 </view>
-<view class="cu-list menu " wx:if="{{isEdit}}">
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/key.png" />
+	</view>
+	<view class="modules_input_box" bind:longpress="copyCode">
+	<input disabled="{{true}}" class="modules_input"  value="秘钥：{{group.secretKey}}"/>
+	<text class="cuIcon-refresh" bindtap="refreshCode" />
+	</view>
+</view>
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/group.png" />
+	</view>
+	<view class="modules_input_box" >
+	<input disabled="{{true}}" class="modules_show"  value="成员人数：{{group.membersList.length}}"/>
+	</view>
+</view>
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/key.png" />
+	</view>
+	<view class="modules_input_box" >
+	<input disabled="{{true}}" class="modules_show"  value="创建时间：{{group.createTime}}"/>
+	</view>
+</view>
 
-	<view class="cu-item ">
-		<view class="content">
-			<text class="cuIcon-friend text-grey"/>
-			<text class="text-grey">成员人数：{{group.membersList.length}}</text>
-		</view>
-	</view>
-	<view class="cu-item ">
-		<view class="content">
-			<text class="cuIcon-command text-grey"/>
-			<text class="text-grey">秘钥：{{group.secretKey}}</text>
-		</view>
-	</view>
-	<view class="cu-item ">
-		<view class="content">
-			<text class="cuIcon-time text-grey"/>
-			<text class="text-grey">创建时间：{{group.createTime}}</text>
-		</view>
-	</view>	
-</view>
 <van-button
  round
  size="large"

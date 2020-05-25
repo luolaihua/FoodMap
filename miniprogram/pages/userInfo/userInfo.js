@@ -21,6 +21,16 @@ Page({
     isEditName: false,
     dateSlogan: '',
   },
+  copyCode(){
+    wx.setClipboardData({
+      data: this.data.shareCode,
+      success: (result)=>{
+        
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
+  },
   refreshCode(){
     var newCode  = myApi.getRandomCode(6)
     console.log(newCode)
