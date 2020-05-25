@@ -30,9 +30,17 @@ page{
     margin-right: 10px;
     background-color: #ffffff;
     border-radius: 6px;
-   
     box-sizing: border-box;
     box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+  }
+  .no-margin-bottom{
+    margin-bottom: 0px;
+  }
+  .no-margin-top{
+    margin-top: 0px;
+  }
+  .no-shadow{
+   box-shadow: 0;
   }
   .modules_title_box {
     display: flex;
@@ -60,7 +68,6 @@ page{
     margin-right: 20rpx;
   }
   .modules_show{
-    color: grey;
     margin-right: 0rpx;
   }
   .btn-box{

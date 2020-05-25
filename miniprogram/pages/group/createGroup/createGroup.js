@@ -16,7 +16,39 @@ Page({
     //---用于编辑
     isEdit: false,
     group: {},
-    groupIndex: 0
+    groupIndex: 0,
+    isGetMembersDetail:false,
+    membersDetailList:[]
+  },
+  //获取成员详情
+  getMembersDetail(){
+    var isGetMembersDetail = this.data.isGetMembersDetail
+    if(!isGetMembersDetail){
+    wx.showLoading({
+      title: '加载中',
+    });
+    // 获取成员详情需要去云函数
+    var that = this
+    var membersList = this.data.group.membersList
+    console.log(membersList)
+    wx.cloud.callFunction({
+      name: 'checkSafeContent',
+      data: {
+        requestType: 'getMembersDetail',
+        membersList: membersList
+      }
+    }).then(res=>{
+      wx.hideLoading();
+      console.log(res)
+      that.setData({
+        membersDetailList:res.result
+      })
+    })
+    }
+    this.setData({
+      isGetMembersDetail:!this.data.isGetMembersDetail
+    })
+
   },
   changeAvatar: function () {
     var that = this
@@ -89,7 +121,9 @@ Page({
           nickName: nickName,
           groupAvatarUrl: groupAvatarUrl,
           createTime: that.data.createTime,
-          membersList: [openId],
+          //圈子初始化时，群主不加入成员列表
+          //membersList: [openId],
+          membersList: [],
           secretKey: that.data.secretKey,
           stores: []
         }

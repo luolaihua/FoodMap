@@ -1,4 +1,5 @@
 module.exports={
+    defaultAvatar:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/userAvatar/defaultAvatar.png?sign=fdadec77bbb6de52201dbfdba145caec&t=1590418969',
     QrCodeUrl:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/QrCode.png?sign=6d5ea069c17a888a24e48a0c6b40b1b2&t=1590245841',
     touch:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/touch.png?sign=0dabd4533c47ddbcc6f1ac4b1f3b399f&t=1588120391',
     feedbackUrl:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/feedback.png?sign=6670976380dd70c893bf39debdd27bc0&t=1587110487',

@@ -23,20 +23,31 @@
 	<text class="cuIcon-refresh" bindtap="refreshCode" />
 	</view>
 </view>
-<view class="modules_box" wx:if="{{isEdit}}">
+<view class="modules_box no-margin-bottom" wx:if="{{isEdit}}">
 	<view class="modules_icon_box">
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/group.png" />
 	</view>
-	<view class="modules_input_box" >
-	<input disabled="{{true}}" class="modules_show"  value="成员人数：{{group.membersList.length}}"/>
+	<view class="modules_input_box" bindtap="{{group.membersList.length>0?'getMembersDetail':''}}">
+	<input disabled="{{true}}" class="modules_show text-{{group.membersList.length>0?'black':'grey'}}"  value="成员人数：{{group.membersList.length}}"/>
+	<text wx:if="{{group.membersList.length>0}}" class="cuIcon-{{isGetMembersDetail?'unfold':'fold'}}" />
 	</view>
 </view>
+
+<view class="modules_box no-margin-bottom no-margin-top" wx:if="{{isGetMembersDetail}}" wx:for="{{membersDetailList}}"wx:key="index">
+	<view class="modules_icon_box">
+		<image class="modules_icon round" mode="scaleToFill" src="{{item.avatarUrl}}" />
+	</view>
+	<view class="modules_input_box">
+		<input disabled="{{true}}" class="modules_show" value="{{item.nickName}}"/>
+	</view>
+</view>
+
 <view class="modules_box">
 	<view class="modules_icon_box">
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/time.png" />
 	</view>
 	<view class="modules_input_box" >
-	<input disabled="{{true}}" class="modules_show"  value="创建时间：{{createTime}}"/>
+	<input disabled="{{true}}" class="modules_show text-grey"  value="创建时间：{{createTime}}"/>
 	</view>
 </view>
 
