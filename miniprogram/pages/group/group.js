@@ -251,7 +251,7 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '用户不存在',
+        title: '该美食圈子不存在',
         icon: 'none',
         success: (result) => {
           wx.hideLoading();

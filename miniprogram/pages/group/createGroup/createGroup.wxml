@@ -1,13 +1,13 @@
 <!--miniprogram/pages/group/createGroup/createGroup.wxml-->
 <cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
-	<view slot="content">创建美食圈子</view>
+	<view slot="content">{{isEdit?'编辑':'创建'}}美食圈子</view>
 </cu-custom>
 <view class="userInfo bg-white">
 	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../../images/user.png':avatarUrl}}" class="avatar bg-grey light" />
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../../images/laba.png" />
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/name.png" />
 	</view>
 	<view class="modules_input_box">
 	<input  class="modules_input" placeholder="圈子名称" bindinput="inputName" maxlength="8" value="{{nickName}}"/>
@@ -33,7 +33,7 @@
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../../images/key.png" />
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/time.png" />
 	</view>
 	<view class="modules_input_box" >
 	<input disabled="{{true}}" class="modules_show"  value="创建时间：{{group.createTime}}"/>

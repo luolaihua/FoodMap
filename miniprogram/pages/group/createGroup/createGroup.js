@@ -53,9 +53,17 @@ Page({
       group
     })
   },
-  async createGroup() {
-    var My_GroupsList = wx.getStorageSync('My_GroupsList');
+  async createGroup() { 
     var nickName = this.data.nickName
+    if(nickName==""){
+      wx.showToast({
+        title: '名称不能为空',
+        icon: 'none',
+      });
+      return
+    }
+    var that = this
+    var My_GroupsList = wx.getStorageSync('My_GroupsList');
     var isMsgSafe = await myApi.doMsgSecCheck(nickName)
     if (isMsgSafe) {
       var openId = wx.getStorageSync('openId');
@@ -95,7 +103,7 @@ Page({
       wx.navigateBack({
         complete: (res) => {
           wx.showToast({
-            title: '创建成功',
+            title:(that.data.isEdit?'修改':'创建')+ '成功',
           })
         },
       });

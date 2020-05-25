@@ -5,6 +5,7 @@ const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 //TODO 食堂美食推荐
+//test
 Page({
 
   /**
