@@ -3,7 +3,7 @@
 	<view slot="content">{{isEdit?'编辑':'创建'}}美食圈子</view>
 </cu-custom>
 <view class="userInfo bg-white">
-	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../../images/user.png':avatarUrl}}" class="avatar bg-grey light" />
+	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar bg-grey light" />
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
@@ -19,11 +19,11 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/key.png" />
 	</view>
 	<view class="modules_input_box" bind:longpress="copyCode">
-	<input disabled="{{true}}" class="modules_input"  value="秘钥：{{group.secretKey}}"/>
+	<input disabled="{{true}}" class="modules_input"  value="秘钥：{{secretKey}}"/>
 	<text class="cuIcon-refresh" bindtap="refreshCode" />
 	</view>
 </view>
-<view class="modules_box">
+<view class="modules_box" wx:if="{{isEdit}}">
 	<view class="modules_icon_box">
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/group.png" />
 	</view>
@@ -36,7 +36,7 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/time.png" />
 	</view>
 	<view class="modules_input_box" >
-	<input disabled="{{true}}" class="modules_show"  value="创建时间：{{group.createTime}}"/>
+	<input disabled="{{true}}" class="modules_show"  value="创建时间：{{createTime}}"/>
 	</view>
 </view>
 

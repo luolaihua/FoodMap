@@ -1,5 +1,6 @@
 // miniprogram/pages/group/createGroup/createGroup.js
 const myApi = require('../../../utils/myApi')
+const imgUrl = require('../../../utils/imgUrl')
 const db = wx.cloud.database()
 const groupsList = db.collection('groupsList');
 Page({
@@ -8,8 +9,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    avatarUrl: '',
+    avatarUrl: imgUrl.head,
     nickName: '',
+    createTime: '',
+    secretKey: '',
     //---用于编辑
     isEdit: false,
     group: {},
@@ -41,27 +44,27 @@ Page({
     })
   },
   refreshCode() {
-    var newCode = myApi.getRandomCode(4)
-    var group = this.data.group
-    group.secretKey = newCode
-    var My_GroupsList = wx.getStorageSync('My_GroupsList');
-    myApi.updateGroupsList(newCode, 'secretKey', this.data.group._id)
-    My_GroupsList[this.data.groupIndex].secretKey = newCode
-    wx.setStorageSync('My_GroupsList', My_GroupsList);
-
+/*     if (this.data.isEdit) {
+      var My_GroupsList = wx.getStorageSync('My_GroupsList');
+      myApi.updateGroupsList(newCode, 'secretKey', this.data.group._id)
+      My_GroupsList[this.data.groupIndex].secretKey = newCode
+      wx.setStorageSync('My_GroupsList', My_GroupsList);
+    }
+ */
     this.setData({
-      group
+      secretKey: myApi.getRandomCode(4)
     })
   },
-  async createGroup() { 
+  async createGroup() {
     var nickName = this.data.nickName
-    if(nickName==""){
+    if (nickName == "") {
       wx.showToast({
         title: '名称不能为空',
         icon: 'none',
       });
       return
     }
+
     var that = this
     var My_GroupsList = wx.getStorageSync('My_GroupsList');
     var isMsgSafe = await myApi.doMsgSecCheck(nickName)
@@ -70,21 +73,24 @@ Page({
       var groupAvatarUrl = this.data.avatarUrl
       //判断是编辑还是创建
       if (this.data.isEdit) {
+        var groupIndex = this.data.groupIndex
         var data = {}
         data.nickName = nickName
         data.groupAvatarUrl = groupAvatarUrl
         await myApi.updateGroupsList(data, 'name_avatar', this.data.group._id)
-        My_GroupsList[this.data.groupIndex].nickName = nickName
-        My_GroupsList[this.data.groupIndex].groupAvatarUrl = groupAvatarUrl
+        myApi.updateGroupsList(this.data.secretKey, 'secretKey', this.data.group._id)
+        My_GroupsList[groupIndex].secretKey = this.data.secretKey
+        My_GroupsList[groupIndex].nickName = nickName
+        My_GroupsList[groupIndex].groupAvatarUrl = groupAvatarUrl
         wx.setStorageSync('My_GroupsList', My_GroupsList);
 
       } else {
         var group = {
           nickName: nickName,
           groupAvatarUrl: groupAvatarUrl,
-          createTime: myApi.formatTime(new Date),
+          createTime: that.data.createTime,
           membersList: [openId],
-          secretKey: myApi.getRandomCode(4),
+          secretKey: that.data.secretKey,
           stores: []
         }
         groupsList.add({
@@ -103,7 +109,7 @@ Page({
       wx.navigateBack({
         complete: (res) => {
           wx.showToast({
-            title:(that.data.isEdit?'修改':'创建')+ '成功',
+            title: (that.data.isEdit ? '修改' : '创建') + '成功',
           })
         },
       });
@@ -122,6 +128,12 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+    var createTime = myApi.formatTime(new Date)
+    var secretKey = myApi.getRandomCode(4)
+    this.setData({
+      createTime,
+      secretKey
+    })
     const eventChannel = this.getOpenerEventChannel()
     // 监听getGroupData事件，获取上一页面通过eventChannel传送到当前页面的数据
     eventChannel.on('getGroupData', function (data) {
@@ -132,6 +144,8 @@ Page({
         groupIndex: data.groupIndex,
         avatarUrl: group.groupAvatarUrl,
         nickName: group.nickName,
+        createTime: group.createTime,
+        secretKey: group.secretKey,
         isEdit: true
       })
 

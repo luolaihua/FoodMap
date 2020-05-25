@@ -259,7 +259,7 @@ Page({
       });
     }
     this.setData({
-      shareCode: ''
+      secretKey: ''
     })
   },
   /**
