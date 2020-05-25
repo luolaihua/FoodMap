@@ -12,6 +12,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    colorList:app.globalData.ColorList,
     cardCur: 0,
     keywords_array: [],
     store: '',

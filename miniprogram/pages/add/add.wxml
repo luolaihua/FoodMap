@@ -1,8 +1,7 @@
-	
-<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}" isBack="{{true}}">
-  <view slot="backText">返回</view>
-  <view slot="content">添加美食</view>
-</cu-custom>
+	<cu-custom bgColor="bg-gradual-blue" isCustom="{{true}}" isBack="{{true}}">
+		<view slot="backText">返回</view>
+		<view slot="content">添加美食</view>
+	</cu-custom>
 	<view class="cu-form-group">
 		<view class="title">名称:</view>
 		<input placeholder='可在地图上选择' name="name" value='{{store.name}}' bindinput="inputName" />
@@ -92,7 +91,23 @@
 			</block>
 		</van-tabs>
 	-->
+   <view class="modules_box modules_answer_box" wx:for="{{store.special_list}}" wx:key="unique">
+      <view class="modules_input_box">
+         <input bindinput="checkSpecial" class="modules_input" data-index="{{index}}" maxlength="20" placeholder="特色菜{{index+1}}" value="{{item}}"></input>
+      </view>
+      <view bindtap="subSpecial" class="modules_icon_box" data-index="{{index}}">
+         <image class="modules_icon" mode="scaleToFill" src="https://gamesdata.oss-cn-hangzhou.aliyuncs.com/xiaojueding/icon_edit_sub_60.png"></image>
+      </view>			
+   </view>
 
+   <view bindtap="addSpecial" class="modules_box modules_add_box" wx:if="{{store.special_list.length<10}}">
+      <view class="modules_word_box">
+         <view class="modules_word">添加美食菜品</view>
+      </view>
+	    <view class="modules_icon_box">
+         <image class="modules_icon" mode="scaleToFill" src="https://gamesdata.oss-cn-hangzhou.aliyuncs.com/xiaojueding/icon_edit_add_60.png"></image>
+      </view>		
+   </view>
 
 <!---->
 	<view class="cu-bar bg-white margin-top">
@@ -100,12 +115,12 @@
 			图片上传
 		</view>
 		<view class="action">
-			{{fileList.length}}/6
+			{{fileList.length}}/9
 		</view>
 	</view>
 	<view class="cu-form-group upImage">
 		<van-uploader
-		 max-count='6'
+		 max-count='9'
 		 bind:delete="DelImg"
 		 file-list="{{ fileList }}"
 		 bind:after-read="afterRead"
@@ -117,6 +132,3 @@
 
 
 	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
-
-
-

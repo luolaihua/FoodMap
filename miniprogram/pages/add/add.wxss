@@ -40,3 +40,97 @@ textarea{
   height:60rpx;
   width:60rpx
 }
+.modules_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100% ;
+  height: 60px;
+  margin-top: 15px;
+  background-color:white;
+}
+
+.modules_icon_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 60px;
+  width: 60px;
+}
+
+.modules_icon {
+  width: 20px;
+  height: 20px;
+}
+
+.modules_input_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 40px);
+  height: 60px;
+}
+
+.modules_input {
+  width: 100%;
+  font-size: 15px;
+  color: #000000;
+  padding-left: 20px;
+}
+
+@keyframes btn_rotate {
+  0% {
+      transform: rotate(0deg);
+  }
+
+  100% {
+      transform: rotate(360deg);
+  }
+}
+
+.modules_answer_box:hover .modules_icon_box {
+  animation: btn_rotate 0.3s 0s linear 1 normal;
+}
+
+.modules_word_box {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: calc(100% - 60px);
+  height: 100%;
+}
+
+.modules_word {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding-left: 20px;
+  font-size: 30rpx;
+}
+
+.modules_save_box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  color: #007aff;
+  border: 1px solid #007aff;
+  box-sizing: border-box;
+  background-color: #ffffff;
+}
+
+@keyframes word_rotate {
+  0% {
+      transform: rotateX(0deg);
+  }
+
+  100% {
+      transform: rotateX(360deg);
+  }
+}
+
+.modules_save_box:hover .modules_icon_box {
+  animation: word_rotate 0.3s 0s linear 1 normal;
+}

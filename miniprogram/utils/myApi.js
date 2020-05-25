@@ -428,13 +428,13 @@ function getGroupsList(openId) {
   db.collection('groupsList').where({
     _openid: openId
   }).get().then(res => {
-    console.log('my', res.data)
+    //console.log('my', res.data)
     wx.setStorageSync('My_GroupsList', res.data)
   })
   db.collection('groupsList').where({
     membersList: _.all([openId])
   }).get().then(res => {
-    console.log('joined', res.data)
+   // console.log('joined', res.data)
     wx.setStorageSync('Joined_GroupsList', res.data)
   })
 }

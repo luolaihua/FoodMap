@@ -109,3 +109,13 @@ text {
   left: 40rpx;
   bottom: 240rpx;
 }
+.special_list{
+  width: 60vw;
+  
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap:wrap ;
+}
+.special-item{
+  margin:0 6px 10px;
+}

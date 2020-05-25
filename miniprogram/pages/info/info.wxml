@@ -54,9 +54,18 @@
 		<view class="cu-tag bg-purple round" wx:if="{{store.tagList.length>1}}">{{store.tagList[1]}}</view>
 		<view class="cu-tag bg-cyan round" wx:if="{{store.tagList.length>2}}">{{store.tagList[2]}}</view>
 	</view>
-	<view class="notes">
+	<view class="notes" wx:if="{{store.special_list.length>0}}">
 		<text class="notes-title">店铺地址：</text>
 		<text selectable="{{true}}">{{store.address}}</text>
+	</view>
+	<view class="notes">
+		<text class="notes-title">特色菜品：</text>
+		<view class="padding-xs special_list">
+		<block  wx:for="{{store.special_list}}"wx:key="index">
+			<view class="cu-tag line-{{colorList[index].name}} special-item">{{item}}</view>
+		</block>
+   			
+  		</view>
 	</view>
 	<view class="notes" wx:if="{{store.notes!=''}}">
 		<text class="notes-title">个人点评：</text>

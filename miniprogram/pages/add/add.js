@@ -56,8 +56,58 @@ Page({
         borderRadius: 30,
       },
       images: [],
-      tagList: []
+      tagList: [],
+      //---------增加菜品
+      special_list: []
+    },
+
+
+  },
+  //输入菜品
+  checkSpecial(e) {
+    var that = this,
+      value = e.detail.value,
+      index = e.currentTarget.dataset.index,
+      store = that.data.store
+    for (let i in store.special_list) {
+      if (index == i) {
+        store.special_list[i] = value
+      }
     }
+    // console.log(store)
+
+    // console.log(special_list)
+    that.setData({
+      store
+    })
+  },
+  //增加
+  addSpecial() {
+    var that = this,
+      store = that.data.store
+    // console.log(special_list)
+    store.special_list.push('');
+    //console.log(store)
+
+    that.setData({
+      store
+    })
+  },
+  //删除
+  subSpecial(e) {
+    var that = this,
+      index = e.currentTarget.dataset.index,
+      store = that.data.store
+    for (let i in store.special_list) {
+      if (i == index) {
+        store.special_list.splice(i, 1);
+        break;
+      }
+    }
+    //console.log(store)
+    that.setData({
+      store
+    })
   },
   chooseLocation: function (event) {
     var that = this
@@ -258,7 +308,8 @@ Page({
     this.setData({
       requestType
     })
-    console.log('options', options)
+    // console.log('options', options)
+    //是编辑店铺还是增加店铺
     if (requestType == 'editStore') {
       //使用eventChannel来通信
       const eventChannel = this.getOpenerEventChannel()
@@ -313,7 +364,7 @@ Page({
         default:
           break;
       }
-      console.log('已存在店铺：', storesArr)
+      // console.log('已存在店铺：', storesArr)
       this.setData({
         groupId,
         requestType,
@@ -404,11 +455,11 @@ Page({
       eventChannel1.emit('editStore', {
         store: store
       });
-    setTimeout(() => {
-      wx.navigateBack({
-        delta: 1
-      });
-    }, 500);
+      setTimeout(() => {
+        wx.navigateBack({
+          delta: 1
+        });
+      }, 500);
 
 
 
@@ -420,7 +471,6 @@ Page({
       this.data.store.createTime = myApi.formatTime(date)
       this.data.store.id = date.getTime()
       this.data.store.images = this.data.images
-
       //更新数据
       stores.push(this.data.store)
       //判断是添加到哪里
@@ -470,7 +520,7 @@ Page({
     var imgList = this.data.imgList
     var requestType = this.data.requestType
     var index = e.detail.index
-    var that =this
+    var that = this
     console.log(fileList, imgList)
     wx.showModal({
       title: '删除图片',
@@ -481,16 +531,16 @@ Page({
         if (res.confirm) {
           if (requestType == 'editStore') {
             var store = this.data.store
-            var length = fileList.length-imgList.length//原来就有的图片数目
-             fileList.splice(index, 1)
-            if(index+1<=length){
+            var length = fileList.length - imgList.length //原来就有的图片数目
+            fileList.splice(index, 1)
+            if (index + 1 <= length) {
               //说明删除的是原来的照片
-             store.images.splice(index,1)
+              store.images.splice(index, 1)
 
-            }else{
+            } else {
               //删除的是新添加的
               if (fileList[index].status == 'done') {
-                var len = index-length
+                var len = index - length
                 imgList.splice(len, 1);
               }
             }
