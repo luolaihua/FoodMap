@@ -25,6 +25,7 @@ Page({
     ID: '',
     action: '',
     isShowShareBtn: true,
+    isShowEditBtn: true,
     isShowPosterModal: false, //是否展示海报弹窗
     posterImageUrl: "", //海报地址
   },
@@ -150,7 +151,7 @@ Page({
     })
   },
 
-  // cardSwiper
+  // 图片滑动
   cardSwiper(e) {
     this.setData({
       cardCur: e.detail.current
@@ -222,8 +223,11 @@ Page({
 
       //通过friendsIndex来判断是否显示约饭按钮
       var isShowShareBtn = true
+      var isShowEditBtn = true
+      //从好友列表过来就不显示分享按钮
       if (friendsIndex != 'self' && friendsIndex != 'MyGroup' && friendsIndex != 'JoinedGroup') {
         isShowShareBtn = false
+        isShowEditBtn=false
       }
 
       var action = ''
@@ -241,6 +245,11 @@ Page({
           action = 'Group'
           //ID = data.groupId
           ID = data.secretKey
+          //群成员鉴权，是否有权限编辑
+          var openId = wx.getStorageSync('openId')
+          if(openId!=store.creatorId){
+            isShowEditBtn = false
+          }
         }
 
         //判断在收藏店铺id列表中是否有当前店铺id存在
@@ -273,7 +282,8 @@ Page({
           friendsIndex,
           store_id,
           ID,
-          isShowShareBtn
+          isShowShareBtn,
+          isShowEditBtn
         })
       })
     }

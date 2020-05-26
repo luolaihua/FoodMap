@@ -1,5 +1,9 @@
 // miniprogram/pages/group/showGroup/showGroup.js
 const myApi = require('../../../utils/myApi')
+/**
+ * 美食动态删除权限：群主可以删除所有，成员只能删除自己发的
+ * 美食动态编辑权限：所有人只能编辑自己发的
+ */
 Page({
 
   /**
@@ -8,13 +12,12 @@ Page({
   data: {
     groupName: '',
     groupId: '',
-    groupType: 'my',
     GroupsList: [],
     group: {},
-    type: 'my',
+    type: 'MyGroup',
     isStar: true
   },
-  toFoodMap(){
+  toFoodMap() {
     var stores = this.data.group.stores
     wx.navigateTo({
       url: '../../foodMap/foodMap',
@@ -117,8 +120,8 @@ Page({
         // 通过eventChannel向被打开页面传送数据
         res.eventChannel.emit('getStore', {
           store: store,
-          groupId:groupId,
-          secretKey:secretKey
+          groupId: groupId,
+          secretKey: secretKey
         })
       }
     });
@@ -128,6 +131,7 @@ Page({
     var groupId = this.data.groupId
     var group = this.data.group
     var that = this
+    var type = this.data.type
 
     wx.showModal({
       title: '是否删除？',
@@ -139,15 +143,33 @@ Page({
       confirmColor: '#3CC51F',
       success: (result) => {
         if (result.confirm) {
-          group.stores.splice(index, 1)
-          myApi.updateGroupsList(group.stores, 'stores', groupId)
-          wx.showToast({
-            title: '删除成功',
-            duration: 800,
-          });
-          that.setData({
-            group
-          })
+          function deleteGroup() {
+            group.stores.splice(index, 1)
+            myApi.updateGroupsList(group.stores, 'stores', groupId)
+            wx.showToast({
+              title: '删除成功',
+              duration: 800,
+            });
+            that.setData({
+              group
+            })
+          }
+          //需要进行用户鉴权,群主都可删
+          if (type == 'MyGroup') {
+            deleteGroup()
+          }else{
+            var openId = wx.getStorageSync('openId');
+            //当前用户id等于店铺创建者id才可删除
+            if(openId==group.stores[index].creatorId){
+              deleteGroup()
+            }else{
+              wx.showToast({
+                title: '无权限删除',
+                icon: 'none'
+              });
+            }
+          }
+
         }
       },
       fail: () => {},

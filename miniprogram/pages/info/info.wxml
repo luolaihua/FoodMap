@@ -75,7 +75,7 @@
 <image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{isStar?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
 
 <button wx:if="{{isShowShareBtn}}" class='button' open-type="share">约饭</button>
-<button wx:if="{{isShowShareBtn}}" class='button2' bindtap = "toAdd">编辑</button>
+<button wx:if="{{isShowEditBtn}}" class='button2' bindtap = "toAdd">编辑</button>
 <button wx:if="{{isShowShareBtn}}" class='button3' bindtap="onCreatePoster">分享</button>
 
 <!-- 生成海报组件 -->

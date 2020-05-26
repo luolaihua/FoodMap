@@ -35,6 +35,8 @@ Page({
       id: '',
       creatorName: '',
       creatorAvatar: '',
+      //创建者ID用于美食圈子动态鉴权
+      creatorId: '',
       createTime: '',
       address: '',
       name: '',
@@ -42,7 +44,6 @@ Page({
       price_per: 50,
       keywords: '',
       notes: '',
-      thumbs_up: 1,
       isStar: false,
       iconPath: "/images/food.png",
       longitude: '',
@@ -380,12 +381,14 @@ Page({
 
   createItem: async function (event) {
     let that = this
-    var name = this.data.store.name
-    let content = this.data.store.notes
+    var store = this.data.store
+    /**
+     * 店铺内容预处理
+     */
 
     //安全检测评论内容
-    if (content.length != 0) {
-      var isSafe = await myApi.doMsgSecCheck('content')
+    if (store.notes.length != 0) {
+      var isSafe = await myApi.doMsgSecCheck(store.notes)
       //console.log(isSafe)
       if (!isSafe) {
         wx.showToast({
@@ -394,15 +397,25 @@ Page({
         });
         return
       }
-
     }
-    if (name.length == 0) {
+    //名称不能为空
+    if (store.name.length == 0) {
       wx.showToast({
         title: '请选择店铺',
         icon: 'none',
       });
       return
     }
+    //检查特色菜是否有空项目
+    store.special_list.forEach((element,index) => {
+      if(element==""){
+        store.special_list.splice(index,1)
+      }
+    });
+    this.setData({
+      store
+    })
+
     that.uploadData()
   },
   //上传图片
@@ -446,8 +459,19 @@ Page({
   },
   addData: async function () {
     var requestType = this.data.requestType
+
+    //无论是编辑还是创建，创建者都要是该用户
+    var creatorId = wx.getStorageSync('openId')
+    var creatorName = wx.getStorageSync('nickName')
+    var creatorAvatar = wx.getStorageSync('avatarUrl')
+
+
     if (requestType == 'editStore') {
       var store = this.data.store
+      //编辑过了之后,创建者也变了
+      store.creatorId = creatorId
+      store.creatorName = creatorName
+      store.creatorAvatar = creatorAvatar
       if (this.data.images.length != 0) {
         store.images = store.images.concat(this.data.images)
       }
@@ -464,10 +488,11 @@ Page({
 
 
     } else {
-      var stores = this.data.stores
       var date = new Date()
-      this.data.store.creatorName = wx.getStorageSync('nickName')
-      this.data.store.creatorAvatar = wx.getStorageSync('avatarUrl')
+      var stores = this.data.stores
+      this.data.store.creatorId = creatorId
+      this.data.store.creatorName = creatorName
+      this.data.store.creatorAvatar = creatorAvatar
       this.data.store.createTime = myApi.formatTime(date)
       this.data.store.id = date.getTime()
       this.data.store.images = this.data.images
@@ -485,18 +510,6 @@ Page({
             }
           })
           break;
-          /*       case 'MyGroup':
-                  await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
-                  setTimeout(() => {
-                    wx.showToast({
-                      title: '创建成功！',
-                      icon: 'success',
-                      success: res => {
-                        wx.navigateBack({})
-                      }
-                    })
-                  }, 500);
-                  break; */
         default:
           await myApi.updateGroupsList(stores, 'stores', this.data.groupId)
           setTimeout(() => {

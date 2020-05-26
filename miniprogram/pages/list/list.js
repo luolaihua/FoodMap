@@ -52,6 +52,7 @@ Page({
     isShowPoster: false,
 
   },
+  //TODO 收藏的店铺不能被导入圈子动态
   toFoodMap(){
     var stores = this.data.storesArr
     wx.navigateTo({
