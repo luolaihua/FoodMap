@@ -35,9 +35,9 @@
 
 <view class="modules_box no-margin-bottom no-margin-top" wx:if="{{isGetMembersDetail}}" wx:for="{{membersDetailList}}"wx:key="index">
 	<view class="modules_icon_box">
-		<image class="modules_icon round" mode="scaleToFill" src="{{item.avatarUrl}}" />
+		<image class="modules_icon round" id="{{index}}" mode="scaleToFill" src="{{item.avatarUrl}}" />
 	</view>
-	<view class="modules_input_box">
+	<view class="modules_input_box" id="{{index}}" bind:longpress="deleteMember">
 		<input disabled="{{true}}" class="modules_show" value="{{item.nickName}}"/>
 	</view>
 </view>

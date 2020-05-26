@@ -17,37 +17,70 @@ Page({
     isEdit: false,
     group: {},
     groupIndex: 0,
-    isGetMembersDetail:false,
-    membersDetailList:[]
+    isGetMembersDetail: false,
+    membersDetailList: []
   },
   //获取成员详情
-  getMembersDetail(){
+  getMembersDetail() {
     var isGetMembersDetail = this.data.isGetMembersDetail
-    if(!isGetMembersDetail){
-    wx.showLoading({
-      title: '加载中',
-    });
-    // 获取成员详情需要去云函数
-    var that = this
-    var membersList = this.data.group.membersList
-    console.log(membersList)
-    wx.cloud.callFunction({
-      name: 'checkSafeContent',
-      data: {
-        requestType: 'getMembersDetail',
-        membersList: membersList
-      }
-    }).then(res=>{
-      wx.hideLoading();
-      console.log(res)
-      that.setData({
-        membersDetailList:res.result
+    if (!isGetMembersDetail) {
+      wx.showLoading({
+        title: '加载中',
+      });
+      // 获取成员详情需要去云函数
+      var that = this
+      var membersList = this.data.group.membersList
+      console.log(membersList)
+      wx.cloud.callFunction({
+        name: 'checkSafeContent',
+        data: {
+          requestType: 'getMembersDetail',
+          membersList: membersList
+        }
+      }).then(res => {
+        wx.hideLoading();
+        console.log(res)
+        that.setData({
+          membersDetailList: res.result,
+          isGetMembersDetail: !that.data.isGetMembersDetail
+        })
       })
+    }else{
+          this.setData({
+      isGetMembersDetail: !this.data.isGetMembersDetail
     })
     }
-    this.setData({
-      isGetMembersDetail:!this.data.isGetMembersDetail
-    })
+
+
+  },
+  deleteMember(e){
+    console.log(e)
+    var that = this
+    var index =Number(e.currentTarget.id) 
+    var group = this.data.group
+    var membersDetailList = this.data.membersDetailList
+    wx.showModal({
+      title: '删除成员',
+      content: '是否删除成员'+membersDetailList[index].nickName,
+      showCancel: true,
+      cancelText: '取消',
+      cancelColor: '#000000',
+      confirmText: '确定',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if(result.confirm){
+          membersDetailList.splice(index,1)
+          group.membersList.splice(index,1)
+          myApi.updateGroupsList(group.membersList,'membersList',group._id)
+          that.setData({
+            membersDetailList,
+            group
+          })
+        }
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
 
   },
   changeAvatar: function () {
@@ -76,16 +109,22 @@ Page({
     })
   },
   refreshCode() {
-/*     if (this.data.isEdit) {
-      var My_GroupsList = wx.getStorageSync('My_GroupsList');
-      myApi.updateGroupsList(newCode, 'secretKey', this.data.group._id)
-      My_GroupsList[this.data.groupIndex].secretKey = newCode
-      wx.setStorageSync('My_GroupsList', My_GroupsList);
-    }
- */
+    /*     if (this.data.isEdit) {
+          var My_GroupsList = wx.getStorageSync('My_GroupsList');
+          myApi.updateGroupsList(newCode, 'secretKey', this.data.group._id)
+          My_GroupsList[this.data.groupIndex].secretKey = newCode
+          wx.setStorageSync('My_GroupsList', My_GroupsList);
+        }
+     */
     this.setData({
       secretKey: myApi.getRandomCode(4)
     })
+  },
+  copyCode(){
+    wx.setClipboardData({
+      data: this.data.group.secretKey,
+
+    });
   },
   async createGroup() {
     var nickName = this.data.nickName

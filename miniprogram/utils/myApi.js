@@ -442,7 +442,7 @@ function getGroupsList(openId) {
  * 更新圈子数据
  * @param {*需要更新的数据} data 
  * @param {*数据类型} type 
- * @param {*集合的id} id 
+ * @param {*圈子的_id} id 
  */
 async function updateGroupsList(data, type, id) {
   const groupsList = db.collection('groupsList')
@@ -467,6 +467,9 @@ async function updateGroupsList(data, type, id) {
     case 'secretKey':
       updateData.secretKey = data
       break;
+      case 'membersList':
+        updateData.membersList = data
+        break;
     default:
       break;
   }
