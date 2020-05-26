@@ -118,6 +118,14 @@ Page({
     var starStoreIdList = wx.getStorageSync("starStoreIdList")
     //未收藏状态就收藏
     if (!isStar) {
+      //压入店铺列表前预处理，把店铺创建者改成自己
+      var creatorId = wx.getStorageSync('openId')
+      var creatorName = wx.getStorageSync('nickName')
+      var creatorAvatar = wx.getStorageSync('avatarUrl')
+      store.creatorId = creatorId
+      store.creatorName = creatorName
+      store.creatorAvatar = creatorAvatar
+
       // 压入我的店铺
       myStores.push(store)
       //置零表示已收藏

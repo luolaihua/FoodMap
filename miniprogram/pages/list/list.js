@@ -52,7 +52,7 @@ Page({
     isShowPoster: false,
 
   },
-  //TODO 收藏的店铺不能被导入圈子动态
+  //TODO 收藏的店铺不能被导入圈子动态,把收藏的店铺隐藏？
   toFoodMap(){
     var stores = this.data.storesArr
     wx.navigateTo({
