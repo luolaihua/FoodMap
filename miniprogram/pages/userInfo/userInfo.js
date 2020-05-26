@@ -11,7 +11,7 @@ Page({
   data: {
     nickName: '',
     avatarUrl: '',
-    shareCode:'',
+    shareCode: '',
     feedBackUrl: imgUrl.feedbackUrl,
     editUrl: imgUrl.bigWheel_edit,
     peopleUrl: imgUrl.human,
@@ -20,23 +20,137 @@ Page({
     openId: '',
     isEditName: false,
     dateSlogan: '',
+    whereToEatList: [],
+    defaultImg: imgUrl.share,
+    isShowWhereToEat: false,
+    storeData: {}
   },
-  copyCode(){
-    wx.setClipboardData({
-      data: this.data.shareCode,
-      success: (result)=>{
-        
-      },
-      fail: ()=>{},
-      complete: ()=>{}
+  hideWhereToEat() {
+    this.setData({
+      isShowWhereToEat: false
+    })
+  },
+  nextOne() {
+    var whereToEatList = this.data.whereToEatList
+    var randNum = Math.floor(Math.random() * whereToEatList.length)
+    var storeData = whereToEatList[randNum]
+    //console.log(storeData)
+    this.setData({
+      storeData
+    })
+  },
+  chooseIt() {
+    var storeData = this.data.storeData
+    wx.navigateTo({
+      url: '../info/info?friendsIndex=' + storeData.friendsIndex,
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: storeData.store,
+          groupId: storeData.groupId,
+          secretKey: storeData.secretKey
+        })
+      }
     });
   },
-  refreshCode(){
-    var newCode  = myApi.getRandomCode(6)
-    console.log(newCode)
-    myApi.updateUserInfo(newCode,'shareCode')
+  whereToEat() {
+
+    var whereToEatList = this.data.whereToEatList
+    if (whereToEatList.length == 0) {
+      var My_GroupList = wx.getStorageSync('My_GroupsList');
+      var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+      var storesArr = wx.getStorageSync('storesArr');
+      //从三个地方取店铺，
+/*       My_GroupList.forEach(group => {
+        group.stores.forEach(store => {
+          var tempData = {}
+          tempData.store = store
+          tempData.groupId = group._id
+          tempData.secretKey = group.secretKey
+          tempData.friendsIndex = 'MyGroup'
+          whereToEatList.push(tempData)
+        });
+      })
+      Joined_GroupsList.forEach(group => {
+        group.stores.forEach(store => {
+          var tempData = {}
+          tempData.store = store
+          tempData.groupId = group._id
+          tempData.secretKey = group.secretKey
+          tempData.friendsIndex = 'JoinedGroup'
+          whereToEatList.push(tempData)
+        });
+      }) */
+      storesArr.forEach(store => {
+        var tempData = {}
+        tempData.store = store
+        tempData.groupId = 'null'
+        tempData.secretKey = 'null'
+        tempData.friendsIndex = 'self'
+        whereToEatList.push(tempData)
+      });
+      console.log(whereToEatList)
+    }
+    var randNum = Math.floor(Math.random() * whereToEatList.length)
+    var storeData = whereToEatList[randNum]
+    //console.log(storeData)
     this.setData({
-      shareCode:newCode
+      storeData,
+      whereToEatList,
+      isShowWhereToEat: true
+    })
+    /*     wx.navigateTo({
+          url: '../info/info?friendsIndex=' + storeData.friendsIndex,
+          success: function (res) {
+            // 通过eventChannel向被打开页面传送数据
+            res.eventChannel.emit('getStore', {
+              store: storeData.store,
+              groupId: storeData.groupId,
+              secretKey: storeData.secretKey
+            })
+          }
+        }); */
+    /*     var newList = []
+        //去除重复的店铺
+        whereToEatList.forEach(store=>{
+          var isPush = true
+          newList.forEach(item=>{
+            if(item.name==store.name){
+              isPush =false
+            }
+          })
+          if(isPush){
+            newList.push(store)
+          }
+        })
+        newList.sort(myApi.randomSort) */
+    //模拟从群列表或者个人列表过来的状态
+
+
+
+  },
+  /**
+   * 复制秘钥
+   */
+  copyCode() {
+    wx.setClipboardData({
+      data: this.data.shareCode,
+      success: (result) => {
+
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+  },
+  /**
+   * 更新秘钥
+   */
+  refreshCode() {
+    var newCode = myApi.getRandomCode(6)
+    console.log(newCode)
+    myApi.updateUserInfo(newCode, 'shareCode')
+    this.setData({
+      shareCode: newCode
     })
   },
   /**
@@ -49,9 +163,9 @@ Page({
       dateSlogan
     })
   },
-  clearSlogan() { 
+  clearSlogan() {
     this.setData({
-      dateSlogan:''
+      dateSlogan: ''
     })
     wx.setStorageSync('dateSlogan', '');
   },

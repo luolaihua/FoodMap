@@ -423,6 +423,7 @@ Page({
     wx.showLoading({
       title: '安全检测中...',
     })
+    var that = this
     var tempFilePaths = this.data.imgList
     let items = [];
     for (const tempFilePath of tempFilePaths) {
@@ -444,12 +445,25 @@ Page({
       for (const file of result) {
         urls.push(file.fileID);
       }
-      this.setData({
-        images: urls
-      }, res => {
-        wx.hideLoading();
-        this.addData()
+      //将fileID换成https链接
+      wx.cloud.getTempFileURL({
+        fileList: urls
+      }).then(res => {
+        var tempUrlList=[]
+        // get temp file URL
+        console.log(res.fileList)
+        res.fileList.forEach(item=>{
+          tempUrlList.push(item.tempFileURL)
+        })
+
+        that.setData({
+          images: tempUrlList
+        }, res => {
+          wx.hideLoading();
+          that.addData()
+        })
       })
+
     }).catch(() => {
       wx.showToast({
         title: '上传图片错误',

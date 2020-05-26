@@ -181,7 +181,7 @@ Page({
       })
     }
 
-    //判断是不是从约饭那里过来的
+    //判断是不是从约饭/分享那里过来的
     if (options.action == 'List' || options.action == 'Group') {
       var ID = options.ID
       store_id = options.store_id
@@ -223,11 +223,15 @@ Page({
         store: store,
         store_id,
         ID,
-        action:options.action
+        action:options.action,
+        isShowEditBtn:false
       })
     } else {
       //下面是正常情况
       var friendsIndex = options.friendsIndex
+      /**
+       * friendsIndex取值:MyGroup  self  JoinedGroup  01234...
+       */
 
       //通过friendsIndex来判断是否显示约饭按钮
       var isShowShareBtn = true
@@ -246,7 +250,8 @@ Page({
         // console.log(data)
         store = data.store
         //console.log(data.groupId)
-        if (data.groupId == undefined) {
+        //分享美食只能是个人美食列表或者群动态
+        if (data.groupId == 'null') {
           action = 'List'
           ID = wx.getStorageSync('shareCode');
         } else {
@@ -269,7 +274,10 @@ Page({
         var shareImage = that.data.shareImage
         //设置分享图片
         if (store.images.length != 0) {
-          wx.cloud.getTempFileURL({
+         
+            shareImage=store.images[0]
+          
+/*           wx.cloud.getTempFileURL({
             fileList: [store.images[0]],
             success: res => {
               console.log(res)
@@ -281,7 +289,7 @@ Page({
             fail: error => {
               console.error("出现Bug了", error)
             }
-          })
+          }) */
         }
         that.setData({
           action,

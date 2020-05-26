@@ -47,6 +47,7 @@
   width: 40px;
   align-items: center;
   justify-content: center;
+ 
 }
 button{
   border: none;
@@ -54,7 +55,15 @@ button{
 .btn-box{
     justify-content: space-between;
 }
-
+.showWhere{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.showTitle{
+  display: flex;
+  justify-content: center;
+}
 .modules_icon_box {
   height: 60px;
   width: 60px;

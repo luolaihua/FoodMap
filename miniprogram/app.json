@@ -1,15 +1,15 @@
 {
   "pages": [
- 
+
      "pages/map/map",       
      "pages/add/add",   
- 
+    "pages/userInfo/userInfo",  
   "pages/group/group",      
     "pages/foodMap/foodMap",
     "pages/group/showGroup/showGroup",
     "pages/group/createGroup/createGroup",
     "pages/imageEdit/imageEdit",
-    "pages/userInfo/userInfo",
+
     "pages/friends/friends",
 
     "pages/info/info",
