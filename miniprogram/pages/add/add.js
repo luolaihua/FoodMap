@@ -1,8 +1,5 @@
 const app = getApp();
 const myApi = require('../../utils/myApi')
-const db = wx.cloud.database()
-const store = db.collection('store');
-const userInfo = db.collection('userInfo')
 const imgUrl = require('../../utils/imgUrl')
 var tabList = ['火锅', '奶茶', '烧烤', '串串', '水果', '自助', '海鲜', '烤鸭', '烤鸡', '烤鱼', '小吃', '烧饼', '早点', '水饺', '馄饨', '面条', '香锅', '拌饭', '麻辣烫', '黄焖鸡']
 Page({
@@ -11,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg1,
     foodIconUrl: "/images/food.png",
     foodIconList: imgUrl.foodIconLocal,
     rateValue: 3.0,

@@ -13,11 +13,7 @@
   width: 100%;
   width: 100%;
 }
-.noData{
-  position: relative;
-  top: 50vh;
-  text-align: center;
-}
+
 .input-box{
   height: 30vh;
   width: 80vw;

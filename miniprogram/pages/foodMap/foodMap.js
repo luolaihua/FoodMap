@@ -1,5 +1,6 @@
 // miniprogram/pages/foodMap/foodMap.js
 const config = require('../../config.js');
+const imgUrl = require('../../utils/imgUrl')
 const app = getApp();
 Page({
 
@@ -7,6 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg12,
     mapHeight: app.globalData.MapHeight,
     setting: {
       skew: 0,

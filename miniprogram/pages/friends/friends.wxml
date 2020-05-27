@@ -1,5 +1,5 @@
 <!--miniprogram/pages/friends/friends.wxml-->
-<cu-custom bgColor="bg-gradual-purple" isCustom="{{true}}"  isBack="{{isBack}}">
+<cu-custom bgColor="bg-gradual-purple" bgImage="{{bar_bgImg}}" isCustom="{{true}}"  isBack="{{isBack}}">
   <view slot="backText">返回</view>
   <view slot="content">添加美食店铺</view>
 </cu-custom>

@@ -1,10 +1,10 @@
 <!--miniprogram/pages/userInfo/userInfo.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}"isBack="{{true}}">
+<cu-custom bgColor="bg-white" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="backText">返回</view>
 	<view slot="content">个性化设置</view>
 </cu-custom>
-<view class="userInfo" hover-class="none" hover-stop-propagation="false">
-	<image bindtap="changeAvatar" src="{{avatarUrl==''?'../../images/UNlogin.png':avatarUrl}}" class="avatar" />
+<view class="userInfo bg-img" style="background-image: url({{bar_bgImg2}});" hover-class="none" hover-stop-propagation="false">
+	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar" />
 	<view class="nickName" hover-class="none" hover-stop-propagation="false">
 		<input focus="{{true}}" style="background-color:{{isEditName?'thistle':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName==''?'美食网友':nickName}}"></input>
 		<image src="{{editUrl}}" class="editName" mode="scaleToFill" bindtap = "editName"/>
@@ -69,11 +69,13 @@
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>
 </view>
-
+<!--
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="contact">
 	<view class="modules_title_box">机器人客服</view>
 	<image class="modules_icon" mode="scaleToFill" src="{{peopleUrl}}" />
 </button>
+-->
+
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="feedback">
 	<view class="modules_title_box">意见反馈</view>
 	<image class="modules_icon_small" mode="scaleToFill" src="{{feedBackUrl}}" />

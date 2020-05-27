@@ -10,6 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg7,
     groupId: '',
     isAddItemToGroup: false,
     modalName: '',

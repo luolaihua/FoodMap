@@ -12,6 +12,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg6,
     colorList:app.globalData.ColorList,
     cardCur: 0,
     keywords_array: [],

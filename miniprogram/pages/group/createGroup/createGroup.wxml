@@ -1,8 +1,8 @@
 <!--miniprogram/pages/group/createGroup/createGroup.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg1}}" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="content">{{isEdit?'编辑':'创建'}}美食圈子</view>
 </cu-custom>
-<view class="userInfo bg-white">
+<view class="userInfo bg-image" style="background-image: url({{bar_bgImg2}});">
 	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar bg-grey light" />
 </view>
 <view class="modules_box">

@@ -16,40 +16,9 @@
 		<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
 		<cover-view class="up" bindtap="hideMe" />
 	</block>
-	<!-- 管理入口 -->
-	<!--
-		<cover-view class="cover">
-		<button
-		 class='button'
-     bindtap = "toAdd"
-		>添加美食
-		</button>
-	</cover-view>
-	<cover-view class="button show_all" bindtap="viewAll" bindlongpress='toList'>查看美食</cover-view>
-
-	-->
-
-  <!--
-  	<cover-view class="cover">
-		<button
-		 class='button'
-		 open-type='getUserInfo'
-		 bindgetuserinfo='getUserInfo'
-		 bindlongpress='getOpenID'
-		 lang='zh_CN'
-		>添加美食
-		</button>
-	</cover-view>-->
-	<!-- 搜索按钮 
-        <cover-view wx:else class="cover">
-      <button class='button' bindtap='search'>搜索</button>
-    </cover-view>
-    -->
-
-	<!-- 查看全部 -->
-
 </map>
 <view>
+<view class="coverPage"></view>
 <view class="img-box" hover-class="none" hover-stop-propagation="false"animation="{{animAddFriends}}" id="toFriends" bindtap="toFunctionPages">
 	 <image src="../../images/addFriends.png" class="img" ></image>
 	 美食好友

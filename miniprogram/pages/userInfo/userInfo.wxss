@@ -40,7 +40,9 @@
   font-size: 18px;
   margin-right: 20rpx;
 }
-
+page{
+  background-color: white;
+}
 .modules_switch_box {
   display: flex;
   height: 60px;
@@ -82,9 +84,9 @@ button{
 }
 .avatar {
   border-radius: 50%;
-  width: 8vh;
-  height: 8vh;
-  margin: 3vh;
+  width: 10vh;
+  height: 10vh;
+  margin: 2vh;
 }
 .userInfo{
   width: 100vw;

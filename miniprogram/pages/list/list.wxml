@@ -1,4 +1,4 @@
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}"isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink"  bgImage="{{bar_bgImg}}" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="backText">返回</view>
 	<view slot="content">{{isAddItemToGroup?'添加店铺到美食圈子':(friendsIndex=='self'?'我的美食列表':"好友的美食列表")}}</view>
 </cu-custom>

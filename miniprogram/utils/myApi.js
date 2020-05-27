@@ -81,7 +81,8 @@ async function doImgSecCheck(ImageUrl, type) {
     api: 'imgSecCheck',
     data: {
       "Action": "ImageModeration",
-      "Scenes": ["PORN", "POLITICS", "TERRORISM", "TEXT"],
+     // "Scenes": ["PORN", "POLITICS", "TERRORISM", "TEXT"],
+      "Scenes": ["PORN", "POLITICS", "TERRORISM"],
       "ImageUrl": ImageUrl,
       "ImageBase64": "",
       "Config": "",
@@ -95,9 +96,10 @@ async function doImgSecCheck(ImageUrl, type) {
     var POLITICS = res.data.Response.PoliticsResult.Suggestion == "PASS" ? true : false
     var PORN = res.data.Response.PornResult.Suggestion == "PASS" ? true : false
     var TERRORISM = res.data.Response.TerrorismResult.Suggestion == "PASS" ? true : false
-    var TEXT = res.data.Response.TextResult.Suggestion == "PASS" ? true : false
-    console.log('POLITICS, PORN, TERRORISM, TEXT', POLITICS, PORN, TERRORISM, TEXT)
-    if (POLITICS && PORN && TERRORISM && TEXT) {
+   // var TEXT = res.data.Response.TextResult.Suggestion == "PASS" ? true : false
+   //console.log('POLITICS, PORN, TERRORISM, TEXT', POLITICS, PORN, TERRORISM, TEXT)
+   console.log('POLITICS, PORN, TERRORISM', POLITICS, PORN, TERRORISM)
+    if (POLITICS && PORN && TERRORISM ) {
 
       console.log('图片内容安全')
       return true

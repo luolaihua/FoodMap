@@ -1,5 +1,6 @@
 // miniprogram/pages/group/showGroup/showGroup.js
 const myApi = require('../../../utils/myApi')
+const imgUrl = require('../../../utils/imgUrl')
 /**
  * 美食动态删除权限：群主可以删除所有，成员只能删除自己发的
  * 美食动态编辑权限：所有人只能编辑自己发的
@@ -10,6 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg4,
     groupName: '',
     groupId: '',
     GroupsList: [],

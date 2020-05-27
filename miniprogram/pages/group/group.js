@@ -1,5 +1,6 @@
 // miniprogram/pages/group/group.js
 const myApi = require('../../utils/myApi')
+const imgUrl = require('../../utils/imgUrl')
 const db = wx.cloud.database()
 const _ = db.command
 const groupsList = db.collection('groupsList')
@@ -9,6 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg:imgUrl.bar_bg5,
     modalName: '',
     TabCur: 0,
     tabList: ['创建的美食圈子', '加入的美食圈子'],

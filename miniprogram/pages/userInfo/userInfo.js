@@ -9,6 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg1:imgUrl.bar_bg17,
+    bar_bgImg2:imgUrl.bar_bg9,
     nickName: '',
     avatarUrl: '',
     shareCode: '',
@@ -61,7 +63,7 @@ Page({
       var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
       var storesArr = wx.getStorageSync('storesArr');
       //从三个地方取店铺，
-/*       My_GroupList.forEach(group => {
+       My_GroupList.forEach(group => {
         group.stores.forEach(store => {
           var tempData = {}
           tempData.store = store
@@ -80,7 +82,7 @@ Page({
           tempData.friendsIndex = 'JoinedGroup'
           whereToEatList.push(tempData)
         });
-      }) */
+      }) 
       storesArr.forEach(store => {
         var tempData = {}
         tempData.store = store
@@ -90,6 +92,13 @@ Page({
         whereToEatList.push(tempData)
       });
       console.log(whereToEatList)
+      if(whereToEatList.length == 0){
+        wx.showToast({
+          title: '您还没有添加店铺或者加入美食圈呢',
+          icon: 'none'
+        });
+        return
+      }
     }
     var randNum = Math.floor(Math.random() * whereToEatList.length)
     var storeData = whereToEatList[randNum]

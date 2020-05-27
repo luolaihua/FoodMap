@@ -11,7 +11,7 @@
 			<text class="cuIcon-back" bindtap="BackPage" wx:if="{{isBack}}"/>
 			<text class="cuIcon-homefill" bindtap="toHome"/>
     </view>
-		<view class="content" style="top:{{StatusBar}}px">
+		<view class="content text-black" style="top:{{StatusBar}}px">
 			<slot name="content" />
 		</view>
 		<slot name="right" />

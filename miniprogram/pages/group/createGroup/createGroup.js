@@ -9,6 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    bar_bgImg1:imgUrl.bar_bg17,
+    bar_bgImg2:imgUrl.bar_bg18,
     avatarUrl: imgUrl.head,
     nickName: '',
     createTime: '',

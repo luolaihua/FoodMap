@@ -1,5 +1,5 @@
 <!--miniprogram/pages/group/showGroup/showGroup.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}"isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="content">{{group.nickName}}</view>
 </cu-custom>
 <block wx:for="{{group.stores}}" wx:key="index">

@@ -1,5 +1,5 @@
 <!--miniprogram/pages/foodMap/foodMap.wxml-->
-<cu-custom bgColor="bg-gradual-pink" isCustom="{{true}}" isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}"  isCustom="{{true}}" isBack="{{true}}">
 	<view slot="backText">返回</view>
 	<view slot="content">美食地图</view>
 </cu-custom>

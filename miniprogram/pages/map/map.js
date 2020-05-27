@@ -308,16 +308,17 @@ Page({
     var store = stores.find(item => {
       return item.id == storeId
     })
-
     wx.navigateTo({
       url: '../info/info?friendsIndex=self',
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
         res.eventChannel.emit('getStore', {
-          store: store
+          store: store,
+          groupId: 'null',
+          secretKey: 'null'
         })
       }
-    })
+    });
   },
   hideMe: function (res) {
     this.setData({

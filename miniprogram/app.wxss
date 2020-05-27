@@ -18,3 +18,9 @@
   z-index: 100;
   opacity: 0.6;
 }
+.noData{
+  color: gray;
+  position: relative;
+  top: 40vh;
+  text-align: center;
+}

@@ -69,3 +69,12 @@ map{
   width: 12vw;
   z-index: 100;
  }
+ .coverPage{
+   position: fixed;
+   left: 0;
+   top: 0;
+   height: 100vh;
+   width: 100vw;
+   background-color: lightcoral;
+   z-index: 99;
+ }
