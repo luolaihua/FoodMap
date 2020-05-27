@@ -1,6 +1,6 @@
 module.exports={
     bar_bg21:'',
-    bar_bg20:'',
+    bar_bg20:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',
     bar_bg19:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/19.jpg?sign=a1c55b2b7242ca7b9d830c6533ec8db4&t=1590561965',
     bar_bg18:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/18.png?sign=172b62d9cb5f210f931d05aaf5cf50e6&t=1590561119',
     bar_bg17:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/17.png?sign=1029dc2e216efcf7dd5cd1fdd5f487c6&t=1590561105',

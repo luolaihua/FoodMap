@@ -18,27 +18,61 @@
 	</block>
 </map>
 <view>
-<view class="coverPage"></view>
-<view class="img-box" hover-class="none" hover-stop-propagation="false"animation="{{animAddFriends}}" id="toFriends" bindtap="toFunctionPages">
-	 <image src="../../images/addFriends.png" class="img" ></image>
-	 美食好友
-</view>
-<view class="img-box" hover-class="none" animation="{{animAddStore}}" id="toGroup" bindtap="toFunctionPages">
-	 <image src="../../images/group.png" class="img"></image>
-	 美食圈子
-</view>
-<view class="img-box" hover-class="none" animation="{{animToList}}" id="toUerInfo" bindtap="toFunctionPages">
-	 <image src="../../images/user.png" class="img"></image>
-	 个人信息
-</view>
-<view class="img-box" hover-class="none" animation="{{animInput}}" id="toList" bindtap="toFunctionPages">
-	 <image src="../../images/menu2.png" class="img"></image>
-	 美食列表
-</view>
-<view class="img-box" hover-class="none" animation="{{animCloud}}" id="toAdd" bindtap="toFunctionPages">
-	 <image src="../../images/add4.png" class="img"></image>
-	 添加美食
-</view>
- <image src="../../images/friend.png" class="img-switch-style" animation="{{animMenu}}" bindtap="openMenu"></image>
+	<image wx:if="{{isHideMap}}" class="coverPage" src="{{defaultImg}}" />
+	<view class="top-right">
+		<switch class="switch-sex" checked="{{isHideMap}}" bindchange="showMap" />
+	</view>
+	<view
+	 class="img-box"
+	 animation="{{animAddFriends}}"
+	 id="toFriends"
+	 bindtap="toFunctionPages"
+	>
+		<image src="../../images/addFriends.png" class="img" />
+		美食好友
+	</view>
+	<view
+	 class="img-box"
+	 animation="{{animToGroup}}"
+	 id="toGroup"
+	 bindtap="toFunctionPages"
+	>
+		<image src="../../images/group.png" class="img" />
+		美食圈子
+	</view>
+	<view
+	 class="img-box"
+	 animation="{{animToUerInfo}}"
+	 id="toUerInfo"
+	 bindtap="toFunctionPages"
+	>
+		<image src="../../images/user.png" class="img" />
+		个人信息
+	</view>
+	<view
+	 class="img-box"
+	 animation="{{animToList}}"
+	 id="toList"
+	 bindtap="toFunctionPages"
+	>
+		<image src="../../images/menu2.png" class="img" />
+		美食列表
+	</view>
+	<view
+	 class="img-box"
+	 animation="{{animToAdd}}"
+	 id="toAdd"
+	 bindtap="toFunctionPages"
+	>
+		<image src="../../images/add4.png" class="img" />
+		添加美食
+	</view>
+	<image
+	wx:if="{{!isHideMap}}"
+	 src="../../images/eating.png"
+	 class="img-switch-style"
+	 animation="{{animMenu}}"
+	 bindtap="openMenu"
+	/>
 </view>
 

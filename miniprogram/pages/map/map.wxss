@@ -1,3 +1,5 @@
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
 map{
   width: 750rpx;
 }
@@ -41,7 +43,7 @@ map{
 	border-left:20rpx solid transparent;
 	border-bottom:20rpx solid rgb(62, 207, 142);
 }
-.img-switch-style,.img-style {
+.img-switch-style{
   height: 14vw;
   width: 14vw;
   position: fixed;
@@ -49,13 +51,7 @@ map{
   right: 43vw;
   z-index: 100;
  }
-  
- .img-style {
-  opacity: 0;
- }
- 
  .img-box {
-
   position: fixed;
   bottom: 6vh;
   right: 43vw;
@@ -69,12 +65,26 @@ map{
   width: 12vw;
   z-index: 100;
  }
+
+
  .coverPage{
    position: fixed;
    left: 0;
    top: 0;
    height: 100vh;
    width: 100vw;
-   background-color: lightcoral;
    z-index: 99;
  }
+ .top-right{
+  position: fixed;
+  right: 10vw;
+  top: 10vh;
+  z-index: 99;
+ }
+ .switch-sex::after {
+  content: "\e672";
+  }
+  .switch-sex::before {
+   content: "\e650";
+  }
+    

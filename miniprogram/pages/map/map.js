@@ -12,6 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isHideMap: true,
+    defaultImg: imgUrl.bar_bg20,
     setting: {
       skew: 0,
       rotate: 0,
@@ -28,35 +30,41 @@ Page({
       enableSatellite: false,
       enableTraffic: false,
     },
-    defaultScale:16,
+    defaultScale: 16,
     longitude: 113.3245211,
     latitude: 23.10229,
     mapSubKey: config.mapSubKey,
     hideMe: true,
-    isPopping: true,
+    isPopping: false,
     animMenu: {},
-    animAddStore: {},
+    animToGroup: {},
+    animToUerInfo: {},
     animToList: {},
-    animInput: {},
-    animCloud: {},
+    animToAdd: {},
     animAddFriends: {},
-    isHideFunction: false,
     stores: []
-
+  },
+  showMap(e) {
+    var isHideMap = e.detail.value
+    if(!isHideMap){
+      this.close();
+    }else{
+      this.initMenu()
+    }
+    this.setData({
+      isHideMap
+    })
   },
   tapMap(e) {
     // console.log(e)
     this.close();
-    this.setData({
-      isPopping: false
-    })
   },
   //去五个功能页面
   toFunctionPages(e) {
-    this.close();
-    this.setData({
-      isPopping: false
-    })
+    if (!this.data.isHideMap) {
+      this.close();
+    }
+
     switch (e.currentTarget.id) {
       case 'toAdd':
         wx.navigateTo({
@@ -94,9 +102,9 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-/*     wx.showToast({
-      title: '' + options.test,
-    }) */
+    /*     wx.showToast({
+          title: '' + options.test,
+        }) */
     //this.initData()
     //TODO 引导分享 暂时不做
     /*     setTimeout(() => {
@@ -133,7 +141,7 @@ Page({
           fail: () => {},
           complete: () => {}
         });
-      }else if(scene.length == 4){
+      } else if (scene.length == 4) {
         wx.showModal({
           title: '加入好友美食圈子',
           content: '已获取好友美食圈子秘钥，是否加入？',
@@ -151,15 +159,15 @@ Page({
                 },
                 fail: () => {},
                 complete: () => {}
-              }); 
+              });
             }
           },
           fail: () => {},
           complete: () => {}
         });
-      }else{
+      } else {
         var codeList = scene.split('-')
-      console.log(codeList)
+        console.log(codeList)
 
         var ID = codeList[0]
         var store_id = codeList[1]
@@ -170,7 +178,8 @@ Page({
       }
 
     }
-    this.openMenu()
+    this.initMenu()
+    // this.openMenu()
   },
   async initMap() {
     var that = this
@@ -196,7 +205,7 @@ Page({
     var openId = wx.getStorageSync('openId')
     var storesArr = []
     var avatarUrl = imgUrl.defaultAvatar
-    var nickName = '美食网友'+myApi.getRandomCode(2)
+    var nickName = '美食网友' + myApi.getRandomCode(2)
     var friendsList = []
     var My_GroupsList = []
     var starStoreIdList = []
@@ -327,34 +336,25 @@ Page({
   },
   //点击弹出
   openMenu: function () {
-    var isHideFunction = this.data.isHideFunction
-    if (isHideFunction) {
-      this.toList()
+   // console.log(this.data.isPopping)
+    if (this.data.isPopping) {
+      //缩回动画
+      this.close();
     } else {
-      if (this.data.isPopping) {
-        //缩回动画
-        this.close();
-        this.setData({
-          isPopping: false
-        })
-      } else {
-        //弹出动画
-        this.pop();
-        this.setData({
-          isPopping: true
-        })
-      }
+      //弹出动画
+      this.pop();
     }
-
   },
-  //弹出动画
-  pop: function () {
-    //plus顺时针旋转
-    var animMenu = wx.createAnimation({
+  initMenu() {
+    /*     var animMenu = wx.createAnimation({
+          duration: 400,
+          timingFunction: 'ease-out'
+        }) */
+    var animToGroup = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    var animAddStore = wx.createAnimation({
+    var animToUerInfo = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out'
     })
@@ -362,11 +362,7 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    var animationInput = wx.createAnimation({
-      duration: 400,
-      timingFunction: 'ease-out'
-    })
-    var animationCloud = wx.createAnimation({
+    var animToAdd = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out'
     })
@@ -374,19 +370,62 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    animMenu.rotateZ(180).step();
-    animAddStore.translate(-85, -85).opacity(1).step();
-    animToList.translate(-120, 0).opacity(1).step();
-    animationInput.translate(120, 0).opacity(1).step();
-    animationCloud.translate(85, -85).opacity(1).step();
+    //animMenu.rotateY(180).step();
+
+    animToUerInfo.scale(0.8).translate(-160, 0).opacity(1).step();
+    animToGroup.scale(0.8).translate(-80, 0).opacity(1).step();
+    animAddFriends.scale(0.8).translate(0, 0).opacity(1).step();
+    animToAdd.scale(0.8).translate(80, 0).opacity(1).step();
+    animToList.scale(0.8).translate(160, 0).opacity(1).step();
+    this.setData({
+      //animMenu: animMenu.export(),
+      animToGroup: animToGroup.export(),
+      animToUerInfo: animToUerInfo.export(),
+      animToList: animToList.export(),
+      animToAdd: animToAdd.export(),
+      animAddFriends: animAddFriends.export(),
+    })
+  },
+  //弹出动画
+  pop: function () {
+    var animMenu = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToGroup = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToUerInfo = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToList = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToAdd = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animAddFriends = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    animMenu.rotateY(180).step();
+    animToGroup.translate(-85, -85).opacity(1).step();
+    animToUerInfo.translate(-120, 0).opacity(1).step();
+    animToList.translate(120, 0).opacity(1).step();
+    animToAdd.translate(85, -85).opacity(1).step();
     animAddFriends.translate(0, -120).opacity(1).step();
     this.setData({
       animMenu: animMenu.export(),
-      animAddStore: animAddStore.export(),
+      animToGroup: animToGroup.export(),
+      animToUerInfo: animToUerInfo.export(),
       animToList: animToList.export(),
-      animInput: animationInput.export(),
-      animCloud: animationCloud.export(),
+      animToAdd: animToAdd.export(),
       animAddFriends: animAddFriends.export(),
+      isPopping:true
     })
   },
   //收回动画
@@ -396,7 +435,11 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    var animAddStore = wx.createAnimation({
+    var animToGroup = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToUerInfo = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out'
     })
@@ -404,11 +447,7 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    var animationInput = wx.createAnimation({
-      duration: 400,
-      timingFunction: 'ease-out'
-    })
-    var animationCloud = wx.createAnimation({
+    var animToAdd = wx.createAnimation({
       duration: 400,
       timingFunction: 'ease-out'
     })
@@ -417,18 +456,19 @@ Page({
       timingFunction: 'ease-out'
     })
     animMenu.rotateZ(0).step();
-    animAddStore.translate(0, 0).opacity(0).step();
+    animToGroup.translate(0, 0).opacity(0).step();
+    animToUerInfo.translate(0, 0).opacity(0).step();
     animToList.translate(0, 0).opacity(0).step();
-    animationInput.translate(0, 0).opacity(0).step();
-    animationCloud.translate(0, 0).opacity(0).step();
+    animToAdd.translate(0, 0).opacity(0).step();
     animAddFriends.translate(0, 0).opacity(0).step();
     this.setData({
       animMenu: animMenu.export(),
-      animAddStore: animAddStore.export(),
+      animToGroup: animToGroup.export(),
+      animToUerInfo: animToUerInfo.export(),
       animToList: animToList.export(),
-      animInput: animationInput.export(),
-      animCloud: animationCloud.export(),
+      animToAdd: animToAdd.export(),
       animAddFriends: animAddFriends.export(),
+      isPopping:false
     })
   },
 
