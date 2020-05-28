@@ -25,7 +25,7 @@
 		</swiper-item>
 	</swiper>
 </block>
-<view>
+<view bind:touchstart="close">
 	<view class="title-box">
 		<text selectable="{{true}}" class="title text-shadow text-black">{{store.name}}</text>
 		<view class="cu-tag line-orange round navigateTo" bindtap="navigate">
@@ -54,11 +54,11 @@
 		<view class="cu-tag bg-purple round" wx:if="{{store.tagList.length>1}}">{{store.tagList[1]}}</view>
 		<view class="cu-tag bg-cyan round" wx:if="{{store.tagList.length>2}}">{{store.tagList[2]}}</view>
 	</view>
-	<view class="notes" wx:if="{{store.special_list.length>0}}">
+	<view class="notes">
 		<text class="notes-title">店铺地址：</text>
 		<text selectable="{{true}}">{{store.address}}</text>
 	</view>
-	<view class="notes">
+	<view class="notes" wx:if="{{store.special_list.length>0}}">
 		<text class="notes-title">特色菜品：</text>
 		<view class="padding-xs special_list">
 		<block  wx:for="{{store.special_list}}"wx:key="index">
@@ -72,11 +72,20 @@
 		<text  class="notes-content"selectable="{{true}}" >{{store.notes}}</text>
 	</view>
 </view>
-<image wx:if="{{friendsIndex!='self'}}" class="shadow share" src="{{isStar?'/images/heartRed.png':'/images/heart1.png'}}" bindtap="star"></image>
+<button wx:if="{{onlyShowStarBtn}}" class='button button2 bg-white' bindtap="star">收藏<text class="cuIcon-{{isStar?'likefill':'like'}} text-red lg " style="font-size:35rpx"></text></button>
+<block wx:if="{{!onlyShowStarBtn}}">
+	<button animation="{{animToDate}}" class='button bg-white' open-type="share">约饭<text class="cuIcon-forward lg  text-mauve " style="font-size:35rpx"></text></button>
+	<button animation="{{animToEdit}}" class='button bg-white' bindtap = "toAdd">编辑<text class="cuIcon-edit lg  text-blue" style="font-size:35rpx"></text></button>
+	<button animation="{{animToShare}}" class='button bg-white' bindtap="onCreatePoster">分享<text class="cuIcon-share lg  text-orange" style="font-size:35rpx"></text></button>
+	<button animation="{{animToStar}}" class='button bg-white' bindtap="star">收藏<text class="cuIcon-{{isStar?'likefill':'like'}} text-red lg " style="font-size:35rpx"></text></button>
+	<text class="cuIcon-fold lg menu text-blue light" animation="{{animMenu}}" bindtap="openMenu"></text>
+</block>
 
-<button wx:if="{{isShowShareBtn}}" class='button' open-type="share">约饭</button>
-<button wx:if="{{isShowEditBtn}}" class='button2' bindtap = "toAdd">编辑</button>
-<button wx:if="{{isShowShareBtn}}" class='button3' bindtap="onCreatePoster">分享</button>
+
+
+
+
+
 
 <!-- 生成海报组件 -->
 <poster id="poster" hide-loading="{{false}}" preload="{{false}}" config="{{posterConfig}}" bind:success="onPosterSuccess" bind:fail="onPosterFail"></poster>

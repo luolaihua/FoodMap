@@ -6,7 +6,7 @@
     <view class="cu-card case" bind:longpress="deleteItem" bindtap = "toInfo" id="{{item.id}}" data-index="{{index}}">
         <view class="cu-item shadow">
                 <view class="image">
-                <image src="{{item.images.length==0?'https://ossweb-img.qq.com/images/lol/web201310/skin/big10006.jpg':item.images[0]}}" mode="widthFix"></image>
+                <image src="{{item.images.length==0?defaultImg:item.images[0]}}" mode="aspectFill"></image>
                 <view class="cu-tag bg-blue">TEST</view>
                 <view class="cu-bar bg-shadeBottom">
                     <text class="text-cut">{{item.notes}}</text>
@@ -30,9 +30,11 @@
                 </view>
         </view>
     </view>
-    </block>
+</block>
 
-
+<block wx:if="{{group.stores.length==0}}">
+	<view class="noData">---暂无数据---</view>
+</block>
 
 <image  class="shadow add" src="../../../images/add3.png" bindtap="toAdd" bind:longpress="toAddList"></image>
 <image  class="shadow showMap" src="../../../images/map.png" bindtap="toFoodMap"></image>

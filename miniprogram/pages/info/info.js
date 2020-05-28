@@ -12,8 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg6,
-    colorList:app.globalData.ColorList,
+    bar_bgImg: imgUrl.bar_bg6,
+    colorList: app.globalData.ColorList,
     cardCur: 0,
     keywords_array: [],
     store: '',
@@ -21,18 +21,131 @@ Page({
     thumbs_up: 1, //1表示未收藏，0表示已收藏
     store_id: '',
     isStar: false,
-    shareImage:imgUrl.share,
+    shareImage: imgUrl.share,
     isBack: true,
     ID: '',
     action: '',
+    onlyShowStarBtn: false,
     isShowShareBtn: true,
     isShowEditBtn: true,
     isShowPosterModal: false, //是否展示海报弹窗
-    posterImageUrl: "", //海报地址
+    posterImageUrl: "", //海报地址,
+    animMenu: {},
+    animToShare: {},
+    animToDate: {},
+    animToEdit: {},
+    animToStar: {},
+    isPopping: false
   },
+  openMenu() {
+    //console.log(this.data.isPopping)
+    if (this.data.isPopping) {
+      //缩回动画
+      this.close();
+    } else {
+      //弹出动画
+      this.pop();
+    }
+  },
+  //弹出动画
+  pop: function () {
+    /**
+     * 分为几种情况：
+     * 1.朋友列表进入，只有收藏---------单独考虑
+     * 2.自己列表进入，有编辑，约饭，分享
+     * 圈子进入，考虑有无编辑权限，
+     * 分为：
+     * 收藏，编辑，约饭，分享；
+     * 3.收藏，约饭，分享-----约饭进入也无编辑
+     *
+     */
+    var animMenu = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToShare = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToDate = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToEdit = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToStar = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    animMenu.rotateX(180).step();
+    animToShare.translate(0, -50).opacity(1).step();
+    animToDate.translate(0, -100).opacity(1).step();
+    //是自己，有编辑无收藏
+    if (this.data.friendsIndex == 'self') {
+      animToStar.translate(0, 0).opacity(0).step();
+      animToEdit.translate(0, -150).opacity(1).step();
+    }else{
+     // 不是自己，有收藏
+      animToStar.translate(0, -150).opacity(1).step();
+      if (this.data.isShowEditBtn) {
+        animToEdit.translate(0, -200).opacity(1).step();
+      } else {
+            animToEdit.translate(0, 0).opacity(0).step();
+      }
+    }
+    this.setData({
+      animMenu: animMenu.export(),
+      animToShare: animToShare.export(),
+      animToDate: animToDate.export(),
+      animToEdit: animToEdit.export(),
+      animToStar: animToStar.export(),
+      isPopping: true
+    })
+  },
+  //收回动画
+  close: function () {
+    var animMenu = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToShare = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToDate = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToEdit = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    var animToStar = wx.createAnimation({
+      duration: 400,
+      timingFunction: 'ease-out'
+    })
+    animMenu.rotateX(0).step();
+    animToShare.translate(0, 0).opacity(0).step();
+    animToDate.translate(0, 0).opacity(0).step();
+    animToEdit.translate(0, 0).opacity(0).step();
+    animToStar.translate(0, 0).opacity(0).step();
+
+    this.setData({
+      animMenu: animMenu.export(),
+      animToShare: animToShare.export(),
+      animToDate: animToDate.export(),
+      animToEdit: animToEdit.export(),
+      animToStar: animToStar.export(),
+      isPopping: false
+    })
+  },
+
   toAdd() {
     var store = this.data.store
     var that = this
+    this.close()
     wx.navigateTo({
       url: '../add/add?requestType=editStore',
       events: {
@@ -205,18 +318,18 @@ Page({
         store = storesArr.find(item => {
           return item.id == store_id
         })
-      }else{
+      } else {
         wx.showToast({
           title: '你的好友已更换分享码',
           icon: 'none',
           image: '',
           duration: 1500,
           mask: false,
-          success: (result)=>{
-            
+          success: (result) => {
+
           },
-          fail: ()=>{},
-          complete: ()=>{}
+          fail: () => {},
+          complete: () => {}
         });
       }
       that.isStar(store_id)
@@ -224,8 +337,8 @@ Page({
         store: store,
         store_id,
         ID,
-        action:options.action,
-        isShowEditBtn:false
+        action: options.action,
+        isShowEditBtn: false
       })
     } else {
       //下面是正常情况
@@ -235,14 +348,15 @@ Page({
        */
 
       //通过friendsIndex来判断是否显示约饭按钮
-      var isShowShareBtn = true
       var isShowEditBtn = true
-      //从好友列表过来就不显示分享按钮
+      var onlyShowStarBtn = false
+      //从好友列表过来就不显示分享按钮，编辑按钮也没有，只有收藏
       if (friendsIndex != 'self' && friendsIndex != 'MyGroup' && friendsIndex != 'JoinedGroup') {
-        isShowShareBtn = false
-        isShowEditBtn=false
+        onlyShowStarBtn = true
+        this.setData({
+          onlyShowStarBtn
+        })
       }
-
       var action = ''
       var ID = ''
       //使用eventChannel来通信
@@ -261,7 +375,7 @@ Page({
           ID = data.secretKey
           //群成员鉴权，是否有权限编辑
           var openId = wx.getStorageSync('openId')
-          if(openId!=store.creatorId){
+          if (openId != store.creatorId) {
             isShowEditBtn = false
           }
         }
@@ -275,22 +389,22 @@ Page({
         var shareImage = that.data.shareImage
         //设置分享图片
         if (store.images.length != 0) {
-         
-            shareImage=store.images[0]
-          
-/*           wx.cloud.getTempFileURL({
-            fileList: [store.images[0]],
-            success: res => {
-              console.log(res)
-              shareImage = res.fileList[0].tempFileURL
-              that.setData({
-                shareImage
-              })
-            },
-            fail: error => {
-              console.error("出现Bug了", error)
-            }
-          }) */
+
+          shareImage = store.images[0]
+
+          /*           wx.cloud.getTempFileURL({
+                      fileList: [store.images[0]],
+                      success: res => {
+                        console.log(res)
+                        shareImage = res.fileList[0].tempFileURL
+                        that.setData({
+                          shareImage
+                        })
+                      },
+                      fail: error => {
+                        console.error("出现Bug了", error)
+                      }
+                    }) */
         }
         that.setData({
           action,
@@ -299,7 +413,6 @@ Page({
           friendsIndex,
           store_id,
           ID,
-          isShowShareBtn,
           isShowEditBtn
         })
       })
@@ -389,6 +502,7 @@ Page({
     })
   },
   tapImage: function (e) {
+    this.close()
     wx.previewImage({
       urls: this.data.store.images,
       current: e.currentTarget.id
@@ -398,6 +512,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    this.close()
     var title = wx.getStorageSync('dateSlogan');
     if (title == '') {
       title = '约饭吗'
@@ -409,6 +524,7 @@ Page({
     }
   },
   navigate: function (e) {
+    this.close()
     wx.openLocation({
       latitude: this.data.store.latitude,
       longitude: this.data.store.longitude,
@@ -442,6 +558,7 @@ Page({
    * 生成海报
    */
   onCreatePoster: async function () {
+    this.close()
     wx.showLoading({
       title: '加载中',
     });
@@ -449,35 +566,35 @@ Page({
     if (that.data.posterImageUrl !== "") {
       that.setData({
         isShowPosterModal: true
-      },()=>{
+      }, () => {
         wx.hideLoading();
       })
       return;
     }
 
-    var QrCodeUrl=''
-    var imageUrl=this.data.shareImage
+    var QrCodeUrl = ''
+    var imageUrl = this.data.shareImage
     console.log(imageUrl)
     var avatarUrl = wx.getStorageSync('avatarUrl')
     //无则默认
-    if(avatarUrl==''){
+    if (avatarUrl == '') {
       avatarUrl = imgUrl.head
     }
 
     //生成二维码URL
-    var scene =this.data.ID+ '-' + this.data.store_id + '-' + this.data.action
+    var scene = this.data.ID + '-' + this.data.store_id + '-' + this.data.action
     //console.log(scene.length)
     var posterImageUrl = await myApi.getQrCodeUrl(scene)
-     //console.log(posterImageUrl)
+    //console.log(posterImageUrl)
     var QrCodeUrl = posterImageUrl.result
     if (QrCodeUrl == '') {
       QrCodeUrl = imgUrl.QrCodeUrl
-    }else{
+    } else {
       var res1 = await wx.cloud.getTempFileURL({
         fileList: [QrCodeUrl],
       })
       //console.log(res1)
-      QrCodeUrl =res1.fileList[0].tempFileURL
+      QrCodeUrl = res1.fileList[0].tempFileURL
     }
     let posterConfig = {
       width: 750,

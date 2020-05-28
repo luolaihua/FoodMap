@@ -87,27 +87,36 @@ text {
   border-radius: 50rpx;
   text-shadow: 0 1px 3px rgba(36,180,126,.4);
 }
-.button,.button2,.button3 {
+button::after{
+  border: none;
+}
+.button,.button2,.button3,.menu {
   position: fixed;
-  left: 40rpx;
-  bottom: 40rpx;
-  color: #fff;
-  height: 70rpx;
-  line-height: 70rpx;
+  right: 20rpx;
+  bottom: 4vh;
+  color: black;
+  height: 65rpx;
+  line-height: 65rpx;
   width: 150rpx;
-  font-size: 35rpx;
+  font-size: 30rpx;
   text-align: center;
-  background-color: rgba(248, 105, 10, 0.6);
   border-radius: 35rpx;
   box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+  opacity: 0;
 }
 .button2{
-  left: 40rpx;
-  bottom: 140rpx;
+  opacity: 1;
 }
 .button3{
-  left: 40rpx;
-  bottom: 240rpx;
+ 
+}
+.menu{
+  opacity: 1;
+  background-color: white;
+  font-size: 40rpx;
+  right: 20rpx;
+  bottom: 4vh;
+  z-index: 100;
 }
 .special_list{
   width: 60vw;

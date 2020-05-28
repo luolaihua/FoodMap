@@ -3,7 +3,7 @@
  scale="{{defaultScale}}"
  longitude='{{longitude}}'
  latitude='{{latitude}}'
- style='height:100vh'
+ style='height:100vh;filter: blur({{isPopping?4:0}}rpx);'
  markers="{{stores}}"
  subkey="{{mapSubKey}}"
  show-compass="{{true}}"
@@ -18,17 +18,24 @@
 	</block>
 </map>
 <view>
-	<image wx:if="{{isHideMap}}" class="coverPage" src="{{defaultImg}}" />
+	<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
+	<!--
+	<image wx:if="{{isPopping}}" class="coverPage2" src="{{defaultImg2}}" mode="aspectFit"/>	
+	-->
+
+	<!--
 	<view class="top-right">
 		<switch class="switch-sex" checked="{{isHideMap}}" bindchange="showMap" />
-	</view>
-	<view
+	</view>	
+	-->
+
+	<view style=""
 	 class="img-box"
 	 animation="{{animAddFriends}}"
 	 id="toFriends"
 	 bindtap="toFunctionPages"
 	>
-		<image src="../../images/addFriends.png" class="img" />
+		<image src="../../images/food2.png" class="img" />
 		美食好友
 	</view>
 	<view
@@ -37,7 +44,7 @@
 	 id="toGroup"
 	 bindtap="toFunctionPages"
 	>
-		<image src="../../images/group.png" class="img" />
+		<image src="../../images/f2.png" class="img" />
 		美食圈子
 	</view>
 	<view
@@ -46,7 +53,7 @@
 	 id="toUerInfo"
 	 bindtap="toFunctionPages"
 	>
-		<image src="../../images/user.png" class="img" />
+		<image src="../../images/f1.png" class="img" />
 		个人信息
 	</view>
 	<view
@@ -55,7 +62,7 @@
 	 id="toList"
 	 bindtap="toFunctionPages"
 	>
-		<image src="../../images/menu2.png" class="img" />
+		<image src="../../images/f3.png" class="img" />
 		美食列表
 	</view>
 	<view
@@ -64,7 +71,7 @@
 	 id="toAdd"
 	 bindtap="toFunctionPages"
 	>
-		<image src="../../images/add4.png" class="img" />
+		<image src="../../images/f4.png" class="img" />
 		添加美食
 	</view>
 	<image

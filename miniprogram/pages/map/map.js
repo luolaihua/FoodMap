@@ -12,8 +12,10 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isHideMap: true,
-    defaultImg: imgUrl.bar_bg20,
+    isHideMap: false,
+    defaultImg:imgUrl.bar_bg20,
+    defaultImg1:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/1111.jpg?sign=8408a818205a874fa8d4edd1a3c8dd2d&t=1590679618',
+    defaultImg2: imgUrl.bar_bg10,
     setting: {
       skew: 0,
       rotate: 0,
@@ -178,8 +180,8 @@ Page({
       }
 
     }
-    this.initMenu()
-    // this.openMenu()
+    //this.initMenu()
+     this.openMenu()
   },
   async initMap() {
     var that = this
@@ -194,7 +196,8 @@ Page({
         const longitude = res.longitude
         that.setData({
           latitude,
-          longitude
+          longitude,
+          defaultScale:16
         })
       }
     })
@@ -412,12 +415,12 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    animMenu.rotateY(180).step();
-    animToGroup.translate(-85, -85).opacity(1).step();
-    animToUerInfo.translate(-120, 0).opacity(1).step();
-    animToList.translate(120, 0).opacity(1).step();
-    animToAdd.translate(85, -85).opacity(1).step();
-    animAddFriends.translate(0, -120).opacity(1).step();
+    animMenu.scale(1.4).rotateZ(0).step();
+    animToGroup.translate(-95, -95).scale(1.4).opacity(1).step();
+    animToUerInfo.translate(-140, 0).scale(1.4).opacity(1).step();
+    animToList.translate(140, 0).scale(1.4).opacity(1).step();
+    animToAdd.translate(95, -95).scale(1.4).opacity(1).step();
+    animAddFriends.translate(0, -140).scale(1.4).opacity(1).step();
     this.setData({
       animMenu: animMenu.export(),
       animToGroup: animToGroup.export(),
@@ -455,7 +458,7 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    animMenu.rotateZ(0).step();
+    animMenu.rotateZ(180).step();
     animToGroup.translate(0, 0).opacity(0).step();
     animToUerInfo.translate(0, 0).opacity(0).step();
     animToList.translate(0, 0).opacity(0).step();

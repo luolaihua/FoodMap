@@ -11,6 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    defaultImg:imgUrl.share3,
     bar_bgImg:imgUrl.bar_bg4,
     groupName: '',
     groupId: '',

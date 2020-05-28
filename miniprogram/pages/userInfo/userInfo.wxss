@@ -12,8 +12,8 @@
   margin-right: 10px;
   background-color: #ffffff;
   border-radius: 6px;
-  border: 1px solid #cfcece;
   box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
 }
 .modules_title_box {
   display: flex;
@@ -51,7 +51,7 @@ page{
   justify-content: center;
  
 }
-button{
+button::after{
   border: none;
 }
 .btn-box{

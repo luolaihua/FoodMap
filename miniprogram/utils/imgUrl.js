@@ -1,4 +1,8 @@
 module.exports={
+    share1:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/share1.jpg?sign=c64534d53b4d70542721526f4b2b1bf6&t=1590631297',
+    share2:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/share2.jpg?sign=a11df9bc3ec4245529c4a8402073a822&t=1590631310',
+    share3:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/defaultShare.jpg?sign=61621f2e3492ea4da337c26acfe6bdf0&t=1590631327',
+    share4:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/131847624299537875.png?sign=e57e48202b85cc72a17693f7f57f44a6&t=1590631337',
     bar_bg21:'',
     bar_bg20:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',
     bar_bg19:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/19.jpg?sign=a1c55b2b7242ca7b9d830c6533ec8db4&t=1590561965',

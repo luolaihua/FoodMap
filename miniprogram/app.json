@@ -1,6 +1,6 @@
 {
   "pages": [
-
+  
      "pages/map/map",       
      "pages/add/add",   
     "pages/userInfo/userInfo",  
@@ -9,10 +9,10 @@
     "pages/group/showGroup/showGroup",
     "pages/group/createGroup/createGroup",
     "pages/imageEdit/imageEdit",
-
+ "pages/info/info", 
     "pages/friends/friends",
 
-    "pages/info/info",
+
     "pages/list/list"
   ],
   "window": {
