@@ -100,3 +100,47 @@ map{
    content: "\e650";
   }
     
+/*内测码输入框*/
+  .input-box{
+    height: 30vh;
+    width: 80vw;
+    position: fixed;
+    top: 30vh;
+    left: 10vw;
+    border-radius: 20rpx;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: lightblue solid 1px;
+    background-color: snow;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(50,50,93,.11), 0 1px 3px rgba(0,0,0,.08);
+    z-index: 666;
+  }
+  .inputCode{
+    text-align: center;
+    height: 20vh;
+    width: 80vw;
+    font-size: 50rpx;
+    border: solid gainsboro 1px;
+   
+  }
+  .button-box{
+    height: 10vh;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+  }
+  .right{
+    height: 100%;
+    width: 40vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 50rpx;
+  }
+  .left{
+   border-right: solid lightblue 1px;
+  }

@@ -73,7 +73,7 @@
 	</view>
 </view>
 <button wx:if="{{onlyShowStarBtn}}" class='button button2 bg-white' bindtap="star">收藏<text class="cuIcon-{{isStar?'likefill':'like'}} text-red lg " style="font-size:35rpx"></text></button>
-<block wx:if="{{!onlyShowStarBtn}}">
+<block wx:if="{{!onlyShowStarBtn&&isShowMenu}}">
 	<button animation="{{animToDate}}" class='button bg-white' open-type="share">约饭<text class="cuIcon-forward lg  text-mauve " style="font-size:35rpx"></text></button>
 	<button animation="{{animToEdit}}" class='button bg-white' bindtap = "toAdd">编辑<text class="cuIcon-edit lg  text-blue" style="font-size:35rpx"></text></button>
 	<button animation="{{animToShare}}" class='button bg-white' bindtap="onCreatePoster">分享<text class="cuIcon-share lg  text-orange" style="font-size:35rpx"></text></button>

@@ -12,6 +12,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isTesting: false,
+    Tester: '',
     isHideMap: false,
     defaultImg: imgUrl.bar_bg20,
     defaultImg2: '../../images/3.png',
@@ -43,7 +45,7 @@ Page({
     animToList: {},
     animToAdd: {},
     animAddFriends: {},
-    stores: []
+    stores: [],
   },
   showMap(e) {
     var isHideMap = e.detail.value
@@ -100,6 +102,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    var that = this
     /*     wx.showToast({
           title: '' + options.test,
         }) */
@@ -176,10 +179,30 @@ Page({
       }
 
     }
-
+    var Tester = wx.getStorageSync('Tester');
+    this.setData({
+      Tester
+    })
+    if (Tester == 'TEST') {
+      this.openMenu()
+    } else {
+      userInfo.doc('27fa7e0e5ecd3edf0000caed5ba5d3e1').get().then(res => {
+        console.log(res)
+        var storesArr = res.data.stores
+        wx.setStorageSync('storesArr', storesArr)
+        //console.log(storesArr)
+        that.setData({
+          stores: storesArr,
+          defaultScale: 6
+        })
+      })
+    }
+    this.setData({
+      Tester
+    })
 
     //this.initMenu()
-    this.openMenu()
+
   },
   async initMap() {
     var that = this
@@ -274,8 +297,11 @@ Page({
 
   onShow: function () {
     var that = this
-    that.initMap()
-    this.initData()
+    if (this.data.Tester == 'TEST') {
+      that.initMap()
+      this.initData()
+    }
+
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
           // res.data 包含该记录的数据
          // console.log('Hide Function ?',res.data.isHide)
@@ -339,13 +365,20 @@ Page({
   //点击弹出
   openMenu: function () {
     // console.log(this.data.isPopping)
-    if (this.data.isPopping) {
-      //缩回动画
-      this.close();
+    if (this.data.Tester != 'TEST') {
+      wx.navigateTo({
+        url: '../list/list?friendsIndex=self&isShowMenu=no',
+      });
     } else {
-      //弹出动画
-      this.pop();
+      if (this.data.isPopping) {
+        //缩回动画
+        this.close();
+      } else {
+        //弹出动画
+        this.pop();
+      }
     }
+
   },
   initMenu() {
     /*     var animMenu = wx.createAnimation({
@@ -473,5 +506,41 @@ Page({
       isPopping: false
     })
   },
+
+  testStart(e) {
+    var startTime = e.timeStamp
+    this.data.startTime = startTime
+    //console.log(e)
+  },
+  testEnd(e) {
+    var startTime = this.data.startTime
+    var endTime = e.timeStamp
+    if (endTime - startTime > 6666) {
+      this.setData({
+        isTesting: true
+      })
+    }
+  },
+  cancelInput() {
+    this.setData({
+      isTesting: false
+    })
+  },
+  inputCode(e) {
+    this.data.testCode = e.detail.value
+  },
+  confirmCode() {
+    var testCode = this.data.testCode
+    if (testCode === 'BigDipper') {
+      wx.showToast({
+        title: '成功切换为内测版',
+      });
+      this.setData({
+        Tester: 'TEST'
+      })
+      wx.setStorageSync('Tester', 'TEST');
+    }
+    this.cancelInput()
+  }
 
 })

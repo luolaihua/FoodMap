@@ -35,7 +35,8 @@ Page({
     animToDate: {},
     animToEdit: {},
     animToStar: {},
-    isPopping: false
+    isPopping: false,
+    isShowMenu:true
   },
   openMenu() {
     myApi.vibrate()
@@ -286,6 +287,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+    var Tester = wx.getStorageSync('Tester');
+    if(Tester!='TEST'){
+      this.setData({
+        isShowMenu:false
+      })
+    }
     console.log(options)
     var that = this
     var store_id, store

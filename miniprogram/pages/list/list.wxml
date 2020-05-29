@@ -60,7 +60,7 @@
 	<!--
 		<image wx:if="{{!isInstantShare&&!isAddItemToGroup}}" class="shadow showMap" src="../../images/map.png" bindtap="toFoodMap" />
 	-->
-	<block wx:if="{{friendsIndex=='self'&&!isInstantShare}}">
+	<block wx:if="{{friendsIndex=='self'&&!isInstantShare&&isShowMenu}}">
 		<view class="img-box" animation="{{animToInstant}}" bindtap="instantShare">
 			<image src="../../images/mango.png" class="img" />
 			即时分享

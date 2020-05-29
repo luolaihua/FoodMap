@@ -80,6 +80,21 @@
 	 class="img-switch-style"
 	 animation="{{animMenu}}"
 	 bindtap="openMenu"
+	 bind:touchstart="testStart"
+	 bind:touchend="testEnd"
 	/>
 </view>
 
+<block wx:if="{{isTesting}}">
+	<view class="input-box shadow">
+		<input
+		 class="inputCode"
+		 placeholder="请输入内测码"
+		 bindinput="inputCode"
+		/>
+		<view class="button-box">
+			<view class="left right" bindtap="cancelInput">取消</view>
+			<view class="right" bindtap="confirmCode">确认</view>
+		</view>
+	</view>
+</block>
