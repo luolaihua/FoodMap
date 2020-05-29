@@ -287,12 +287,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
-    var Tester = wx.getStorageSync('Tester');
+/*     var Tester = wx.getStorageSync('Tester');
     if(Tester!='TEST'){
       this.setData({
         isShowMenu:false
       })
-    }
+    } */
     console.log(options)
     var that = this
     var store_id, store

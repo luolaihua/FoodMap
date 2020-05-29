@@ -179,7 +179,7 @@ Page({
       }
 
     }
-    var Tester = wx.getStorageSync('Tester');
+/*     var Tester = wx.getStorageSync('Tester');
     this.setData({
       Tester
     })
@@ -199,10 +199,10 @@ Page({
     }
     this.setData({
       Tester
-    })
+    }) */
 
     //this.initMenu()
-
+    this.openMenu()
   },
   async initMap() {
     var that = this
@@ -297,11 +297,12 @@ Page({
 
   onShow: function () {
     var that = this
-    if (this.data.Tester == 'TEST') {
+/*     if (this.data.Tester == 'TEST') {
       that.initMap()
       this.initData()
-    }
-
+    } */
+    that.initMap()
+    this.initData()
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
           // res.data 包含该记录的数据
          // console.log('Hide Function ?',res.data.isHide)
@@ -365,7 +366,7 @@ Page({
   //点击弹出
   openMenu: function () {
     // console.log(this.data.isPopping)
-    if (this.data.Tester != 'TEST') {
+/*     if (this.data.Tester != 'TEST') {
       wx.navigateTo({
         url: '../list/list?friendsIndex=self&isShowMenu=no',
       });
@@ -377,8 +378,14 @@ Page({
         //弹出动画
         this.pop();
       }
+    } */
+    if (this.data.isPopping) {
+      //缩回动画
+      this.close();
+    } else {
+      //弹出动画
+      this.pop();
     }
-
   },
   initMenu() {
     /*     var animMenu = wx.createAnimation({

@@ -532,12 +532,12 @@ Page({
     switch (friendsIndex) {
       case 'self':
         storesArr = wx.getStorageSync('storesArr')
-        var Tester = wx.getStorageSync('Tester');
+/*         var Tester = wx.getStorageSync('Tester');
         if(Tester!='TEST'){
           this.setData({
             isShowMenu:false
           })
-        }
+        } */
         break;
       case 'MyGroup':
         isAddItemToGroup = true
