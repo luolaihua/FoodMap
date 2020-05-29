@@ -13,9 +13,8 @@ Page({
    */
   data: {
     isHideMap: false,
-    defaultImg:imgUrl.bar_bg20,
-    defaultImg1:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/1111.jpg?sign=8408a818205a874fa8d4edd1a3c8dd2d&t=1590679618',
-    defaultImg2: imgUrl.bar_bg10,
+    defaultImg: imgUrl.bar_bg20,
+    defaultImg2: '../../images/3.png',
     setting: {
       skew: 0,
       rotate: 0,
@@ -48,9 +47,9 @@ Page({
   },
   showMap(e) {
     var isHideMap = e.detail.value
-    if(!isHideMap){
+    if (!isHideMap) {
       this.close();
-    }else{
+    } else {
       this.initMenu()
     }
     this.setData({
@@ -63,10 +62,7 @@ Page({
   },
   //去五个功能页面
   toFunctionPages(e) {
-    if (!this.data.isHideMap) {
-      this.close();
-    }
-
+    myApi.vibrate()
     switch (e.currentTarget.id) {
       case 'toAdd':
         wx.navigateTo({
@@ -180,8 +176,10 @@ Page({
       }
 
     }
+
+
     //this.initMenu()
-     this.openMenu()
+    this.openMenu()
   },
   async initMap() {
     var that = this
@@ -197,7 +195,7 @@ Page({
         that.setData({
           latitude,
           longitude,
-          defaultScale:16
+          defaultScale: 16
         })
       }
     })
@@ -313,6 +311,7 @@ Page({
   },
   //点击地图maker
   onMarkerTap: function (event) {
+    myApi.vibrate()
     console.log(event)
     var storeId = event.markerId
     var stores = this.data.stores
@@ -339,7 +338,7 @@ Page({
   },
   //点击弹出
   openMenu: function () {
-   // console.log(this.data.isPopping)
+    // console.log(this.data.isPopping)
     if (this.data.isPopping) {
       //缩回动画
       this.close();
@@ -428,7 +427,7 @@ Page({
       animToList: animToList.export(),
       animToAdd: animToAdd.export(),
       animAddFriends: animAddFriends.export(),
-      isPopping:true
+      isPopping: true
     })
   },
   //收回动画
@@ -458,7 +457,7 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
-    animMenu.rotateZ(180).step();
+    animMenu.rotateZ(-180).step();
     animToGroup.translate(0, 0).opacity(0).step();
     animToUerInfo.translate(0, 0).opacity(0).step();
     animToList.translate(0, 0).opacity(0).step();
@@ -471,7 +470,7 @@ Page({
       animToList: animToList.export(),
       animToAdd: animToAdd.export(),
       animAddFriends: animAddFriends.export(),
-      isPopping:false
+      isPopping: false
     })
   },
 

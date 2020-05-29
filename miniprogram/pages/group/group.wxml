@@ -4,7 +4,7 @@
 	<view slot="content">美食圈子</view>
 </cu-custom>
 <scroll-view scroll-x class="bg-white nav">
-	<view class="flex text-center">
+	<view class="flex text-center"  style="background-image: url({{bar_bgImg2}});" >
 		<view
 		 class="cu-item flex-sub {{index==TabCur?'text-orange cur':''}}"
 		 wx:for="{{tabList}}"
@@ -52,10 +52,15 @@
 		</view>
 	</view>
 </view>
-
+<view class=" flex flex-direction createGroup" wx:if="{{GroupsList.length<6}}">
+	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;"  bind:tap="toCreateGroup">{{TabCur==0?'创建圈子':'加入圈子'}}</button>
+</view>
+<!--
 <view class="createGroup">
 	<van-button round color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="toCreateGroup">{{TabCur==0?'创建圈子':'加入圈子'}}</van-button>
 </view>
+-->
+
 
 <block wx:if="{{GroupsList.length==0}}">
 	<view class="noData">---暂无数据---</view>

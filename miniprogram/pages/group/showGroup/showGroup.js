@@ -11,16 +11,95 @@ Page({
    * 页面的初始数据
    */
   data: {
-    defaultImg:imgUrl.share3,
-    bar_bgImg:imgUrl.bar_bg4,
+    defaultImg: imgUrl.share3,
+    bar_bgImg: imgUrl.bar_bg4,
     groupName: '',
     groupId: '',
     GroupsList: [],
     group: {},
     type: 'MyGroup',
-    isStar: true
+    isStar: true,
+    //---------------菜单动画
+    isPopping: false,
+    animMenu: {},
+    animToAdd: {},
+    animToListAdd: {},
+    animToMap: {},
   },
-  toFoodMap() {
+  //点击弹出
+  openMenu: function () { myApi.vibrate()
+    // console.log(this.data.isPopping)
+    if (this.data.isPopping) {
+      //缩回动画
+      this.close();
+    } else {
+      //弹出动画
+      this.pop();
+    }
+  },
+  //弹出动画
+  pop: function () {
+    var animMenu = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToAdd = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToListAdd = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToMap = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+
+    animMenu.rotateZ(180).step();
+    animToAdd.translate(0, -60).opacity(1).step();
+    animToListAdd.translate(0, -140).opacity(1).step();
+    animToMap.translate(0, -220).opacity(1).step();
+    this.setData({
+      animMenu: animMenu.export(),
+      animToAdd: animToAdd.export(),
+      animToListAdd: animToListAdd.export(),
+      animToMap: animToMap.export(),
+      isPopping: true
+    })
+  },
+  //收回动画
+  close: function () {
+    //plus逆时针旋转
+    var animMenu = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToAdd = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToListAdd = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToMap = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    animMenu.rotateZ(0).step();
+    animToAdd.translate(0, 0).opacity(0).step();
+    animToListAdd.translate(0, 0).opacity(0).step();
+    animToMap.translate(0, 0).opacity(0).step();
+    this.setData({
+      animMenu: animMenu.export(),
+      animToAdd: animToAdd.export(),
+      animToListAdd: animToListAdd.export(),
+      animToMap: animToMap.export(),
+      isPopping: false
+    })
+  },
+  toFoodMap() { myApi.vibrate()
     var stores = this.data.group.stores
     wx.navigateTo({
       url: '../../foodMap/foodMap',
@@ -102,12 +181,12 @@ Page({
       group,
     })
   },
-  toAdd() {
+  toAdd() { myApi.vibrate()
     wx.navigateTo({
       url: '../../add/add?groupId=' + this.data.groupId + '&requestType=' + this.data.type
     });
   },
-  toAddList() {
+  toAddList() { myApi.vibrate()
     wx.navigateTo({
       url: '../../list/list?groupId=' + this.data.groupId + '&friendsIndex=' + this.data.type
     });
@@ -160,12 +239,12 @@ Page({
           //需要进行用户鉴权,群主都可删
           if (type == 'MyGroup') {
             deleteGroup()
-          }else{
+          } else {
             var openId = wx.getStorageSync('openId');
             //当前用户id等于店铺创建者id才可删除
-            if(openId==group.stores[index].creatorId){
+            if (openId == group.stores[index].creatorId) {
               deleteGroup()
-            }else{
+            } else {
               wx.showToast({
                 title: '无权限删除',
                 icon: 'none'

@@ -87,3 +87,36 @@
   z-index: 100;
   opacity: 0.6;
 }
+.img-switch-style{
+  height: 14vw;
+  width: 14vw;
+  position: fixed;
+  bottom: 4vh;
+  right: 43vw;
+  z-index: 104;
+ }
+ .img-box,.img-box2 {
+  position: fixed;
+  bottom: 4vh;
+  right: 43vw;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  opacity: 0;
+  height: 20vw;
+  width: 20vw;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+ }
+ .img-box2{
+  height: 12vw;
+  width: 12vw;
+  background-color: transparent;
+  border-radius: 0;
+ }
+ .img {
+  height: 12vw;
+  width: 12vw;
+  z-index: 100;
+ }

@@ -1,4 +1,4 @@
-<cu-custom bgColor="bg-gradual-pink"  bgImage="{{bar_bgImg}}" isCustom="{{true}}"isBack="{{true}}">
+<cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="backText">返回</view>
 	<view slot="content">{{isAddItemToGroup?'添加店铺到美食圈子':(friendsIndex=='self'?'我的美食列表':"好友的美食列表")}}</view>
 </cu-custom>
@@ -12,33 +12,33 @@
  	</view>
 	<view class="cu-bar bg-white" wx:if="{{isInstantShare||isAddItemToGroup}}">
 		<view class="action" bindtap = "cancelChoose">
-		<text class="text-gray">取消</text> 
+		<text class="text-gray">取消</text>
 		</view>
 		<view class="content text-bold">
-		选择需要{{isAddItemToGroup?'添加':'分享'}}的店铺
+			选择需要{{isAddItemToGroup?'添加':'分享'}}的店铺
 		</view>
-		<view class="action" bindtap = "chooseAllItem">
-		<text class="text-green">全选</text>
+		<view class="action" bindtap="chooseAllItem">
+			<text class="text-green">全选</text>
 		</view>
 	</view>
 	<checkbox-group bindchange="chooseItem">
-		<view class="cu-list menu-avatar">
-			<view wx:for="{{stores}}" wx:key="_id" class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="{{(isInstantShare||isAddItemToGroup)?'':'ListTouchEnd'}}"  data-target="move-box-{{index}}">
-				<view  bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" class="cu-avatar radius lg">
-					<image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload=""></image>
+		<view class="cu-list menu-avatar" bind:touchstart="close">
+			<view wx:for="{{stores}}" wx:key="_id" class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="{{(isInstantShare||isAddItemToGroup)?'':'ListTouchEnd'}}" data-target="move-box-{{index}}">
+				<view bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" class="cu-avatar radius lg">
+					<image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload="" />
 				</view>
-				<view class="content" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" >
+				<view class="content" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
 					<view class="text-black">{{item.name}}</view>
 					<view class="text-gray text-sm">
-						<text class="cuIcon-locationfill text-orange" ></text>
+						<text class="cuIcon-locationfill text-orange" />
 						{{item.address}}
 					</view>
 				</view>
-				<view class="action" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" >
+				<view class="action" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
 					<view class="text-grey text-xs">¥ {{item.price_per}}</view>
 					<view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
 				</view>
-				<checkbox value="{{index}}" wx:if="{{isInstantShare||isAddItemToGroup}}" checked="{{isChooseAll}}"/>
+				<checkbox value="{{index}}" wx:if="{{isInstantShare||isAddItemToGroup}}" checked="{{isChooseAll}}" />
 				<view class="move">
 					<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>
 					<view class="bg-red light" id="{{index}}" bindtap="deleteItem">删除</view>
@@ -47,24 +47,47 @@
 		</view>
 	</checkbox-group>
 	<block wx:if="{{isInstantShare||isAddItemToGroup}}">
-		<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">{{isAddItemToGroup?'添加':'分享'}}</van-button>
+		<view class=" flex flex-direction">
+			<button class="cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur text-bold" style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;" bind:tap="shareItems">{{isAddItemToGroup?'添加':'分享'}}店铺</button>
+		</view>
+		<!--
+			<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">{{isAddItemToGroup?'添加':'分享'}}</van-button>
+		-->
 	</block>
-	<image wx:if="{{!isInstantShare&&!isAddItemToGroup}}" class="shadow showMap" src="../../images/map.png" bindtap="toFoodMap"></image>
-	<image wx:if="{{friendsIndex=='self'&&!isInstantShare}}" class="shadow share" src="../../images/share.png" bindtap="showShareModal"></image>
+	<view wx:if="{{friendsIndex!='self'&&!isInstantShare&&!isAddItemToGroup}}" class="img-box2" style="opacity: 1;" bindtap="toFoodMap">
+		<image src="../../images/ice_cream.png" class="img" />
+	</view>
+	<!--
+		<image wx:if="{{!isInstantShare&&!isAddItemToGroup}}" class="shadow showMap" src="../../images/map.png" bindtap="toFoodMap" />
+	-->
+	<block wx:if="{{friendsIndex=='self'&&!isInstantShare}}">
+		<view class="img-box" animation="{{animToInstant}}" bindtap="instantShare">
+			<image src="../../images/mango.png" class="img" />
+			即时分享
+		</view>
+		<view class="img-box" animation="{{animToMap}}" bindtap="toFoodMap">
+			<image src="../../images/ice_cream.png" class="img" />
+			美食地图
+		</view>
+		<view class="img-box" animation="{{animToForever}}" bindtap="foreverShare">
+			<image src="../../images/pear.png" class="img" />
+			永久分享
+		</view>
+		<image class="shadow img-switch-style" src="../../images/quan.png" animation="{{animMenu}}" bindtap="openMenu" />
+	</block>
 </block>
-
 
 <block wx:else>
 	<view class="noData">---暂无数据---</view>
 </block>
-
 
 <view class="cu-modal {{isShowModal?'show':''}}">
 	<view class="cu-dialog">
 		<view class="cu-bar bg-white justify-end">
 			<view class="content">分享给朋友</view>
 			<view class="action" bindtap="hideShareModal">
-				<text class="cuIcon-close text-red"></text>
+				<text class="cuIcon-close text-red"/>
+
 			</view>
 		</view>
 		<view class="padding-xl">
@@ -73,32 +96,38 @@
 		</view>
 		<view class="cu-bar bg-white">
 			<view class="action margin-0 flex-sub " bindtap="instantShare">
-				<text class="cuIcon-we text-mauve"></text>即时分享</view>
+				<text class="cuIcon-we text-mauve"/>
+即时分享
+</view>
 			<view class="action margin-0 flex-sub solid-left" bindtap="hideShareModal">取消</view>
 			<view class="action margin-0 flex-sub " bindtap="foreverShare">
-				<text class="cuIcon-wefill text-orange"></text>永久分享</view>
+				<text class="cuIcon-wefill text-orange"/>
+永久分享
+</view>
 		</view>
 	</view>
 </view>
-
 
 <!--海报部分-->
 <block wx:if="{{isShowPoster}}">
 	<view class="middle-flex-column-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.2);z-index:10000;">
 		<view class="middle-flex-column-center" style="width:600rpx;height:920rpx;background:#ffffff;border-radius:16rpx;">
 			<view style="width:400rpx;height:650rpx;">
-				<image style="width:100%;height:100%;" src="{{posterUrl}}"></image>
+				<image style="width:100%;height:100%;" src="{{posterUrl}}" />
 			</view>
-			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;" bindtap = "copyShareCode">
-			<text class="posterText">保存后分享给朋友</text></view>
+			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;" bindtap="copyShareCode">
+				<text class="posterText">保存后分享给朋友
+
+</text>
+			</view>
 			<view style="width:600rpx;height:70rpx;" class="middle-flex-row-center">
 				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;" bindtap='closePosterImage'>关闭</button>
 				<button style="margin:0;padding:0;width:200rpx;height:70rpx;color: #1078e7;border-radius: 8rpx;border: 1px solid #1078e7;background: none;font-size: 28rpx;text-align:center;line-height:70rpx;margin-left:30rpx;" bindtap='savePosterImage'>保存图片</button>
 			</view>
 		</view>
 	</view>
-</block>
+	</block>
 
-<block>
-	<canvas canvas-id="shareCanvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;border:1px dashed black;position:fixed;left:9000px;"></canvas>
-</block>
+	<block>
+		<canvas canvas-id="shareCanvas" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;border:1px dashed black;position:fixed;left:9000px;" />
+	</block>

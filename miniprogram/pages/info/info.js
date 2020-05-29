@@ -21,7 +21,7 @@ Page({
     thumbs_up: 1, //1表示未收藏，0表示已收藏
     store_id: '',
     isStar: false,
-    shareImage: imgUrl.share,
+    shareImage: imgUrl.share3,
     isBack: true,
     ID: '',
     action: '',
@@ -38,6 +38,7 @@ Page({
     isPopping: false
   },
   openMenu() {
+    myApi.vibrate()
     //console.log(this.data.isPopping)
     if (this.data.isPopping) {
       //缩回动画
@@ -86,13 +87,13 @@ Page({
     if (this.data.friendsIndex == 'self') {
       animToStar.translate(0, 0).opacity(0).step();
       animToEdit.translate(0, -150).opacity(1).step();
-    }else{
-     // 不是自己，有收藏
+    } else {
+      // 不是自己，有收藏
       animToStar.translate(0, -150).opacity(1).step();
       if (this.data.isShowEditBtn) {
         animToEdit.translate(0, -200).opacity(1).step();
       } else {
-            animToEdit.translate(0, 0).opacity(0).step();
+        animToEdit.translate(0, 0).opacity(0).step();
       }
     }
     this.setData({
@@ -143,6 +144,7 @@ Page({
   },
 
   toAdd() {
+    myApi.vibrate()
     var store = this.data.store
     var that = this
     this.close()
@@ -216,6 +218,7 @@ Page({
   },
   //收藏好友的店铺功能
   async star() {
+    myApi.vibrate()
     var myStores = wx.getStorageSync("storesArr")
     var friendsList = wx.getStorageSync('friendsList');
     var store_id = this.data.store_id
@@ -318,6 +321,22 @@ Page({
         store = storesArr.find(item => {
           return item.id == store_id
         })
+        that.isStar(store_id)
+        var shareImage = that.data.shareImage
+        if (store.images.length != 0) {
+          shareImage = store.images[0]
+        }else{
+          //设置默认显示的图片
+          store.images.push(shareImage)
+        }
+        this.setData({
+          shareImage,
+          store: store,
+          store_id,
+          ID,
+          action: options.action,
+          isShowEditBtn: false
+        })
       } else {
         wx.showToast({
           title: '你的好友已更换分享码',
@@ -332,14 +351,7 @@ Page({
           complete: () => {}
         });
       }
-      that.isStar(store_id)
-      this.setData({
-        store: store,
-        store_id,
-        ID,
-        action: options.action,
-        isShowEditBtn: false
-      })
+
     } else {
       //下面是正常情况
       var friendsIndex = options.friendsIndex
@@ -405,6 +417,9 @@ Page({
                         console.error("出现Bug了", error)
                       }
                     }) */
+        }else{
+          //设置默认显示的图片
+          store.images.push(shareImage)
         }
         that.setData({
           action,
@@ -512,6 +527,7 @@ Page({
    * 用户点击右上角分享
    */
   onShareAppMessage: function () {
+    myApi.vibrate()
     this.close()
     var title = wx.getStorageSync('dateSlogan');
     if (title == '') {
@@ -524,6 +540,7 @@ Page({
     }
   },
   navigate: function (e) {
+    myApi.vibrate()
     this.close()
     wx.openLocation({
       latitude: this.data.store.latitude,
@@ -558,6 +575,7 @@ Page({
    * 生成海报
    */
   onCreatePoster: async function () {
+    myApi.vibrate()
     this.close()
     wx.showLoading({
       title: '加载中',
@@ -723,6 +741,7 @@ Page({
    * @param {*} e 
    */
   hideModal(e) {
+    myApi.vibrate()
     this.setData({
       isShowPosterModal: false
     })
@@ -731,6 +750,7 @@ Page({
    * 保存海报图片
    */
   savePosterImage: function () {
+    myApi.vibrate()
     let that = this
     wx.saveImageToPhotosAlbum({
       filePath: that.data.posterImageUrl,

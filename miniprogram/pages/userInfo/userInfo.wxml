@@ -6,17 +6,17 @@
 <view class="userInfo bg-img" style="background-image: url({{bar_bgImg2}});" hover-class="none" hover-stop-propagation="false">
 	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar" />
 	<view class="nickName" hover-class="none" hover-stop-propagation="false">
-		<input focus="{{true}}" style="background-color:{{isEditName?'thistle':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName==''?'美食网友':nickName}}"></input>
+		<input focus="{{true}}" style="border: {{isEditName?'solid 1px gray':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName}}"></input>
 		<image src="{{editUrl}}" class="editName" mode="scaleToFill" bindtap = "editName"/>
 	</view>
 </view>
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
-	<view class="modules_title_box">{{nickName==''?'获取用户名和头像':nickName}}</view>
-	<image class="modules_icon" mode="scaleToFill" src="{{avatarUrl==''?'../../images/UNlogin.png':avatarUrl}}" />
+	<view class="modules_title_box">{{isUnLogin?'获取微信昵称和头像':nickName}}</view>
+	<image class="modules_icon" mode="scaleToFill" src="{{avatarUrl}}" />
 </button>
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../images/laba.png" />
+		<image class="modules_icon" mode="scaleToFill" src="../../images/food1.png" />
 	</view>
 	<view class="modules_input_box">
 	<input  class="modules_input" placeholder="约饭口号" bindinput="setSlogan" maxlength="20" value="{{dateSlogan}}"/>
@@ -25,7 +25,7 @@
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../images/eating.png" />
+		<image class="modules_icon" mode="scaleToFill" src="../../images/instant.png" />
 	</view>
 	<view class="modules_input_box" bind:tap="whereToEat">
 	<input disabled="{{true}}" class="modules_input"  value="今天去哪儿吃"/>
@@ -53,7 +53,7 @@
 
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../images/key.png" />
+		<image class="modules_icon" mode="scaleToFill" src="../../images/share.png" />
 	</view>
 	<view class="modules_input_box" bind:longpress="copyCode">
 	<input disabled="{{true}}" class="modules_input"  value="分享码：{{shareCode}}"/>
@@ -62,9 +62,9 @@
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="{{touchUrl}}" />
+		<image class="modules_icon" mode="scaleToFill" src="../../images/flash.png" />
 	</view>
-	<view class="modules_title_box">触摸反馈</view>
+	<view class="modules_title_box">触摸振动</view>
 	<view class="modules_switch_box">
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>

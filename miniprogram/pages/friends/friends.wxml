@@ -17,6 +17,7 @@
 		</view>
 	</view>
 </block>
+<image  wx:else class="shadow share" src="../../images/add3.png" bindtap="addFriends"></image>
 
 <view class="cu-list menu-avatar">
 	<view class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" wx:for="{{friendsList}}" wx:key="_id" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="ListTouchEnd"  data-target="move-box-{{index}}">
@@ -40,5 +41,4 @@
 		</view>
 	</view>
 </view>
-<image class="shadow share" src="../../images/add3.png" bindtap="addFriends"></image>
 

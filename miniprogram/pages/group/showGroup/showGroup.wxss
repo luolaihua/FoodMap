@@ -7,7 +7,8 @@
     padding: 0;
 }
 
-.add, .showMap{
+.add,
+.showMap {
     height: 14vw;
     width: 14vw;
     position: fixed;
@@ -16,6 +17,37 @@
     z-index: 100;
     opacity: 0.6;
 }
-.showMap{
+
+.showMap {
     right: 20vw;
+}
+
+.img-switch-style {
+    height: 14vw;
+    width: 14vw;
+    position: fixed;
+    bottom: 4vh;
+    right: 5vw;
+    z-index: 104;
+}
+
+.img-box {
+    position: fixed;
+    bottom: 4vh;
+    right: 2vw;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    opacity: 0;
+    height: 20vw;
+    width: 20vw;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+}
+
+.img {
+    height: 12vw;
+    width: 12vw;
+    z-index: 100;
 }

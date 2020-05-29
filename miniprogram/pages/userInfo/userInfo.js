@@ -9,8 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg1:imgUrl.bar_bg17,
-    bar_bgImg2:imgUrl.bar_bg9,
+    bar_bgImg1: imgUrl.bar_bg17,
+    bar_bgImg2: imgUrl.bar_bg9,
     nickName: '',
     avatarUrl: '',
     shareCode: '',
@@ -25,14 +25,17 @@ Page({
     whereToEatList: [],
     defaultImg: imgUrl.share,
     isShowWhereToEat: false,
-    storeData: {}
+    storeData: {},
+    isUnLogin: false
   },
   hideWhereToEat() {
+    myApi.vibrate()
     this.setData({
       isShowWhereToEat: false
     })
   },
   nextOne() {
+    myApi.vibrate()
     var whereToEatList = this.data.whereToEatList
     var randNum = Math.floor(Math.random() * whereToEatList.length)
     var storeData = whereToEatList[randNum]
@@ -42,6 +45,7 @@ Page({
     })
   },
   chooseIt() {
+    myApi.vibrate()
     var storeData = this.data.storeData
     wx.navigateTo({
       url: '../info/info?friendsIndex=' + storeData.friendsIndex,
@@ -56,14 +60,14 @@ Page({
     });
   },
   whereToEat() {
-
+    myApi.vibrate()
     var whereToEatList = this.data.whereToEatList
     if (whereToEatList.length == 0) {
       var My_GroupList = wx.getStorageSync('My_GroupsList');
       var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
       var storesArr = wx.getStorageSync('storesArr');
       //从三个地方取店铺，
-       My_GroupList.forEach(group => {
+      My_GroupList.forEach(group => {
         group.stores.forEach(store => {
           var tempData = {}
           tempData.store = store
@@ -82,7 +86,7 @@ Page({
           tempData.friendsIndex = 'JoinedGroup'
           whereToEatList.push(tempData)
         });
-      }) 
+      })
       storesArr.forEach(store => {
         var tempData = {}
         tempData.store = store
@@ -91,8 +95,8 @@ Page({
         tempData.friendsIndex = 'self'
         whereToEatList.push(tempData)
       });
-      console.log(whereToEatList)
-      if(whereToEatList.length == 0){
+     // console.log(whereToEatList)
+      if (whereToEatList.length == 0) {
         wx.showToast({
           title: '您还没有添加店铺或者加入美食圈呢',
           icon: 'none'
@@ -142,6 +146,7 @@ Page({
    * 复制秘钥
    */
   copyCode() {
+    myApi.vibrate()
     wx.setClipboardData({
       data: this.data.shareCode,
       success: (result) => {
@@ -155,8 +160,9 @@ Page({
    * 更新秘钥
    */
   refreshCode() {
+    myApi.vibrate()
     var newCode = myApi.getRandomCode(6)
-    console.log(newCode)
+    //console.log(newCode)
     myApi.updateUserInfo(newCode, 'shareCode')
     this.setData({
       shareCode: newCode
@@ -173,6 +179,7 @@ Page({
     })
   },
   clearSlogan() {
+    myApi.vibrate()
     this.setData({
       dateSlogan: ''
     })
@@ -229,7 +236,8 @@ Page({
       isVibrate_setting
     })
   },
-  onGetUserInfo: function (e) {
+  onGetUserInfo: function (e) { myApi.vibrate()
+    myApi.vibrate()
     var that = this
     var nickName = e.detail.userInfo.nickName
     var avatarUrl = e.detail.userInfo.avatarUrl
@@ -244,7 +252,7 @@ Page({
       wx.hideLoading();
       //根据是否安全获取openId还是将openId置空
       // myApi.getOpenId(res)
-      console.log(res)
+      //console.log(res)
       //如果是安全的，就存入
       if (res) {
         // wx.setStorageSync('nickName', nickName)
@@ -265,12 +273,13 @@ Page({
           fail: () => {},
           complete: () => {}
         });
-        nickName = '互联网冲浪选手'
+        nickName = '美食网友' + myApi.getRandomCode(2)
         avatarUrl = 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
       }
       that.setData({
         nickName,
-        avatarUrl
+        avatarUrl,
+        isUnLogin: false
       })
       myApi.updateUserInfo(nickName, 'nickName')
       myApi.updateUserInfo(avatarUrl, 'avatarUrl')
@@ -320,10 +329,17 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
     var nickName = wx.getStorageSync('nickName')
     var avatarUrl = wx.getStorageSync('avatarUrl')
-    console.log(avatarUrl)
+    var isUnLogin = false
+   // console.log(nickName.length)
+    if (nickName.length == 6) {
+      console.log(nickName.substr(0, 4))
+      if (nickName.substr(0, 4) == '美食网友') {
+        isUnLogin = true
+      }
+    }
+    //console.log(avatarUrl)
     var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
     if (isVibrate_setting === '') {
       wx.setStorageSync('isVibrate_setting', false)
@@ -333,7 +349,8 @@ Page({
     this.setData({
       isVibrate_setting,
       nickName,
-      avatarUrl
+      avatarUrl,
+      isUnLogin
     })
   },
 

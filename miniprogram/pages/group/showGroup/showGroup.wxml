@@ -2,8 +2,8 @@
 <cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="content">{{group.nickName}}</view>
 </cu-custom>
-<block wx:for="{{group.stores}}" wx:key="index">
-    <view class="cu-card case" bind:longpress="deleteItem" bindtap = "toInfo" id="{{item.id}}" data-index="{{index}}">
+<block wx:for="{{group.stores}}" wx:key="index" >
+    <view class="cu-card case" bind:touchstart="close" bind:longpress="deleteItem" bindtap = "toInfo" id="{{item.id}}" data-index="{{index}}">
         <view class="cu-item shadow">
                 <view class="image">
                 <image src="{{item.images.length==0?defaultImg:item.images[0]}}" mode="aspectFill"></image>
@@ -36,5 +36,22 @@
 	<view class="noData">---暂无数据---</view>
 </block>
 
+<block >
+    <view class="img-box" animation="{{animToAdd}}" bindtap="toAdd">
+        <image src="../../../images/f5.png" class="img" />
+        发布动态
+    </view>
+    <view class="img-box" animation="{{animToMap}}" bindtap="toFoodMap">
+        <image src="../../../images/ice_cream.png" class="img" />
+        美食地图
+    </view>
+    <view class="img-box" animation="{{animToListAdd}}" bindtap="toAddList">
+        <image src="../../../images/f6.png" class="img" />
+        导入动态
+    </view>
+    <image class="shadow img-switch-style" src="../../../images/quan.png" animation="{{animMenu}}" bindtap="openMenu" />
+</block>
+<!--
 <image  class="shadow add" src="../../../images/add3.png" bindtap="toAdd" bind:longpress="toAddList"></image>
 <image  class="shadow showMap" src="../../../images/map.png" bindtap="toFoodMap"></image>
+-->

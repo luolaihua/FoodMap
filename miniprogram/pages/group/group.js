@@ -4,13 +4,17 @@ const imgUrl = require('../../utils/imgUrl')
 const db = wx.cloud.database()
 const _ = db.command
 const groupsList = db.collection('groupsList')
+/**
+ * 圈子创建和加入数量限制：6
+ */
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg5,
+    bar_bgImg: imgUrl.bar_bg5,
+    bar_bgImg2: imgUrl.bar_bg55,
     modalName: '',
     TabCur: 0,
     tabList: ['创建的美食圈子', '加入的美食圈子'],
@@ -46,6 +50,7 @@ Page({
    * @param {*} e 
    */
   shareItem(e) {
+    myApi.vibrate()
     var id = e.currentTarget.id
     var group = this.data.GroupsList[id]
     this.createPoster(group)
@@ -59,6 +64,7 @@ Page({
    * 复制分享码
    */
   copyShareCode() {
+    myApi.vibrate()
     wx.setClipboardData({
       data: this.data.secretKey,
     });
@@ -67,6 +73,7 @@ Page({
    * 关闭保存海报图片的框
    */
   closePosterImage: function () {
+    myApi.vibrate()
     this.setData({
       isShowPoster: false,
     });
@@ -76,6 +83,7 @@ Page({
    * 保存海报图片
    */
   savePosterImage: function () {
+    myApi.vibrate()
     var that = this;
     var filePath = that.data.posterUrl;
     wx.saveImageToPhotosAlbum({
@@ -160,6 +168,7 @@ Page({
     })
   },
   cancel() {
+    myApi.vibrate()
     this.setData({
       isShowInputCode: false
     })
@@ -182,6 +191,16 @@ Page({
       title: '加载中',
     });
     var GroupsList = wx.getStorageSync('Joined_GroupsList');
+    /**
+     * 判断加入的圈子是否超过6个
+     */
+    if (GroupsList.length > 5) {
+      wx.showToast({
+        title: '无法加入，加入圈子的数目超过限制',
+        icon: 'none',
+      });
+      return
+    }
     //需要判断当前分享码是否已经存在列表中,先取出所有分享码
     var secretKeysFromList = []
     GroupsList.forEach(item => {
@@ -269,6 +288,7 @@ Page({
    * @param {*} e 
    */
   tabSelect(e) {
+    myApi.vibrate()
     myApi.getGroupsList(this.data.openId)
     wx.showLoading({
       title: '加载中',
@@ -296,6 +316,7 @@ Page({
     })
   },
   toCreateGroup() {
+    myApi.vibrate()
     if (this.data.TabCur == 0) {
       myApi.requestSendMsg('newMemberToGroup')
       wx.navigateTo({
@@ -309,6 +330,7 @@ Page({
 
   },
   toEditGroup(e) {
+    myApi.vibrate()
     var index = e.currentTarget.id
     var group = this.data.GroupsList[index]
 
@@ -318,7 +340,7 @@ Page({
         // 通过eventChannel向被打开页面传送数据
         result.eventChannel.emit('getGroupData', {
           group: group,
-          groupIndex:index
+          groupIndex: index
         })
       },
       fail: () => {},
@@ -340,6 +362,7 @@ Page({
    * item删除
    */
   deleteItem: function (e) {
+    myApi.vibrate()
     var that = this
 
     var TabCur = this.data.TabCur

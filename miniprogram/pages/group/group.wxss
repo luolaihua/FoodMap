@@ -2,10 +2,10 @@
 @import "../../style/colorui.wxss";
 @import "../../style/icon.wxss";
 .createGroup{
-
+  width: 100vw;
     position: fixed;
-    bottom: 100rpx;
-    right: 100rpx;
+    bottom: 10px;
+    left:  0;
 }
 .input-box{
     height: 30vh;

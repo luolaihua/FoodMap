@@ -30,7 +30,7 @@
 		<text selectable="{{true}}" class="title text-shadow text-black">{{store.name}}</text>
 		<view class="cu-tag line-orange round navigateTo" bindtap="navigate">
 		去这里
-		<text class='cuIcon-forward text-orange'/>
+		<text class='cuIcon-forward text-orange' style="font-size:60rpx"/>
 		</view>
 	</view>
 	<view class="star">

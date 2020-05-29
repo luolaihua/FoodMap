@@ -12,7 +12,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg2,
+    bar_bgImg: imgUrl.bar_bg2,
     friendsList: [],
     shareCode: '',
     isShowInputCode: false,
@@ -24,6 +24,7 @@ Page({
   },
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
+    myApi.vibrate()
     wx.showLoading({
       title: '更新数据中',
       mask: true,
@@ -37,54 +38,54 @@ Page({
         shareCode: shareCode
       }).get()
       console.log(info)
-     if(info.data.length!=0){
-             var storesCloud = info.data[0].stores
-      friendsList[index].stores = storesCloud
-      wx.setStorageSync('friendsList', friendsList);
-      this.setData({
-        friendsList
-      }, () => {
-        wx.navigateTo({
-          url: '../list/list?friendsIndex=' + index,
-        });
-      })
-     }else{
-       wx.showToast({
-         title: '更新失败，可能是好友已更换分享码',
-         icon: 'none',
-         image: '',
-         duration: 1500,
-         mask: false,
-         success: (result)=>{
-           
-         },
-         fail: ()=>{},
-         complete: ()=>{}
-       });
-     }
+      if (info.data.length != 0) {
+        var storesCloud = info.data[0].stores
+        friendsList[index].stores = storesCloud
+        wx.setStorageSync('friendsList', friendsList);
+        this.setData({
+          friendsList
+        }, () => {
+          wx.navigateTo({
+            url: '../list/list?friendsIndex=' + index,
+          });
+        })
+      } else {
+        wx.showToast({
+          title: '更新失败，可能是好友已更换分享码',
+          icon: 'none',
+          image: '',
+          duration: 1500,
+          mask: false,
+          success: (result) => {
 
-/*       //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
-      var starStoreIdList = wx.getStorageSync("starStoreIdList")
-      if (starStoreIdList != '') {
-        for (let index = 0; index < storesCloud.length; index++) {
-          //console.log(starStoreIdList.indexOf(storesCloud[index].id+''))
-          //原始的id为number类型,存到starStoreIdList里面的是string类型，一开始indexOf不起作用，需要转换数据类型
-          if (starStoreIdList.indexOf(storesCloud[index].id + '') != -1) {
-            storesCloud[index].thumbs_up = 0
-          }
-          // console.log(storesCloud)
-          // console.log(storesLocal)
-          friendsList[index].stores = storesCloud
-          wx.setStorageSync('friendsList', friendsList);
-          this.setData({
-            friendsList
-          }, () => {
-            wx.navigateTo({
-              url: '../list/list?friendsIndex=' + index,
-            });
-          })
-        }
-      } */
+          },
+          fail: () => {},
+          complete: () => {}
+        });
+      }
+
+      /*       //需要一个收藏店铺id的列表。为的是防止更新数据的时候把收藏状态也初始化了
+            var starStoreIdList = wx.getStorageSync("starStoreIdList")
+            if (starStoreIdList != '') {
+              for (let index = 0; index < storesCloud.length; index++) {
+                //console.log(starStoreIdList.indexOf(storesCloud[index].id+''))
+                //原始的id为number类型,存到starStoreIdList里面的是string类型，一开始indexOf不起作用，需要转换数据类型
+                if (starStoreIdList.indexOf(storesCloud[index].id + '') != -1) {
+                  storesCloud[index].thumbs_up = 0
+                }
+                // console.log(storesCloud)
+                // console.log(storesLocal)
+                friendsList[index].stores = storesCloud
+                wx.setStorageSync('friendsList', friendsList);
+                this.setData({
+                  friendsList
+                }, () => {
+                  wx.navigateTo({
+                    url: '../list/list?friendsIndex=' + index,
+                  });
+                })
+              }
+            } */
     } catch (e) {
 
     } finally {
@@ -97,6 +98,7 @@ Page({
 
   },
   topItem(e) {
+    myApi.vibrate()
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
     friendsList = myApi.makeItemTop(friendsList, index)
@@ -112,6 +114,7 @@ Page({
     })
   },
   deleteItem: function (e) {
+    myApi.vibrate()
     var index = e.currentTarget.id
     var friendsList = this.data.friendsList
     friendsList.splice(index, 1)
@@ -127,6 +130,7 @@ Page({
     })
   },
   addFriends() {
+    myApi.vibrate()
     this.setData({
       isShowInputCode: !this.data.isShowInputCode
     })
@@ -151,6 +155,7 @@ Page({
     })
   },
   cancel() {
+    myApi.vibrate()
     this.setData({
       isShowInputCode: false
     })
@@ -224,7 +229,7 @@ Page({
     console.log('getShareData', info)
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
-      var nickName= wx.getStorageSync('nickName')
+      var nickName = wx.getStorageSync('nickName')
       /**
        *  邀请人{{name1.DATA}}
           邀请项目{{thing2.DATA}}
@@ -234,7 +239,7 @@ Page({
        */
       //console.log(info)
       var msgData = {
-        openId : info.data[0].openId,
+        openId: info.data[0].openId,
         name1: nickName,
         thing2: '美食店铺分享',
         date3: myApi.formatTime(new Date()),
@@ -242,7 +247,7 @@ Page({
         thing5: nickName + '已查看您的美食列表',
       }
       //console.log(msgData)
-      myApi.sendMsg('viewList',msgData)
+      myApi.sendMsg('viewList', msgData)
 
 
       var storesArr = info.data[0].stores

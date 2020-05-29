@@ -1,6 +1,7 @@
 // miniprogram/pages/foodMap/foodMap.js
 const config = require('../../config.js');
 const imgUrl = require('../../utils/imgUrl')
+const myApi = require('../../utils/myApi')
 const app = getApp();
 Page({
 
@@ -74,7 +75,7 @@ Page({
     ]
   },
   // 控制地图缩放级别
-  onIncreaseScale() {
+  onIncreaseScale() { myApi.vibrate()
     let scale = this.data.scale;
     console.log(scale)
     if (scale == 20) {
@@ -104,7 +105,7 @@ Page({
 
     }, 300) */
   },
-  onDecreaseScale() {
+  onDecreaseScale() { myApi.vibrate()
     let scale = this.data.scale;
     console.log(scale)
     if (scale == 3) {
@@ -139,7 +140,7 @@ Page({
 /*   end(e) {
     clearInterval(this.data[e.currentTarget.dataset.type]);
   }, */
-  switchChange(e) {
+  switchChange(e) { myApi.vibrate()
     var index = e.currentTarget.dataset.index
     var settingList = this.data.settingList
     var stores = this.data.stores
@@ -176,7 +177,7 @@ Page({
     })
   },
   //点击地图maker
-  onMarkerTap: function (event) {
+  onMarkerTap: function (event) { myApi.vibrate()
     console.log(event)
     var storeId = event.markerId
     var stores = this.data.stores

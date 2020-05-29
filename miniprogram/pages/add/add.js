@@ -8,7 +8,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg1,
+    bar_bgImg: imgUrl.bar_bg8,
     foodIconUrl: "/images/food.png",
     foodIconList: imgUrl.foodIconLocal,
     rateValue: 3.0,
@@ -82,6 +82,7 @@ Page({
   },
   //增加
   addSpecial() {
+    myApi.vibrate()
     var that = this,
       store = that.data.store
     // console.log(special_list)
@@ -94,6 +95,7 @@ Page({
   },
   //删除
   subSpecial(e) {
+    myApi.vibrate()
     var that = this,
       index = e.currentTarget.dataset.index,
       store = that.data.store
@@ -109,6 +111,7 @@ Page({
     })
   },
   chooseLocation: function (event) {
+    myApi.vibrate()
     var that = this
     wx.getSetting({
       success: res => {
@@ -206,6 +209,7 @@ Page({
   },
   //关闭关键词标签
   tagClose: function (e) {
+    myApi.vibrate()
     var index = Number(e.currentTarget.id)
     var tagList = this.data.tagList
     tagList.splice(index, 1)
@@ -221,6 +225,7 @@ Page({
   },
   //点击关键词选择
   tagClick(e) {
+    myApi.vibrate()
     var index = e.currentTarget.id
     var tagList = this.data.tagList
     var tabList = this.data.tabList
@@ -378,6 +383,7 @@ Page({
   },
 
   createItem: async function (event) {
+    myApi.vibrate()
     let that = this
     var store = this.data.store
     /**
@@ -405,9 +411,9 @@ Page({
       return
     }
     //检查特色菜是否有空项目
-    store.special_list.forEach((element,index) => {
-      if(element==""){
-        store.special_list.splice(index,1)
+    store.special_list.forEach((element, index) => {
+      if (element == "") {
+        store.special_list.splice(index, 1)
       }
     });
     this.setData({
@@ -447,10 +453,10 @@ Page({
       wx.cloud.getTempFileURL({
         fileList: urls
       }).then(res => {
-        var tempUrlList=[]
+        var tempUrlList = []
         // get temp file URL
         console.log(res.fileList)
-        res.fileList.forEach(item=>{
+        res.fileList.forEach(item => {
           tempUrlList.push(item.tempFileURL)
         })
 

@@ -51,6 +51,11 @@
 	</view>
 </view>
 
+
+<view class=" flex flex-direction ">
+	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg2}});height: 100rpx;font-size:40rpx;"  bind:tap="createGroup">{{isEdit?'修改':'创建'}}圈子</button>
+</view>
+<!--
 <van-button
  round
  size="large"
@@ -58,4 +63,6 @@
  bind:click="createGroup"
 >{{isEdit?'修改':'创建'}}
 </van-button>
+-->
+
 

@@ -129,6 +129,9 @@
 	</view>
 	
 
-
-
-	<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
+<view class=" flex flex-direction">
+	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg}});height: 60px;font-size:40rpx;"  bind:tap="createItem">保存店铺</button>
+</view>
+<!--
+	<van-button size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
+-->

@@ -19,9 +19,9 @@
 </map>
 <view>
 	<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
-	<!--
+
 	<image wx:if="{{isPopping}}" class="coverPage2" src="{{defaultImg2}}" mode="aspectFit"/>	
-	-->
+
 
 	<!--
 	<view class="top-right">

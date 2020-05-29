@@ -9,8 +9,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg1:imgUrl.bar_bg17,
-    bar_bgImg2:imgUrl.bar_bg18,
+    bar_bgImg1: imgUrl.bar_bg17,
+    bar_bgImg2: imgUrl.bar_bg18,
     avatarUrl: imgUrl.head,
     nickName: '',
     createTime: '',
@@ -24,6 +24,7 @@ Page({
   },
   //获取成员详情
   getMembersDetail() {
+    myApi.vibrate()
     var isGetMembersDetail = this.data.isGetMembersDetail
     if (!isGetMembersDetail) {
       wx.showLoading({
@@ -47,41 +48,42 @@ Page({
           isGetMembersDetail: !that.data.isGetMembersDetail
         })
       })
-    }else{
-          this.setData({
-      isGetMembersDetail: !this.data.isGetMembersDetail
-    })
+    } else {
+      this.setData({
+        isGetMembersDetail: !this.data.isGetMembersDetail
+      })
     }
 
 
   },
-  deleteMember(e){
+  deleteMember(e) {
+    myApi.vibrate()
     console.log(e)
     var that = this
-    var index =Number(e.currentTarget.id) 
+    var index = Number(e.currentTarget.id)
     var group = this.data.group
     var membersDetailList = this.data.membersDetailList
     wx.showModal({
       title: '删除成员',
-      content: '是否删除成员'+membersDetailList[index].nickName,
+      content: '是否删除成员' + membersDetailList[index].nickName,
       showCancel: true,
       cancelText: '取消',
       cancelColor: '#000000',
       confirmText: '确定',
       confirmColor: '#3CC51F',
       success: (result) => {
-        if(result.confirm){
-          membersDetailList.splice(index,1)
-          group.membersList.splice(index,1)
-          myApi.updateGroupsList(group.membersList,'membersList',group._id)
+        if (result.confirm) {
+          membersDetailList.splice(index, 1)
+          group.membersList.splice(index, 1)
+          myApi.updateGroupsList(group.membersList, 'membersList', group._id)
           that.setData({
             membersDetailList,
             group
           })
         }
       },
-      fail: ()=>{},
-      complete: ()=>{}
+      fail: () => {},
+      complete: () => {}
     });
 
   },
@@ -106,6 +108,7 @@ Page({
     })
   },
   clearName() {
+    myApi.vibrate()
     this.setData({
       nickName: ''
     })
@@ -118,17 +121,20 @@ Page({
           wx.setStorageSync('My_GroupsList', My_GroupsList);
         }
      */
+    myApi.vibrate()
     this.setData({
       secretKey: myApi.getRandomCode(4)
     })
   },
-  copyCode(){
+  copyCode() {
+    myApi.vibrate()
     wx.setClipboardData({
       data: this.data.group.secretKey,
 
     });
   },
   async createGroup() {
+    myApi.vibrate()
     var nickName = this.data.nickName
     if (nickName == "") {
       wx.showToast({

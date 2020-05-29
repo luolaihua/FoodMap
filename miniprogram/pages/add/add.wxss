@@ -20,7 +20,7 @@ textarea{
 
 }
 .upImage{
-  margin-bottom: 40rpx;
+ 
 }
 .keywords-item,.foodIcon{
   margin-bottom: 20rpx;

@@ -10,7 +10,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg7,
+    bar_bgImg: imgUrl.bar_bg7,
     groupId: '',
     isAddItemToGroup: false,
     modalName: '',
@@ -51,10 +51,90 @@ Page({
     QrCodeUrl: '../../images/QrCode.png',
     posterUrl: '',
     isShowPoster: false,
+    //---------------菜单动画
+    isPopping: false,
+    animMenu: {},
+    animToInstant: {},
+    animToForever: {},
+    animToMap: {},
 
   },
-  //TODO 收藏的店铺不能被导入圈子动态,把收藏的店铺隐藏？
-  toFoodMap(){
+  //点击弹出
+  openMenu: function () {
+    myApi.vibrate()
+    // console.log(this.data.isPopping)
+    if (this.data.isPopping) {
+      //缩回动画
+      this.close();
+    } else {
+      //弹出动画
+      this.pop();
+    }
+  },
+  //弹出动画
+  pop: function () {
+    var animMenu = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToInstant = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToForever = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToMap = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+
+    animMenu.rotateZ(180).step();
+    animToInstant.translate(-80, -60).opacity(1).step();
+    animToForever.translate(80, -60).opacity(1).step();
+    animToMap.translate(0, -80).opacity(1).step();
+    this.setData({
+      animMenu: animMenu.export(),
+      animToInstant: animToInstant.export(),
+      animToForever: animToForever.export(),
+      animToMap: animToMap.export(),
+      isPopping: true
+    })
+  },
+  //收回动画
+  close: function () {
+    //plus逆时针旋转
+    var animMenu = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToInstant = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToForever = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    var animToMap = wx.createAnimation({
+      duration: 300,
+      timingFunction: 'ease-out'
+    })
+    animMenu.rotateZ(0).step();
+    animToInstant.translate(0, 0).opacity(0).step();
+    animToForever.translate(0, 0).opacity(0).step();
+    animToMap.translate(0, 0).opacity(0).step();
+    this.setData({
+      animMenu: animMenu.export(),
+      animToInstant: animToInstant.export(),
+      animToForever: animToForever.export(),
+      animToMap: animToMap.export(),
+      isPopping: false
+    })
+  },
+  toFoodMap() {
+    myApi.vibrate()
     var stores = this.data.storesArr
     wx.navigateTo({
       url: '../foodMap/foodMap',
@@ -67,6 +147,7 @@ Page({
     });
   },
   copyShareCode() {
+    myApi.vibrate()
     wx.setClipboardData({
       data: this.data.shareCode,
     });
@@ -75,13 +156,14 @@ Page({
    * 关闭保存海报图片的框
    */
   closePosterImage: function () {
+    myApi.vibrate()
     //订阅消息提醒
-/*     wx.requestSubscribeMessage({
-      tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
-      success(res) {
-        console.log(res)
-      }
-    }) */
+    /*     wx.requestSubscribeMessage({
+          tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
+          success(res) {
+            console.log(res)
+          }
+        }) */
     myApi.requestSendMsg('viewList')
     this.setData({
       isShowPoster: false,
@@ -92,8 +174,9 @@ Page({
   /**
    * 保存海报图片
    */
-  savePosterImage:async function () {
-  myApi.requestSendMsg('viewList')
+  savePosterImage: async function () {
+    myApi.vibrate()
+    myApi.requestSendMsg('viewList')
     var that = this;
     var filePath = that.data.posterUrl;
     wx.saveImageToPhotosAlbum({
@@ -104,7 +187,7 @@ Page({
           icon: 'none',
           duration: 1000,
           mask: true,
-        }) 
+        })
         //myApi.requestSendMsg('viewList')
         that.setData({
           isShowPoster: false,
@@ -173,6 +256,7 @@ Page({
    * storesArr为原有的数据，二者本是一样的，因为搜索功能需要还原数据
    */
   async shareItems() {
+    myApi.vibrate()
     var that = this
     var shareIndexList = this.data.shareIndexList
     var groupId = this.data.groupId
@@ -298,6 +382,7 @@ Page({
    * 打开即时分享
    */
   instantShare() {
+    myApi.vibrate()
     this.setData({
       isShowModal: false,
       isInstantShare: true
@@ -307,6 +392,7 @@ Page({
    * 永久分享
    */
   foreverShare() {
+    myApi.vibrate()
     var shareCode = wx.getStorageSync('shareCode')
     this.createPoster(shareCode, this.data.storesArr)
 
@@ -337,6 +423,7 @@ Page({
    * 全选
    */
   chooseAllItem() {
+    myApi.vibrate()
     var shareIndexList = []
 
     function getAllIndex(item, index) {
@@ -354,6 +441,7 @@ Page({
    * 取消选择
    */
   cancelChoose() {
+    myApi.vibrate()
     this.setData({
       isInstantShare: false,
       isChooseAll: false,
@@ -364,6 +452,7 @@ Page({
    * 点击CheckBox，挨个选择
    */
   chooseItem(e) {
+    myApi.vibrate()
     console.log(e)
     this.setData({
       shareIndexList: e.detail.value
@@ -373,6 +462,7 @@ Page({
    * item置顶
    */
   topItem: function (e) {
+    myApi.vibrate()
     var index = e.currentTarget.id
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
@@ -390,6 +480,7 @@ Page({
    * item删除
    */
   deleteItem: function (e) {
+    myApi.vibrate()
     var index = Number(e.currentTarget.id)
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
@@ -485,49 +576,49 @@ Page({
    */
   showShareModal() {
     var that = this
-            that.setData({
-          isShowModal: true
-        })
+    that.setData({
+      isShowModal: true
+    })
 
-/*     wx.showModal({
-      title: '是否接收通知',
-      content: '当好友获取您的分享内容时，是否通知本人？',
-      showCancel: true,
-      cancelText: '取消',
-      cancelColor: '#000000',
-      confirmText: '确定',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        if(result.confirm){
-          wx.requestSubscribeMessage({
-            tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
-            success(res) {
+    /*     wx.showModal({
+          title: '是否接收通知',
+          content: '当好友获取您的分享内容时，是否通知本人？',
+          showCancel: true,
+          cancelText: '取消',
+          cancelColor: '#000000',
+          confirmText: '确定',
+          confirmColor: '#3CC51F',
+          success: (result) => {
+            if(result.confirm){
+              wx.requestSubscribeMessage({
+                tmplIds: ['UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA','dwHciIp6G-I6CGPWaIckLXAufOVRV-1stoxHvk0EtjM','Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'],
+                success(res) {
+                  that.setData({
+                    isShowModal: true
+                  })
+                  console.log(res)
+                   wx.cloud.callFunction({
+                    name: 'sendMessage',
+                    data: {
+                      name1:wx.getStorageSync('nickName'),
+                      thing2: '你好',
+                      date3: myApi.formatTime(new Date()),
+                      thing4: '已查看',
+                      thing5: '啦啦啦啦啦啦',
+                    }
+                  }) 
+                }
+              })
+            }else{
               that.setData({
                 isShowModal: true
               })
-              console.log(res)
-               wx.cloud.callFunction({
-                name: 'sendMessage',
-                data: {
-                  name1:wx.getStorageSync('nickName'),
-                  thing2: '你好',
-                  date3: myApi.formatTime(new Date()),
-                  thing4: '已查看',
-                  thing5: '啦啦啦啦啦啦',
-                }
-              }) 
             }
-          })
-        }else{
-          that.setData({
-            isShowModal: true
-          })
-        }
-      },
-      fail: ()=>{},
-      complete: ()=>{}
-    });
- */
+          },
+          fail: ()=>{},
+          complete: ()=>{}
+        });
+     */
   },
 
   backToMap() {

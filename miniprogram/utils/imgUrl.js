@@ -9,7 +9,7 @@ module.exports={
     bar_bg18:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/18.png?sign=172b62d9cb5f210f931d05aaf5cf50e6&t=1590561119',
     bar_bg17:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/17.png?sign=1029dc2e216efcf7dd5cd1fdd5f487c6&t=1590561105',
     bar_bg16:'',
-    bar_bg15:'',
+    bar_bg55:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/55.jpg?sign=92e41e8bd982e466f21532968a530fc3&t=1590718076',
     bar_bg13:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/13.jpg?sign=4f51db9719c91cc986f0f868354a00de&t=1590559496',
     bar_bg14:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/14.png?sign=21c70be5a24cd1ee11c6c88799a0282d&t=1590559520',
 
