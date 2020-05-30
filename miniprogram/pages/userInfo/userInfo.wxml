@@ -6,7 +6,7 @@
 <view class="userInfo bg-img" style="background-image: url({{bar_bgImg2}});" hover-class="none" hover-stop-propagation="false">
 	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar" />
 	<view class="nickName" hover-class="none" hover-stop-propagation="false">
-		<input focus="{{true}}" style="border: {{isEditName?'solid 1px gray':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName}}"></input>
+		<input focus="{{true}}" class="text-bold" style="border: {{isEditName?'solid 1px gray':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName}}"></input>
 		<image src="{{editUrl}}" class="editName" mode="scaleToFill" bindtap = "editName"/>
 	</view>
 </view>
@@ -69,13 +69,11 @@
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>
 </view>
-<!--
+
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="contact">
-	<view class="modules_title_box">机器人客服</view>
+	<view class="modules_title_box">人工客服</view>
 	<image class="modules_icon" mode="scaleToFill" src="{{peopleUrl}}" />
 </button>
--->
-
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="feedback">
 	<view class="modules_title_box">意见反馈</view>
 	<image class="modules_icon_small" mode="scaleToFill" src="{{feedBackUrl}}" />

@@ -30,7 +30,6 @@ text {
  .notes-content{
    width: 60vw;
    word-wrap: break-word;
-   font-size: 40rpx;
  }
 .title-box{
   display: flex;
@@ -92,7 +91,7 @@ button::after{
 }
 .button,.button2,.button3,.menu {
   position: fixed;
-  right: 20rpx;
+  right: 10rpx;
   bottom: 4vh;
   color: black;
   height: 65rpx;
@@ -105,17 +104,13 @@ button::after{
   opacity: 0;
 }
 .button2{
+  background-color: rgba(255, 255, 255, 0.6);
   opacity: 1;
-}
-.button3{
- 
 }
 .menu{
   opacity: 1;
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.6);
   font-size: 40rpx;
-  right: 20rpx;
-  bottom: 4vh;
   z-index: 100;
 }
 .special_list{

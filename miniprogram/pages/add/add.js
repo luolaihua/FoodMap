@@ -9,7 +9,7 @@ Page({
    */
   data: {
     bar_bgImg: imgUrl.bar_bg8,
-    foodIconUrl: "/images/food.png",
+    foodIconUrl: "/images/rice.png",
     foodIconList: imgUrl.foodIconLocal,
     rateValue: 3.0,
     imgList: [], //安全检测成功的图片本地链接
@@ -43,7 +43,7 @@ Page({
       keywords: '',
       notes: '',
       isStar: false,
-      iconPath: "/images/food.png",
+      iconPath: "/images/rice.png",
       longitude: '',
       latitude: '',
       callout: {
@@ -59,7 +59,7 @@ Page({
       //---------增加菜品
       special_list: []
     },
-
+    isShowMenu:true
 
   },
   //输入菜品
@@ -306,6 +306,12 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: async function (options) {
+/*     var Tester = wx.getStorageSync('Tester');
+    if(Tester!='TEST'){
+      this.setData({
+        isShowMenu:false
+      })
+    } */
     var openId = wx.getStorageSync('openId')
     var requestType = options.requestType
     var that = this

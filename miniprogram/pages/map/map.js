@@ -199,8 +199,8 @@ Page({
     }
     this.setData({
       Tester
-    }) */
-
+    })
+ */
     //this.initMenu()
     this.openMenu()
   },
@@ -368,7 +368,7 @@ Page({
     // console.log(this.data.isPopping)
 /*     if (this.data.Tester != 'TEST') {
       wx.navigateTo({
-        url: '../list/list?friendsIndex=self&isShowMenu=no',
+        url: '../list/list?friendsIndex=self',
       });
     } else {
       if (this.data.isPopping) {

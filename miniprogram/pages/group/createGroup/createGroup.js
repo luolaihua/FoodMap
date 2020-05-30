@@ -17,7 +17,17 @@ Page({
     secretKey: '',
     //---用于编辑
     isEdit: false,
-    group: {},
+    group: {
+      nickName: '',
+      groupAvatarUrl: imgUrl.head,
+      createTime: '',
+      //圈子初始化时，群主不加入成员列表
+      //membersList: [openId],
+      membersList: [],
+      secretKey: '',
+      stores: [],
+      sign:''
+    },
     groupIndex: 0,
     isGetMembersDetail: false,
     membersDetailList: []
@@ -94,23 +104,43 @@ Page({
       events: {
         // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据,把头像链接传过来
         getAvatar: function (data) {
+          var group = that.data.group
+          group.groupAvatarUrl=data.avatarUrl
           that.setData({
-            avatarUrl: data.avatarUrl
+            group,
+            //avatarUrl: data.avatarUrl
           })
           // console.log(data)
         }
       }
     })
   },
-  inputName(e) {
+  inputContent(e) {
+    var group = this.data.group
+    var id = e.currentTarget.id
+    if(id=='name'){
+      group.nickName=e.detail.value
+    }else{
+      group.sign=e.detail.value
+    }
+    
     this.setData({
-      nickName: e.detail.value
+      group,
+      //nickName: e.detail.value
     })
   },
-  clearName() {
+  clearContent(e) {
     myApi.vibrate()
+    var group = this.data.group
+    var id = e.currentTarget.id
+    if(id=='name'){
+      group.nickName=''
+    }else{
+      group.sign=''
+    }
     this.setData({
-      nickName: ''
+      group,
+      //nickName: ''
     })
   },
   refreshCode() {
@@ -122,21 +152,24 @@ Page({
         }
      */
     myApi.vibrate()
+    var group = this.data.group
+    group.secretKey=myApi.getRandomCode(4)
     this.setData({
-      secretKey: myApi.getRandomCode(4)
+      group,
+      //secretKey:group.secretKey
     })
   },
   copyCode() {
     myApi.vibrate()
     wx.setClipboardData({
       data: this.data.group.secretKey,
-
     });
   },
   async createGroup() {
     myApi.vibrate()
-    var nickName = this.data.nickName
-    if (nickName == "") {
+    var group = this.data.group
+    //var nickName = this.data.nickName
+    if (group.nickName == "") {
       wx.showToast({
         title: '名称不能为空',
         icon: 'none',
@@ -146,25 +179,27 @@ Page({
 
     var that = this
     var My_GroupsList = wx.getStorageSync('My_GroupsList');
-    var isMsgSafe = await myApi.doMsgSecCheck(nickName)
+    var isMsgSafe = await myApi.doMsgSecCheck(group.nickName)
     if (isMsgSafe) {
-      var openId = wx.getStorageSync('openId');
-      var groupAvatarUrl = this.data.avatarUrl
+      //var openId = wx.getStorageSync('openId');
+      //var groupAvatarUrl = this.data.avatarUrl
       //判断是编辑还是创建
       if (this.data.isEdit) {
         var groupIndex = this.data.groupIndex
         var data = {}
-        data.nickName = nickName
-        data.groupAvatarUrl = groupAvatarUrl
+        data.nickName = group.nickName
+        data.groupAvatarUrl = group.groupAvatarUrl
         await myApi.updateGroupsList(data, 'name_avatar', this.data.group._id)
-        myApi.updateGroupsList(this.data.secretKey, 'secretKey', this.data.group._id)
-        My_GroupsList[groupIndex].secretKey = this.data.secretKey
+        myApi.updateGroupsList(group.secretKey, 'secretKey', this.data.group._id)
+        myApi.updateGroupsList(group.sign, 'sign', this.data.group._id)
+        My_GroupsList[groupIndex]=group
+/*         My_GroupsList[groupIndex].secretKey = this.data.secretKey
         My_GroupsList[groupIndex].nickName = nickName
-        My_GroupsList[groupIndex].groupAvatarUrl = groupAvatarUrl
+        My_GroupsList[groupIndex].groupAvatarUrl = groupAvatarUrl */
         wx.setStorageSync('My_GroupsList', My_GroupsList);
 
       } else {
-        var group = {
+/*         var group = {
           nickName: nickName,
           groupAvatarUrl: groupAvatarUrl,
           createTime: that.data.createTime,
@@ -173,7 +208,7 @@ Page({
           membersList: [],
           secretKey: that.data.secretKey,
           stores: []
-        }
+        } */
         groupsList.add({
             // data 字段表示需新增的 JSON 数据
             data: group
@@ -209,11 +244,11 @@ Page({
    */
   onLoad: function (options) {
     var that = this
-    var createTime = myApi.formatTime(new Date)
-    var secretKey = myApi.getRandomCode(4)
+    var group = this.data.group
+    group.createTime = myApi.formatTime(new Date)
+    group.secretKey = myApi.getRandomCode(4)
     this.setData({
-      createTime,
-      secretKey
+      group
     })
     const eventChannel = this.getOpenerEventChannel()
     // 监听getGroupData事件，获取上一页面通过eventChannel传送到当前页面的数据
@@ -223,10 +258,10 @@ Page({
       that.setData({
         group,
         groupIndex: data.groupIndex,
-        avatarUrl: group.groupAvatarUrl,
-        nickName: group.nickName,
-        createTime: group.createTime,
-        secretKey: group.secretKey,
+        // avatarUrl: group.groupAvatarUrl,
+        // nickName: group.nickName,
+        // createTime: group.createTime,
+        // secretKey: group.secretKey,
         isEdit: true
       })
 

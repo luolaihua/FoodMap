@@ -1,3 +1,7 @@
+	<!--pages/test.wxml-->
+	<!--
+	<text>pages/add.wxml</text>		
+	-->
 	<cu-custom bgColor="bg-gradual-blue" bgImage="{{bar_bgImg}}" isCustom="{{true}}" isBack="{{true}}">
 		<view slot="backText">返回</view>
 		<view slot="content">添加美食</view>
@@ -62,7 +66,7 @@
 			<van-tag bind:close="tagClose" id="{{index}}" wx:if="{{ store.tagList.length!=0 }}" color="{{colorList[index]}}" closeable size="large">{{item}}</van-tag>
 		</block>
 		<van-dropdown-menu>
-			<van-dropdown-item id="item" title="">
+			<van-dropdown-item id="item" title="     ">
 				<view class="keywords-box">
 					<block wx:for="{{tabList}}" wx:key="index">
 						<view class="cu-tag round bg-grey keywords-item" id="{{index}}" bindtap = "tagClick">{{item}}</view>
@@ -75,7 +79,7 @@
 		<view class="title">个性图标:</view>
 		<image style="  height:60rpx;width:60rpx" src="{{store.iconPath}}" mode="aspectFit"></image>
 		<van-dropdown-menu>
-			<van-dropdown-item id="item" title="">
+			<van-dropdown-item id="item" title="     ">
 				<view class="keywords-box">
 					<block wx:for="{{foodIconList}}" wx:key="index">
 						<image class="foodIcon" src="{{item}}" id="{{index}}" mode="aspectFit" bindtap = "chooseIcon"></image>

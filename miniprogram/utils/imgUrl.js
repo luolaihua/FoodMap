@@ -95,7 +95,7 @@ module.exports={
         '/images/foodIcon/orange.png',
         '/images/foodIcon/pizza.png',
         '/images/foodIcon/qishui.png',
-        '/images/foodIcon/rice.png',
+        '/images/foodIcon/food.png',
         '/images/foodIcon/strawberry.png',
         '/images/foodIcon/sugar.png',
         '/images/foodIcon/Wine (1).png',

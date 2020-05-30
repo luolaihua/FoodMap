@@ -81,7 +81,7 @@ async function doImgSecCheck(ImageUrl, type) {
     api: 'imgSecCheck',
     data: {
       "Action": "ImageModeration",
-     // "Scenes": ["PORN", "POLITICS", "TERRORISM", "TEXT"],
+      // "Scenes": ["PORN", "POLITICS", "TERRORISM", "TEXT"],
       "Scenes": ["PORN", "POLITICS", "TERRORISM"],
       "ImageUrl": ImageUrl,
       "ImageBase64": "",
@@ -96,10 +96,10 @@ async function doImgSecCheck(ImageUrl, type) {
     var POLITICS = res.data.Response.PoliticsResult.Suggestion == "PASS" ? true : false
     var PORN = res.data.Response.PornResult.Suggestion == "PASS" ? true : false
     var TERRORISM = res.data.Response.TerrorismResult.Suggestion == "PASS" ? true : false
-   // var TEXT = res.data.Response.TextResult.Suggestion == "PASS" ? true : false
-   //console.log('POLITICS, PORN, TERRORISM, TEXT', POLITICS, PORN, TERRORISM, TEXT)
-   console.log('POLITICS, PORN, TERRORISM', POLITICS, PORN, TERRORISM)
-    if (POLITICS && PORN && TERRORISM ) {
+    // var TEXT = res.data.Response.TextResult.Suggestion == "PASS" ? true : false
+    //console.log('POLITICS, PORN, TERRORISM, TEXT', POLITICS, PORN, TERRORISM, TEXT)
+    console.log('POLITICS, PORN, TERRORISM', POLITICS, PORN, TERRORISM)
+    if (POLITICS && PORN && TERRORISM) {
 
       console.log('图片内容安全')
       return true
@@ -436,7 +436,7 @@ function getGroupsList(openId) {
   db.collection('groupsList').where({
     membersList: _.all([openId])
   }).get().then(res => {
-   // console.log('joined', res.data)
+    // console.log('joined', res.data)
     wx.setStorageSync('Joined_GroupsList', res.data)
   })
 }
@@ -469,9 +469,12 @@ async function updateGroupsList(data, type, id) {
     case 'secretKey':
       updateData.secretKey = data
       break;
-      case 'membersList':
-        updateData.membersList = data
-        break;
+    case 'sign':
+      updateData.sign = data
+      break;
+    case 'membersList':
+      updateData.membersList = data
+      break;
     default:
       break;
   }

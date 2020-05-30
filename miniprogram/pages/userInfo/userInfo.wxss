@@ -22,7 +22,6 @@
   height: 60px;
   line-height: 60px;
   width: calc(100% - 120px);
-  font-size: 14px;
   color: #7a7a7a;
 }
 .modules_input_box {
@@ -104,7 +103,6 @@ button::after{
   justify-content: center;
 }
 .nickName input{
-
   width: 140rpx;
   margin-right:10rpx;
   text-align: center;

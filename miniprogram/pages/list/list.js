@@ -532,8 +532,9 @@ Page({
     switch (friendsIndex) {
       case 'self':
         storesArr = wx.getStorageSync('storesArr')
-/*         var Tester = wx.getStorageSync('Tester');
-        if(Tester!='TEST'){
+/*        var Tester = wx.getStorageSync('Tester');
+        //测试版
+         if(Tester!='TEST'){
           this.setData({
             isShowMenu:false
           })
