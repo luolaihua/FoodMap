@@ -23,33 +23,6 @@
 	<text wx:if="{{dateSlogan!=''}}" class="cuIcon-roundclose" bindtap="clearSlogan" />
 	</view>
 </view>
-<view class="modules_box">
-	<view class="modules_icon_box">
-		<image class="modules_icon" mode="scaleToFill" src="../../images/instant.png" />
-	</view>
-	<view class="modules_input_box" bind:tap="whereToEat">
-	<input disabled="{{true}}" class="modules_input"  value="今天去哪儿吃"/>
-	</view>
-</view>
-<!--去哪吃弹窗-->
-<view class="cu-modal {{isShowWhereToEat?'show':''}}">
-  <view class="cu-dialog">
-    <view class="bg-img  showWhere" style="background-image: url({{storeData.store.images.length==0?defaultImg:storeData.store.images[0]}});height:200px;">
-      <view class="cu-bar justify-end text-red text-bold">
-        <view class="action" bindtap="hideWhereToEat">
-          <text class="cuIcon-close text-bold text-shadow"></text>
-        </view>
-      </view>
-		<view class="cu-bar showTitle">
-			<text class="text-cut text-bold text-shadow">{{storeData.store.name}}</text>
-		</view>
-    </view>
-    <view class="cu-bar bg-white">
-      <view class="action margin-0 flex-sub  solid-left" bindtap="nextOne">换一家</view>
-	   <view class="action margin-0 flex-sub  solid-left" bindtap="chooseIt">就选它</view>
-    </view>
-  </view>
-</view>
 
 <view class="modules_box">
 	<view class="modules_icon_box">
@@ -69,12 +42,46 @@
 		<switch bindchange="switchChangeVibrate" checked="{{isVibrate_setting}}" class="modules_switch" type="switch" />
 	</view>
 </view>
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../images/instant.png" />
+	</view>
+	<view class="modules_input_box" bind:tap="whereToEat">
+	<input disabled="{{true}}" class="modules_input"  value="今天去哪儿吃"/>
+	</view>
+</view>
+<!--去哪吃弹窗-->
+<view class="cu-modal {{isShowWhereToEat?'show':''}}">
+  <view class="cu-dialog">
+    <view class="bg-img  showWhere" style="background-image: url({{storeData.store.images.length==0?defaultImg:storeData.store.images[0]}});height:200px;">
+      <view class="cu-bar justify-end text-red text-bold">
+        <view class="action" bindtap="hideWhereToEat">
+          <text class="cuIcon-roundclose text-bold text-shadow"></text>
+        </view>
+      </view>
+		<view class="cu-bar showTitle">
+			<text class="text-cut text-bold text-shadow">{{storeData.store.name}}</text>
+		</view>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub " bindtap="nextOne">换一家</view>
+	   <view class="action margin-0 flex-sub solid-left text-green" bindtap="chooseIt">就选它</view>
+    </view>
+  </view>
+</view>
 
-<button class="btn-box" style="width: calc(100% - 20px);" open-type="contact">
-	<view class="modules_title_box">人工客服</view>
+<navigator url="../welcome/welcome">
+	<button class="modules_box" style="width: calc(100% - 20px);" >
+		<image class="modules_icon" mode="scaleToFill" src="../../images/help.png" />
+		<view class="modules_title_box">使用指南</view>
+	</button>
+</navigator>
+
+<button class="modules_box" style="width: calc(100% - 20px);" open-type="contact">
 	<image class="modules_icon" mode="scaleToFill" src="{{peopleUrl}}" />
+	<view class="modules_title_box">人工客服</view>
 </button>
-<button class="btn-box" style="width: calc(100% - 20px);" open-type="feedback">
-	<view class="modules_title_box">意见反馈</view>
+<button class="modules_box" style="width: calc(100% - 20px);" open-type="feedback">	
 	<image class="modules_icon_small" mode="scaleToFill" src="{{feedBackUrl}}" />
+	<view class="modules_title_box">意见反馈</view>
 </button>

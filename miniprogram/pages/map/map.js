@@ -12,6 +12,9 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isShowWelcome:false,
+    bgImgs: imgUrl.bgList,
+    currentPage:0,
     isTesting: false,
     Tester: '',
     isHideMap: false,
@@ -46,6 +49,23 @@ Page({
     animToAdd: {},
     animAddFriends: {},
     stores: [],
+  },
+  next(){
+    this.setData({
+      currentPage:this.data.currentPage+1
+    })
+  },
+  start() {
+    this.setData({
+      isShowWelcome:false
+    })
+/*     wx.navigateTo({
+      url: '../map/map'
+    }) */
+    //  wx.redirectTo({ url: '../index/index' })
+  },
+  skip(){
+    this.start()
   },
   showMap(e) {
     var isHideMap = e.detail.value
@@ -103,6 +123,15 @@ Page({
    */
   onLoad: async function (options) {
     var that = this
+    //判断是否初次使用
+    var isShowWelcome = wx.getStorageSync('isShowWelcome');
+    if(!isShowWelcome){
+      wx.setStorageSync('isShowWelcome', true);
+      this.setData({
+        isShowWelcome:true
+      })
+    }
+
     /*     wx.showToast({
           title: '' + options.test,
         }) */

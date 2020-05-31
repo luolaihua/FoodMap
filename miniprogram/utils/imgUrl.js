@@ -1,4 +1,12 @@
 module.exports={
+    bgList:[
+        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',
+        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg1.jpg?sign=efd459f66b75a37a6d564848d5947edc&t=1590933544',
+        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg2.jpg?sign=82335166972b906f470286e35f1438fd&t=1590933562', 
+        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg3.jpg?sign=aadc51af74dd46f67d6f7c265997ebe8&t=1590933578',
+    ],
+    icon_sub:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/icon_edit_sub_60.png?sign=1be4ae7f0ec64e4d67f3c227c45c195c&t=1590887887',
+    icon_add:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/icon_edit_add_60.png?sign=99d02fe3159ae53bc793ccbcc9091d26&t=1590887818',
     share1:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/share1.jpg?sign=c64534d53b4d70542721526f4b2b1bf6&t=1590631297',
     share2:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/share2.jpg?sign=a11df9bc3ec4245529c4a8402073a822&t=1590631310',
     share3:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/defaultShare.jpg?sign=61621f2e3492ea4da337c26acfe6bdf0&t=1590631327',

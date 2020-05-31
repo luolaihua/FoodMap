@@ -1,19 +1,27 @@
-	<!--pages/test.wxml-->
-	<!--
-	<text>pages/add.wxml</text>		
-	-->
-	<cu-custom bgColor="bg-gradual-blue" bgImage="{{bar_bgImg}}" isCustom="{{true}}" isBack="{{true}}">
-		<view slot="backText">返回</view>
-		<view slot="content">添加美食</view>
-	</cu-custom>
-	<view class="cu-form-group">
-		<view class="title">名称:</view>
-		<input placeholder='可在地图上选择' name="name" value='{{store.name}}' bindinput="inputName" />
-		<text class="cuIcon-locationfill text-orange" bindtap='chooseLocation'/>
+<cu-custom
+ bgColor="bg-gradual-blue"
+ bgImage="{{bar_bgImg}}"
+ isCustom="{{true}}"
+ isBack="{{true}}"
+>
+	<view slot="backText">返回</view>
+	<view slot="content">添加美食</view>
+</cu-custom>
+<view class="cu-form-group">
+	<view class="title">店铺名称:</view>
+	<input
+	 placeholder=''
+	 name="name"
+	 value='{{store.name}}'
+	 bindinput="inputName"
+	 maxlength="10"
+	/>
+	<text class="cuIcon-locationfill text-orange" bindtap='chooseLocation'/>
+
 			</view>
 	<view class="cu-form-group" bindtap='chooseLocation'>
-		<view class="title">地址:</view>
-		<input placeholder='美食在哪呢' name="address" value='{{store.address}}' />
+		<view class="title">店铺地址:</view>
+		<input placeholder='在地图上选择' name="address" value='{{store.address}}' />
 		<text class="cuIcon-locationfill text-orange"/>
 	</view>
 	<!--
@@ -30,7 +38,6 @@
 				use-button-slot
 				step='5'
 				max='200'
-
 				bar-height='3px'
 				active-color="#ff4500"
 				bind:drag="onDrag"
@@ -97,19 +104,19 @@
 	-->
    <view class="modules_box modules_answer_box" wx:for="{{store.special_list}}" wx:key="unique">
       <view class="modules_input_box">
-         <input bindinput="checkSpecial" class="modules_input" data-index="{{index}}" maxlength="20" placeholder="特色菜{{index+1}}" value="{{item}}"></input>
+         <input bindinput="checkSpecial" class="modules_input" data-index="{{index}}" maxlength="20" placeholder="特色菜品{{index+1}}" value="{{item}}"></input>
       </view>
       <view bindtap="subSpecial" class="modules_icon_box" data-index="{{index}}">
-         <image class="modules_icon" mode="scaleToFill" src="https://gamesdata.oss-cn-hangzhou.aliyuncs.com/xiaojueding/icon_edit_sub_60.png"></image>
+         <image class="modules_icon" mode="scaleToFill" src="{{icon_sub}}"></image>
       </view>			
    </view>
 
-   <view bindtap="addSpecial" class="modules_box modules_add_box" wx:if="{{store.special_list.length<10}}">
+   <view bindtap="addSpecial" class="modules_box modules_add_box" wx:if="{{store.special_list.length<9}}">
       <view class="modules_word_box">
          <view class="modules_word">添加美食菜品</view>
       </view>
 	    <view class="modules_icon_box">
-         <image class="modules_icon" mode="scaleToFill" src="https://gamesdata.oss-cn-hangzhou.aliyuncs.com/xiaojueding/icon_edit_add_60.png"></image>
+         <image class="modules_icon" mode="scaleToFill" src="{{icon_add}}"></image>
       </view>		
    </view>
 
@@ -139,3 +146,4 @@
 <!--
 	<van-button size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="createItem">保存</van-button>
 -->
+

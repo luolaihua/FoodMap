@@ -1,0 +1,11 @@
+<!--miniprogram/pages/welcome/welcome.wxml-->
+<swiper indicator-dots="true" class="square-dot" easing-function="easeInOutCubic" current="{{currentPage}}">
+	<block wx:for="{{bgImgs}}" wx:for-index="index">
+		<swiper-item class="swiper-items">
+			<image class="wel-swiper-image" src="{{item}}" mode="scaleToFill"></image>
+			<image bind:tap="next" class="wel-next" src="../../images/nextOne.png" wx:if="{{index != bgImgs.length - 1}}"/>
+			<button class="wel-start" bindtap="start" wx:if="{{index == bgImgs.length - 1}}">立即体验</button>
+			<button class="wel-skip" bindtap="skip" wx:if="{{index != bgImgs.length - 1}}">跳过</button>
+		</swiper-item>			
+	</block>
+</swiper>

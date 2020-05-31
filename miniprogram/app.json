@@ -1,22 +1,17 @@
 {
   "pages": [
-    
-     "pages/map/map",       
-
-   "pages/group/group",    
-     "pages/add/add",     
-
-    "pages/userInfo/userInfo",  
-     
+    "pages/map/map",
+    "pages/group/group",
+    "pages/add/add",
+    "pages/userInfo/userInfo",
     "pages/foodMap/foodMap",
     "pages/group/showGroup/showGroup",
     "pages/group/createGroup/createGroup",
     "pages/imageEdit/imageEdit",
- "pages/info/info", 
+    "pages/info/info",
     "pages/friends/friends",
-
-
-    "pages/list/list"
+    "pages/list/list",
+    "pages/welcome/welcome"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",

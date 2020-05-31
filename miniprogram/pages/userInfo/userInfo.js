@@ -26,7 +26,8 @@ Page({
     defaultImg: imgUrl.share,
     isShowWhereToEat: false,
     storeData: {},
-    isUnLogin: false
+    isUnLogin: false,
+    randNum:0
   },
   hideWhereToEat() {
     myApi.vibrate()
@@ -95,7 +96,7 @@ Page({
         tempData.friendsIndex = 'self'
         whereToEatList.push(tempData)
       });
-     // console.log(whereToEatList)
+      // console.log(whereToEatList)
       if (whereToEatList.length == 0) {
         wx.showToast({
           title: '您还没有添加店铺或者加入美食圈呢',
@@ -105,9 +106,14 @@ Page({
       }
     }
     var randNum = Math.floor(Math.random() * whereToEatList.length)
-    var storeData = whereToEatList[randNum]
+    //不重复抽取
+    if(randNum==this.data.randNum){
+      randNum = Math.floor(Math.random() * whereToEatList.length)
+    }
+   var storeData = whereToEatList[randNum]
     //console.log(storeData)
     this.setData({
+      randNum,
       storeData,
       whereToEatList,
       isShowWhereToEat: true
@@ -236,7 +242,8 @@ Page({
       isVibrate_setting
     })
   },
-  onGetUserInfo: function (e) { myApi.vibrate()
+  onGetUserInfo: function (e) {
+    myApi.vibrate()
     myApi.vibrate()
     var that = this
     var nickName = e.detail.userInfo.nickName
@@ -332,7 +339,7 @@ Page({
     var nickName = wx.getStorageSync('nickName')
     var avatarUrl = wx.getStorageSync('avatarUrl')
     var isUnLogin = false
-   // console.log(nickName.length)
+    // console.log(nickName.length)
     if (nickName.length == 6) {
       console.log(nickName.substr(0, 4))
       if (nickName.substr(0, 4) == '美食网友') {

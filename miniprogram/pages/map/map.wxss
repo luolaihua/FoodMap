@@ -1,5 +1,6 @@
 @import "../../style/colorui.wxss";
 @import "../../style/icon.wxss";
+@import "../welcome//welcome.wxss";
 map{
   width: 750rpx;
  /*  filter: blur(4rpx); */

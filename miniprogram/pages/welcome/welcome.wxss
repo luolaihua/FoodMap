@@ -1,0 +1,53 @@
+/* miniprogram/pages/welcome/welcome.wxss */
+@import "../../style/colorui.wxss";
+@import "../../style/icon.wxss";
+swiper {
+  /*这个是绝对布局*/
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+
+.wel-swiper-image {
+  height: 100%;
+  width: 100%;
+  /*透明度*/
+  opacity:0.9;
+}
+
+
+.wel-start{   
+   position: fixed;
+   bottom: 10vh;
+   left: 35vw;
+   height: 40px;
+   width: 30vw;
+   opacity:0.6;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+}
+.wel-next{
+  height: 10vw;
+  width: 10vw;  
+  position: fixed;
+  bottom: 10vh;
+  right: 45vw;
+  border: solid 1px grey;
+  background-color: rgba(173, 216, 230, 0.466);
+  border-radius: 50%;
+  z-index: 66;
+}
+.wel-skip{
+  position: fixed;
+  bottom: 3vh;
+  right: 3vw;
+  height: 40px;
+  width: 20vw;
+  background-color: rgba(176, 196, 222, 0.479);
+  opacity:0.6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

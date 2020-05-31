@@ -8,6 +8,8 @@ Page({
    * 页面的初始数据
    */
   data: {
+    icon_add:imgUrl.icon_add,
+    icon_sub:imgUrl.icon_sub,
     bar_bgImg: imgUrl.bar_bg8,
     foodIconUrl: "/images/rice.png",
     foodIconList: imgUrl.foodIconLocal,

@@ -1,100 +1,107 @@
-<map
- id="map"
- scale="{{defaultScale}}"
- longitude='{{longitude}}'
- latitude='{{latitude}}'
- style='height:100vh;filter: blur({{isPopping?4:0}}rpx);'
- markers="{{stores}}"
- subkey="{{mapSubKey}}"
- show-compass="{{true}}"
- setting="{{setting}}"
- bindtap="tapMap"
- bindcallouttap="onMarkerTap"
->
-	<!-- 上方的添加提醒 -->
-	<block wx:if="{{!hideMe}}">
-		<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
-		<cover-view class="up" bindtap="hideMe" />
-	</block>
-</map>
-<view>
-	<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
 
-	<image wx:if="{{isPopping}}" class="coverPage2" src="{{defaultImg2}}" mode="aspectFit"/>	
+<block wx:if="{{isShowWelcome}}">
+	<include src="../welcome/welcome.wxml"/>
+</block>
+<block wx:else>
+
+	<map
+	id="map"
+	scale="{{defaultScale}}"
+	longitude='{{longitude}}'
+	latitude='{{latitude}}'
+	style='height:100vh;filter: blur({{isPopping?4:0}}rpx);'
+	markers="{{stores}}"
+	subkey="{{mapSubKey}}"
+	show-compass="{{true}}"
+	setting="{{setting}}"
+	bindtap="tapMap"
+	bindcallouttap="onMarkerTap"
+	>
+		<!-- 上方的添加提醒 -->
+		<block wx:if="{{!hideMe}}">
+			<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
+			<cover-view class="up" bindtap="hideMe" />
+		</block>
+	</map>
+	<view>
+		<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
+
+		<image wx:if="{{isPopping}}" class="coverPage2" src="{{defaultImg2}}" mode="aspectFit"/>	
 
 
-	<!--
-	<view class="top-right">
-		<switch class="switch-sex" checked="{{isHideMap}}" bindchange="showMap" />
-	</view>	
-	-->
+		<!--
+		<view class="top-right">
+			<switch class="switch-sex" checked="{{isHideMap}}" bindchange="showMap" />
+		</view>	
+		-->
 
-	<view style=""
-	 class="img-box"
-	 animation="{{animAddFriends}}"
-	 id="toFriends"
-	 bindtap="toFunctionPages"
-	>
-		<image src="../../images/food2.png" class="img" />
-		美食好友
-	</view>
-	<view
-	 class="img-box"
-	 animation="{{animToGroup}}"
-	 id="toGroup"
-	 bindtap="toFunctionPages"
-	>
-		<image src="../../images/f2.png" class="img" />
-		美食圈子
-	</view>
-	<view
-	 class="img-box"
-	 animation="{{animToUerInfo}}"
-	 id="toUerInfo"
-	 bindtap="toFunctionPages"
-	>
-		<image src="../../images/f1.png" class="img" />
-		个人信息
-	</view>
-	<view
-	 class="img-box"
-	 animation="{{animToList}}"
-	 id="toList"
-	 bindtap="toFunctionPages"
-	>
-		<image src="../../images/f3.png" class="img" />
-		美食列表
-	</view>
-	<view
-	 class="img-box"
-	 animation="{{animToAdd}}"
-	 id="toAdd"
-	 bindtap="toFunctionPages"
-	>
-		<image src="../../images/f4.png" class="img" />
-		添加美食
-	</view>
-	<image
-	wx:if="{{!isHideMap}}"
-	 src="../../images/eating.png"
-	 class="img-switch-style"
-	 animation="{{animMenu}}"
-	 bindtap="openMenu"
-	 bind:touchstart="testStart"
-	 bind:touchend="testEnd"
-	/>
-</view>
-
-<block wx:if="{{isTesting}}">
-	<view class="input-box shadow">
-		<input
-		 class="inputCode"
-		 placeholder="请输入内测码"
-		 bindinput="inputCode"
-		/>
-		<view class="button-box">
-			<view class="left right" bindtap="cancelInput">取消</view>
-			<view class="right" bindtap="confirmCode">确认</view>
+		<view style=""
+		class="img-box"
+		animation="{{animAddFriends}}"
+		id="toFriends"
+		bindtap="toFunctionPages"
+		>
+			<image src="../../images/food2.png" class="img" />
+			美食好友
 		</view>
+		<view
+		class="img-box"
+		animation="{{animToGroup}}"
+		id="toGroup"
+		bindtap="toFunctionPages"
+		>
+			<image src="../../images/f2.png" class="img" />
+			美食圈子
+		</view>
+		<view
+		class="img-box"
+		animation="{{animToUerInfo}}"
+		id="toUerInfo"
+		bindtap="toFunctionPages"
+		>
+			<image src="../../images/f1.png" class="img" />
+			个人信息
+		</view>
+		<view
+		class="img-box"
+		animation="{{animToList}}"
+		id="toList"
+		bindtap="toFunctionPages"
+		>
+			<image src="../../images/f3.png" class="img" />
+			美食列表
+		</view>
+		<view
+		class="img-box"
+		animation="{{animToAdd}}"
+		id="toAdd"
+		bindtap="toFunctionPages"
+		>
+			<image src="../../images/f4.png" class="img" />
+			添加美食
+		</view>
+		<image
+		wx:if="{{!isHideMap}}"
+		src="../../images/eating.png"
+		class="img-switch-style"
+		animation="{{animMenu}}"
+		bindtap="openMenu"
+		bind:touchstart="testStart"
+		bind:touchend="testEnd"
+		/>
 	</view>
+
+	<block wx:if="{{isTesting}}">
+		<view class="input-box shadow">
+			<input
+			class="inputCode"
+			placeholder="请输入内测码"
+			bindinput="inputCode"
+			/>
+			<view class="button-box">
+				<view class="left right" bindtap="cancelInput">取消</view>
+				<view class="right" bindtap="confirmCode">确认</view>
+			</view>
+		</view>
+	</block>
 </block>
