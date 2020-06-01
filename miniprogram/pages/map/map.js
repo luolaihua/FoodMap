@@ -12,9 +12,9 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isShowWelcome:false,
+    isShowWelcome: false,
     bgImgs: imgUrl.bgList,
-    currentPage:0,
+    currentPage: 0,
     isTesting: false,
     Tester: '',
     isHideMap: false,
@@ -31,12 +31,12 @@ Page({
       enableScroll: true,
       enableRotate: true,
       showCompass: false,
-      enable3D: false,
-      enableOverlooking: false,
+      enable3D: true,
+      enableOverlooking: true,
       enableSatellite: false,
       enableTraffic: false,
     },
-    defaultScale: 16,
+    scale: 16,
     longitude: 113.3245211,
     latitude: 23.10229,
     mapSubKey: config.mapSubKey,
@@ -50,21 +50,68 @@ Page({
     animAddFriends: {},
     stores: [],
   },
-  next(){
+  // 控制地图缩放级别
+  onIncreaseScale() {
+    myApi.vibrate()
+    let scale = this.data.scale;
+    // console.log(scale)
+    if (scale == 20) {
+      wx.showToast({
+        title: '已是最大级别',
+        icon: 'none',
+      });
+      return;
+    }
+    scale++;
     this.setData({
-      currentPage:this.data.currentPage+1
+      scale: scale
+    });
+  },
+  onDecreaseScale() {
+    myApi.vibrate()
+    let scale = this.data.scale;
+    // console.log(scale)
+    if (scale == 3) {
+      wx.showToast({
+        title: '已是最小级别',
+        icon: 'none',
+      });
+      return;
+    } else {
+      scale--;
+      this.setData({
+        scale: scale
+      });
+    }
+  },
+  onLocate(){
+    this.initMap()
+  },
+  /**
+   * 欢迎页
+   * @param {*} e 
+   */
+  changePage(e) {
+    //console.log(e)
+    this.setData({
+      currentPage: e.detail.current
+    })
+  },
+  next() {
+    this.setData({
+      currentPage: this.data.currentPage + 1
     })
   },
   start() {
     this.setData({
-      isShowWelcome:false
+      isShowWelcome: false
     })
-/*     wx.navigateTo({
-      url: '../map/map'
-    }) */
+    /*     wx.navigateTo({
+          url: '../map/map'
+        }) */
     //  wx.redirectTo({ url: '../index/index' })
   },
-  skip(){
+  skip() {
     this.start()
   },
   showMap(e) {
@@ -125,10 +172,10 @@ Page({
     var that = this
     //判断是否初次使用
     var isShowWelcome = wx.getStorageSync('isShowWelcome');
-    if(!isShowWelcome){
+    if (!isShowWelcome) {
       wx.setStorageSync('isShowWelcome', true);
       this.setData({
-        isShowWelcome:true
+        isShowWelcome: true
       })
     }
 
@@ -208,28 +255,28 @@ Page({
       }
 
     }
-/*     var Tester = wx.getStorageSync('Tester');
-    this.setData({
-      Tester
-    })
-    if (Tester == 'TEST') {
-      this.openMenu()
-    } else {
-      userInfo.doc('27fa7e0e5ecd3edf0000caed5ba5d3e1').get().then(res => {
-        console.log(res)
-        var storesArr = res.data.stores
-        wx.setStorageSync('storesArr', storesArr)
-        //console.log(storesArr)
-        that.setData({
-          stores: storesArr,
-          defaultScale: 6
+    /*     var Tester = wx.getStorageSync('Tester');
+        this.setData({
+          Tester
         })
-      })
-    }
-    this.setData({
-      Tester
-    })
- */
+        if (Tester == 'TEST') {
+          this.openMenu()
+        } else {
+          userInfo.doc('27fa7e0e5ecd3edf0000caed5ba5d3e1').get().then(res => {
+            console.log(res)
+            var storesArr = res.data.stores
+            wx.setStorageSync('storesArr', storesArr)
+            //console.log(storesArr)
+            that.setData({
+              stores: storesArr,
+              scale: 6
+            })
+          })
+        }
+        this.setData({
+          Tester
+        })
+     */
     //this.initMenu()
     this.openMenu()
   },
@@ -247,7 +294,7 @@ Page({
         that.setData({
           latitude,
           longitude,
-          defaultScale: 16
+          scale: 16
         })
       }
     })
@@ -326,10 +373,10 @@ Page({
 
   onShow: function () {
     var that = this
-/*     if (this.data.Tester == 'TEST') {
-      that.initMap()
-      this.initData()
-    } */
+    /*     if (this.data.Tester == 'TEST') {
+          that.initMap()
+          this.initData()
+        } */
     that.initMap()
     this.initData()
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
@@ -395,19 +442,19 @@ Page({
   //点击弹出
   openMenu: function () {
     // console.log(this.data.isPopping)
-/*     if (this.data.Tester != 'TEST') {
-      wx.navigateTo({
-        url: '../list/list?friendsIndex=self',
-      });
-    } else {
-      if (this.data.isPopping) {
-        //缩回动画
-        this.close();
-      } else {
-        //弹出动画
-        this.pop();
-      }
-    } */
+    /*     if (this.data.Tester != 'TEST') {
+          wx.navigateTo({
+            url: '../list/list?friendsIndex=self',
+          });
+        } else {
+          if (this.data.isPopping) {
+            //缩回动画
+            this.close();
+          } else {
+            //弹出动画
+            this.pop();
+          }
+        } */
     if (this.data.isPopping) {
       //缩回动画
       this.close();

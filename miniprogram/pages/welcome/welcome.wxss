@@ -40,11 +40,10 @@ swiper {
   z-index: 66;
 }
 .wel-skip{
+  font-size: smaller;
   position: fixed;
   bottom: 3vh;
   right: 3vw;
-  height: 40px;
-  width: 20vw;
   background-color: rgba(176, 196, 222, 0.479);
   opacity:0.6;
   display: flex;

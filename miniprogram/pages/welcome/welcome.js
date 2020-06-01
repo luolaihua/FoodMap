@@ -9,6 +9,12 @@ Page({
     bgImgs: imgUrl.bgList,
     currentPage:0
   },
+  changePage(e){
+    //console.log(e)
+    this.setData({
+      currentPage:e.detail.current
+    })
+  },
   next(){
     this.setData({
       currentPage:this.data.currentPage+1

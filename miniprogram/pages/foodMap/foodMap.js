@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bar_bgImg:imgUrl.bar_bg12,
+    bar_bgImg: imgUrl.bar_bg12,
     mapHeight: app.globalData.MapHeight,
     setting: {
       skew: 0,
@@ -55,6 +55,10 @@ Page({
       }, {
         name: '定位按钮',
         value: true
+      },
+      {
+        name: '缩放按钮',
+        value: true
       }, {
         name: '实时路况',
         value: false
@@ -68,16 +72,14 @@ Page({
       }, {
         name: '气泡窗口',
         value: false
-      }, {
-        name: '缩放按钮',
-        value: false
       }
     ]
   },
   // 控制地图缩放级别
-  onIncreaseScale() { myApi.vibrate()
+  onIncreaseScale() {
+    myApi.vibrate()
     let scale = this.data.scale;
-    console.log(scale)
+    //console.log(scale)
     if (scale == 20) {
       wx.showToast({
         title: '已是最大级别',
@@ -89,25 +91,26 @@ Page({
     this.setData({
       scale: scale
     });
-/*     this.data.IncreaseScale = setInterval(() => {
-      if (scale >= 19) {
-        wx.showToast({
-          title: '已是最大级别',
-          icon: 'none',
-        });
-        return;
-      }else{
-              scale++;
-      this.setData({
-        scale: scale
-      });
-      }
+    /*     this.data.IncreaseScale = setInterval(() => {
+          if (scale >= 19) {
+            wx.showToast({
+              title: '已是最大级别',
+              icon: 'none',
+            });
+            return;
+          }else{
+                  scale++;
+          this.setData({
+            scale: scale
+          });
+          }
 
-    }, 300) */
+        }, 300) */
   },
-  onDecreaseScale() { myApi.vibrate()
+  onDecreaseScale() {
+    myApi.vibrate()
     let scale = this.data.scale;
-    console.log(scale)
+    // console.log(scale)
     if (scale == 3) {
       wx.showToast({
         title: '已是最小级别',
@@ -121,26 +124,27 @@ Page({
       });
     }
 
-/*     this.data.DecreaseScale = setInterval(() => {
-      if (scale <= 3) {
-        wx.showToast({
-          title: '已是最小级别',
-          icon: 'none',
-        });
-        return;
-      } else {
-        scale--;
-        this.setData({
-          scale: scale
-        });
-      }
+    /*     this.data.DecreaseScale = setInterval(() => {
+          if (scale <= 3) {
+            wx.showToast({
+              title: '已是最小级别',
+              icon: 'none',
+            });
+            return;
+          } else {
+            scale--;
+            this.setData({
+              scale: scale
+            });
+          }
 
-    }, 300) */
+        }, 300) */
   },
-/*   end(e) {
-    clearInterval(this.data[e.currentTarget.dataset.type]);
-  }, */
-  switchChange(e) { myApi.vibrate()
+  /*   end(e) {
+      clearInterval(this.data[e.currentTarget.dataset.type]);
+    }, */
+  switchChange(e) {
+    myApi.vibrate()
     var index = e.currentTarget.dataset.index
     var settingList = this.data.settingList
     var stores = this.data.stores
@@ -177,7 +181,8 @@ Page({
     })
   },
   //点击地图maker
-  onMarkerTap: function (event) { myApi.vibrate()
+  onMarkerTap: function (event) {
+    myApi.vibrate()
     console.log(event)
     var storeId = event.markerId
     var stores = this.data.stores
@@ -202,15 +207,15 @@ Page({
   onLoad: function (options) {
     var that = this
     //使用eventChannel来通信
-         const eventChannel = this.getOpenerEventChannel()
-        eventChannel.on('getStores', function (data) {
-          // console.log(data)
-          that.setData({
-            stores: data.stores,
-            defaultScale: config.default_scale
-          })
-          that.initMap()
-        }) 
+    const eventChannel = this.getOpenerEventChannel()
+    eventChannel.on('getStores', function (data) {
+      // console.log(data)
+      that.setData({
+        stores: data.stores,
+        defaultScale: config.default_scale
+      })
+      that.initMap()
+    })
 
   },
   initMap() {

@@ -5,24 +5,29 @@
 <block wx:else>
 
 	<map
-	id="map"
-	scale="{{defaultScale}}"
-	longitude='{{longitude}}'
-	latitude='{{latitude}}'
-	style='height:100vh;filter: blur({{isPopping?4:0}}rpx);'
-	markers="{{stores}}"
-	subkey="{{mapSubKey}}"
-	show-compass="{{true}}"
-	setting="{{setting}}"
-	bindtap="tapMap"
-	bindcallouttap="onMarkerTap"
-	>
+		id="map"
+		scale="{{scale}}"
+		longitude='{{longitude}}'
+		latitude='{{latitude}}'
+		style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
+		markers="{{stores}}"
+		subkey="{{mapSubKey}}"
+		show-compass="{{true}}"
+		setting="{{setting}}"
+		bindtap="tapMap"
+		bindcallouttap="onMarkerTap"
+		>
 		<!-- 上方的添加提醒 -->
 		<block wx:if="{{!hideMe}}">
 			<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
 			<cover-view class="up" bindtap="hideMe" />
 		</block>
 	</map>
+		<block wx:if="{{!isPopping}}">
+			<image src="../../images/add.png" class="control-btn control-btn-increase" bind:touchstart="onIncreaseScale"></image>
+			<image src="../../images/sub.png" class="control-btn control-btn-decrease" bind:touchstart="onDecreaseScale"></image>
+			<image src="../../images/locate.png" class="control-btn control-btn-locate" bind:touchstart="onLocate"></image>
+		</block>
 	<view>
 		<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
 
@@ -90,18 +95,4 @@
 		bind:touchend="testEnd"
 		/>
 	</view>
-
-	<block wx:if="{{isTesting}}">
-		<view class="input-box shadow">
-			<input
-			class="inputCode"
-			placeholder="请输入内测码"
-			bindinput="inputCode"
-			/>
-			<view class="button-box">
-				<view class="left right" bindtap="cancelInput">取消</view>
-				<view class="right" bindtap="confirmCode">确认</view>
-			</view>
-		</view>
-	</block>
 </block>
