@@ -125,7 +125,10 @@ Page({
     }
 
     //生成二维码URL
-    var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
+  var  QrCodeUrl = this.data.QrCodeUrl
+    myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+  
+/*     var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
     // console.log(posterImageUrl)
     var QrCodeUrl = posterImageUrl.result
     if (QrCodeUrl == '') {
@@ -139,7 +142,7 @@ Page({
           myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
         }
       })
-    }
+    } */
     // console.log(textArr)
 
     setTimeout(function () {

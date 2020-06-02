@@ -605,8 +605,8 @@ Page({
     if (avatarUrl == '') {
       avatarUrl = imgUrl.head
     }
-
-    //生成二维码URL
+    QrCodeUrl = imgUrl.QrCodeUrl
+/*     //生成二维码URL
     var scene = this.data.ID + '-' + this.data.store_id + '-' + this.data.action
     //console.log(scene.length)
     var posterImageUrl = await myApi.getQrCodeUrl(scene)
@@ -620,7 +620,7 @@ Page({
       })
       //console.log(res1)
       QrCodeUrl = res1.fileList[0].tempFileURL
-    }
+    } */
     let posterConfig = {
       width: 750,
       height: 1200,

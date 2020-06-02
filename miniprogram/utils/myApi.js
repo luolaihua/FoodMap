@@ -2,9 +2,9 @@ const db = wx.cloud.database()
 const _ = db.command
 const app = getApp()
 const templateIds = {
-  viewList_id: 'UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA',
-  //新成员加入通知
-  newMembersToGroup_id: 'Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'
+  viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
+    //新成员加入通知
+    newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }
 
 function vibrate() {

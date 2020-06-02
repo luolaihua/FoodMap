@@ -1,9 +1,9 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 const templateIds = {
-  viewList_id: 'UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA',
+  viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
     //新成员加入通知
-    newMembersToGroup_id: 'Jf_vPIyYSbrrGhWsKNQ8UyHforoywAQco4hO7Fw64J0'
+    newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }
 cloud.init()
 

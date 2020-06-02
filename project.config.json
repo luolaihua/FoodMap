@@ -4,16 +4,16 @@
 	"setting": {
 		"urlCheck": true,
 		"es6": true,
-		"enhance": true,
 		"postcss": true,
 		"preloadBackgroundData": false,
 		"minified": true,
 		"newFeature": true,
-		"coverView": true,
-		"nodeModules": true,
 		"autoAudits": false,
+		"coverView": true,
 		"showShadowRootInWxmlPanel": true,
 		"scopeDataCheck": false,
+		"enhance": true,
+		"nodeModules": true,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -25,13 +25,11 @@
 		"useCompilerModule": false,
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
-	"appid": "wxaf60970efe7d982d",
-	"projectname": "foodMap",
+	"appid": "wxe3fcd72cecf5c374",
+	"projectname": "foodNoteMap",
 	"libVersion": "2.11.0",
 	"simulatorType": "wechat",
-	"simulatorPluginLibVersion": {
-		"qywx_simulator_plugin": "2.4.0"
-	},
+	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
 	"compileType": "miniprogram",
 	"condition": {
