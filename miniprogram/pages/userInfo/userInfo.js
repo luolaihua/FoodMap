@@ -27,7 +27,7 @@ Page({
     isShowWhereToEat: false,
     storeData: {},
     isUnLogin: false,
-    randNum:0
+    randNum: 0
   },
   hideWhereToEat() {
     myApi.vibrate()
@@ -107,10 +107,10 @@ Page({
     }
     var randNum = Math.floor(Math.random() * whereToEatList.length)
     //不重复抽取
-    if(randNum==this.data.randNum){
+    if (randNum == this.data.randNum) {
       randNum = Math.floor(Math.random() * whereToEatList.length)
     }
-   var storeData = whereToEatList[randNum]
+    var storeData = whereToEatList[randNum]
     //console.log(storeData)
     this.setData({
       randNum,
@@ -242,8 +242,24 @@ Page({
       isVibrate_setting
     })
   },
+/*   changeMapStyle(e) {
+
+    var isBlack = e.detail.value,
+      mapStyle
+    if (!isBlack) {
+      mapStyle = '墨渊'
+    } else {
+      mapStyle = '白浅'
+
+    }
+    wx.setStorageSync('isBlack', isBlack)
+    app.globalData.isBlack = isBlack
+    this.setData({
+      isBlack,
+      mapStyle
+    })
+  }, */
   onGetUserInfo: function (e) {
-    myApi.vibrate()
     myApi.vibrate()
     var that = this
     var nickName = e.detail.userInfo.nickName

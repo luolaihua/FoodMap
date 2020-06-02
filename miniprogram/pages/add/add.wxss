@@ -134,3 +134,16 @@ textarea{
 .modules_save_box:hover .modules_icon_box {
   animation: word_rotate 0.3s 0s linear 1 normal;
 }
+
+.suggestionBox{
+  background-color: white;
+  padding: 10rpx 30rpx;
+  border-bottom: solid 1rpx rgba(128, 128, 128, 0.24);
+
+}
+.suggestion-title{
+  
+}
+.suggestion-title{
+  
+}

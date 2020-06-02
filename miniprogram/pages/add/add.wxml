@@ -14,11 +14,17 @@
 	 name="name"
 	 value='{{store.name}}'
 	 bindinput="inputName"
-	 maxlength="10"
 	/>
-	<text class="cuIcon-locationfill text-orange" bindtap='chooseLocation'/>
-
-			</view>
+	<image wx:if="{{!isShowCity}}" bindtap='getCity' style="height:40rpx;width:40rpx;" src="../../images/locate_sm.png" />
+	<text wx:if="{{isShowCity}}" class="text-orange" bindtap='getCity'>{{myCity}}</text>
+</view>
+<!--关键词输入提示列表渲染-->
+<view wx:for="{{suggestion}}" wx:key="index">
+    <view class="suggestionBox" id="{{index}}" bindtap="backfill" >
+		<view class="suggestion-title text-bold" style="text-align:center;">{{item.title}}</view>
+		<view class="suggestion-addr" style="font-size:12px;color:#666;text-align:center;">{{item.addr}}</view>
+    </view>
+</view>
 	<view class="cu-form-group" bindtap='chooseLocation'>
 		<view class="title">店铺地址:</view>
 		<input placeholder='在地图上选择' name="address" value='{{store.address}}' />

@@ -11,7 +11,9 @@
 		latitude='{{latitude}}'
 		style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
 		markers="{{stores}}"
-		subkey="HSABZ-2OCR3-KTT3G-YYNJD-OTA4Q-HFFZI"
+		subkey="5PSBZ-GMSKU-B4TVS-B74EJ-66NST-YFBIX"
+		layer-style="style2"
+		layerStyle='-1'
 		show-compass="{{true}}"
 		setting="{{setting}}"
 		bindtap="tapMap"

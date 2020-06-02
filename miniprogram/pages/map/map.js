@@ -84,7 +84,7 @@ Page({
       });
     }
   },
-  onLocate(){
+  onLocate() {
     this.initMap()
   },
   /**
