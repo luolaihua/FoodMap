@@ -3,28 +3,26 @@
 	<include src="../welcome/welcome.wxml"/>
 </block>
 <block wx:else>
-
-	<map
-		id="map"
-		scale="{{scale}}"
-		longitude='{{longitude}}'
-		latitude='{{latitude}}'
-		style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
-		markers="{{stores}}"
-		subkey="5PSBZ-GMSKU-B4TVS-B74EJ-66NST-YFBIX"
-		layer-style="style2"
-		layerStyle='-1'
-		show-compass="{{true}}"
-		setting="{{setting}}"
-		bindtap="tapMap"
-		bindcallouttap="onMarkerTap"
-		>
-		<!-- 上方的添加提醒 -->
-		<block wx:if="{{!hideMe}}">
-			<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
-			<cover-view class="up" bindtap="hideMe" />
-		</block>
-	</map>
+		<map 
+			id="map"
+			scale="{{scale}}"
+			longitude='{{longitude}}'
+			latitude='{{latitude}}'
+			style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
+			markers="{{stores}}"
+			subkey="{{mapSubKey}}"
+			layer-style="2"
+			show-compass="{{true}}"
+			setting="{{setting}}"
+			bindtap="tapMap"
+			bindcallouttap="onMarkerTap"
+			>
+			<!-- 上方的添加提醒 -->
+			<block wx:if="{{!hideMe}}">
+				<cover-view class="add_me" bindtap="hideMe">添加到【我的小程序】更快找到我</cover-view>
+				<cover-view class="up" bindtap="hideMe" />
+			</block>
+		</map>
 		<block wx:if="{{!isPopping}}">
 			<image src="../../images/add.png" class="control-btn control-btn-increase" bind:touchstart="onIncreaseScale"></image>
 			<image src="../../images/sub.png" class="control-btn control-btn-decrease" bind:touchstart="onDecreaseScale"></image>

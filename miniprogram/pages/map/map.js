@@ -12,6 +12,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    isBlackStyle:false,
     isShowWelcome: false,
     bgImgs: imgUrl.bgList,
     currentPage: 0,
@@ -25,7 +26,7 @@ Page({
       rotate: 0,
       showLocation: true,
       showScale: true,
-      subKey: '',
+      subKey: config.mapSubKey,
       layerStyle: -1,
       enableZoom: true,
       enableScroll: true,
@@ -170,6 +171,7 @@ Page({
    */
   onLoad: async function (options) {
     var that = this
+
     //判断是否初次使用
     var isShowWelcome = wx.getStorageSync('isShowWelcome');
     if (!isShowWelcome) {
@@ -379,6 +381,12 @@ Page({
         } */
     that.initMap()
     this.initData()
+/*     var isBlackStyle = wx.getStorageSync('isBlack')
+    console.log(isBlackStyle)
+
+    this.setData({
+      isBlackStyle
+    }) */
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
           // res.data 包含该记录的数据
          // console.log('Hide Function ?',res.data.isHide)
