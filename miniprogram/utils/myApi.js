@@ -437,6 +437,19 @@ function getGroupsList(openId) {
     membersList: _.all([openId])
   }).get().then(res => {
     // console.log('joined', res.data)
+    //对备注预处理
+    if(res.data.length!=0){
+      var groupNameRemarkList = wx.getStorageSync('groupNameRemarkList');
+      if(groupNameRemarkList.length!=0){
+        res.data.forEach((group) => {
+          groupNameRemarkList.forEach(remarkObj=>{
+            if(group._id==remarkObj.groupId){
+              group.remark = remarkObj.remark
+            }
+          })
+        });
+      }
+    }
     wx.setStorageSync('Joined_GroupsList', res.data)
   })
 }

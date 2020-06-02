@@ -27,7 +27,8 @@ Page({
     animToMap: {},
   },
   //点击弹出
-  openMenu: function () { myApi.vibrate()
+  openMenu: function () {
+    myApi.vibrate()
     // console.log(this.data.isPopping)
     if (this.data.isPopping) {
       //缩回动画
@@ -99,7 +100,8 @@ Page({
       isPopping: false
     })
   },
-  toFoodMap() { myApi.vibrate()
+  toFoodMap() {
+    myApi.vibrate()
     var stores = this.data.group.stores
     wx.navigateTo({
       url: '../../foodMap/foodMap',
@@ -181,12 +183,14 @@ Page({
       group,
     })
   },
-  toAdd() { myApi.vibrate()
+  toAdd() {
+    myApi.vibrate()
     wx.navigateTo({
       url: '../../add/add?groupId=' + this.data.groupId + '&requestType=' + this.data.type
     });
   },
-  toAddList() { myApi.vibrate()
+  toAddList() {
+    myApi.vibrate()
     wx.navigateTo({
       url: '../../list/list?groupId=' + this.data.groupId + '&friendsIndex=' + this.data.type
     });

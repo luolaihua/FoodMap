@@ -307,7 +307,7 @@ Page({
     var openId = wx.getStorageSync('openId')
     var storesArr = []
     var avatarUrl = imgUrl.defaultAvatar
-    var nickName = '美食网友' + myApi.getRandomCode(2)
+    var nickName = '美食家' + myApi.getRandomCode(3)
     var friendsList = []
     var My_GroupsList = []
     var starStoreIdList = []
@@ -315,7 +315,6 @@ Page({
     if (openId == '') {
       //初始化
       var info = {
-        //TODO 没有设置默认头像和昵称
         nickName: nickName,
         avatarUrl: avatarUrl,
         createTime: myApi.formatTime(new Date())

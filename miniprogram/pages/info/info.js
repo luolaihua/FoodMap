@@ -6,7 +6,6 @@ const config = require('../../config.js');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 import Poster from '../../miniprogram_npm/wxa-plugin-canvas/poster/poster';
-//TODO 复制分享码时请求通知
 Page({
 
   /**

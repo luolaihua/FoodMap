@@ -1,17 +1,26 @@
 <!--miniprogram/pages/group/createGroup/createGroup.wxml-->
 <cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg1}}" isCustom="{{true}}" isBack="{{true}}">
-	<view slot="content">{{isEdit?'编辑':'创建'}}美食圈子</view>
+	<view slot="content">{{isEdit?(isCreator?'编辑':'查看'):'创建'}}美食圈子</view>
 </cu-custom>
 <view class="userInfo bg-image" style="background-image: url({{bar_bgImg2}});">
-	<image bindtap="changeAvatar" src="{{group.groupAvatarUrl}}" class="avatar bg-grey light" />
+	<image bindtap="{{isCreator?'changeAvatar':''}}" src="{{group.groupAvatarUrl}}" class="avatar bg-grey light" />
+</view>
+<view class="modules_box"wx:if="{{!isCreator}}">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../../images/remark.png" />
+	</view>
+	<view class="modules_input_box">
+	<input class="modules_input" id="remark" placeholder="圈子备注" bindinput="inputContent" maxlength="12" value="{{group.remark}}"/>
+	<text class="cuIcon-roundclose" id="remark" bindtap="clearContent" />
+	</view>
 </view>
 <view class="modules_box">
 	<view class="modules_icon_box">
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/name.png" />
 	</view>
 	<view class="modules_input_box">
-	<input  class="modules_input" id="name" placeholder="圈子名称" bindinput="inputContent" maxlength="12" value="{{group.nickName}}"/>
-	<text class="cuIcon-roundclose" id="name" bindtap="clearContent" />
+	<input disabled="{{!isCreator}}" class="modules_input text-{{isCreator?'':'grey'}}" id="name" placeholder="圈子名称" bindinput="inputContent" maxlength="12" value="{{group.nickName}}"/>
+	<text wx:if="{{isCreator}}" class="cuIcon-roundclose" id="name" bindtap="clearContent" />
 	</view>
 </view>
 <view class="modules_box">
@@ -19,8 +28,8 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/sign.png" />
 	</view>
 	<view class="modules_input_box">
-	<input  class="modules_input" id="sign" placeholder="个性签名" bindinput="inputContent" maxlength="18" value="{{group.sign}}"/>
-	<text class="cuIcon-roundclose" id="sign" bindtap="clearContent" />
+	<input disabled="{{!isCreator}}" class="modules_input text-{{isCreator?'':'grey'}}" id="sign" placeholder="个性签名" bindinput="inputContent" maxlength="18" value="{{group.sign}}"/>
+	<text wx:if="{{isCreator}}" class="cuIcon-roundclose" id="sign" bindtap="clearContent" />
 	</view>
 </view>
 <view class="modules_box">
@@ -28,8 +37,8 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/key.png" />
 	</view>
 	<view class="modules_input_box" bind:longpress="copyCode">
-	<input disabled="{{true}}" class="modules_input"  value="秘钥：{{group.secretKey}}"/>
-	<text class="cuIcon-refresh" bindtap="refreshCode" />
+	<input disabled="{{true}}" class="modules_input text-{{isCreator?'':'grey'}}"  value="秘钥：{{group.secretKey}}"/>
+	<text wx:if="{{isCreator}}" class="cuIcon-refresh" bindtap="refreshCode" />
 	</view>
 </view>
 <view class="modules_box no-margin-bottom" wx:if="{{isEdit}}">
@@ -46,8 +55,8 @@
 	<view class="modules_icon_box">
 		<image class="modules_icon round" id="{{index}}" mode="scaleToFill" src="{{item.avatarUrl}}" />
 	</view>
-	<view class="modules_input_box" id="{{index}}" bind:longpress="deleteMember">
-		<input disabled="{{true}}" class="modules_show" value="{{item.nickName}}"/>
+	<view class="modules_input_box" id="{{index}}" bind:longpress="{{isCreator?'deleteMember':''}}">
+		<input disabled="{{true}}" class="modules_show  text-{{isCreator?'':'grey'}}" value="{{item.nickName}}"/>
 	</view>
 </view>
 
@@ -62,7 +71,7 @@
 
 
 <view class=" flex flex-direction ">
-	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg2}});height: 100rpx;font-size:40rpx;"  bind:tap="createGroup">{{isEdit?'修改':'创建'}}圈子</button>
+	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg2}});height: 100rpx;font-size:40rpx;"  bind:tap="createGroup">{{isCreator?(isEdit?'修改圈子':'创建圈子'):'保存'}}</button>
 </view>
 <!--
 <van-button

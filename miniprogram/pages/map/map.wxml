@@ -10,7 +10,7 @@
 			latitude='{{latitude}}'
 			style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
 			markers="{{stores}}"
-			subkey="{{mapSubKey}}"
+			subkey="{{}}"
 			layer-style="2"
 			show-compass="{{true}}"
 			setting="{{setting}}"

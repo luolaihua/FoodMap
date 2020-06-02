@@ -5,7 +5,6 @@ const instantShare = db.collection('instantShare')
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
 const _ = db.command
-//TODO 页面转发优化
 Page({
 
   /**

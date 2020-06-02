@@ -153,14 +153,15 @@ Page({
    */
   copyCode() {
     myApi.vibrate()
+    myApi.requestSendMsg('viewList')
     wx.setClipboardData({
       data: this.data.shareCode,
       success: (result) => {
-
       },
       fail: () => {},
       complete: () => {}
     });
+    
   },
   /**
    * 更新秘钥
@@ -170,6 +171,7 @@ Page({
     var newCode = myApi.getRandomCode(6)
     //console.log(newCode)
     myApi.updateUserInfo(newCode, 'shareCode')
+    myApi.requestSendMsg('viewList')
     this.setData({
       shareCode: newCode
     })

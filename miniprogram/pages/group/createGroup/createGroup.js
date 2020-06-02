@@ -17,6 +17,8 @@ Page({
     secretKey: '',
     //---用于编辑
     isEdit: false,
+    //---用于鉴别是群主还是成员
+    isCreator: true,
     group: {
       nickName: '',
       groupAvatarUrl: imgUrl.head,
@@ -26,7 +28,7 @@ Page({
       membersList: [],
       secretKey: '',
       stores: [],
-      sign:''
+      sign: ''
     },
     groupIndex: 0,
     isGetMembersDetail: false,
@@ -105,7 +107,7 @@ Page({
         // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据,把头像链接传过来
         getAvatar: function (data) {
           var group = that.data.group
-          group.groupAvatarUrl=data.avatarUrl
+          group.groupAvatarUrl = data.avatarUrl
           that.setData({
             group,
             //avatarUrl: data.avatarUrl
@@ -118,12 +120,18 @@ Page({
   inputContent(e) {
     var group = this.data.group
     var id = e.currentTarget.id
-    if(id=='name'){
-      group.nickName=e.detail.value
-    }else{
-      group.sign=e.detail.value
+    switch (id) {
+      case 'name':
+        group.nickName = e.detail.value
+        break;
+      case 'remark':
+        group.remark = e.detail.value
+        break;
+      default:
+        group.sign = e.detail.value
+        break;
     }
-    
+
     this.setData({
       group,
       //nickName: e.detail.value
@@ -133,11 +141,22 @@ Page({
     myApi.vibrate()
     var group = this.data.group
     var id = e.currentTarget.id
-    if(id=='name'){
-      group.nickName=''
-    }else{
-      group.sign=''
+    switch (id) {
+      case 'name':
+        group.nickName = ''
+        break;
+      case 'remark':
+        group.remark = ''
+        break;
+      default:
+        group.sign = ''
+        break;
     }
+    /*     if (id == 'name') {
+          group.nickName = ''
+        } else {
+          group.sign = ''
+        } */
     this.setData({
       group,
       //nickName: ''
@@ -153,7 +172,8 @@ Page({
      */
     myApi.vibrate()
     var group = this.data.group
-    group.secretKey=myApi.getRandomCode(4)
+    group.secretKey = myApi.getRandomCode(4)
+    myApi.requestSendMsg('newMemberToGroup')
     this.setData({
       group,
       //secretKey:group.secretKey
@@ -187,28 +207,42 @@ Page({
       if (this.data.isEdit) {
         var groupIndex = this.data.groupIndex
         var data = {}
-        data.nickName = group.nickName
-        data.groupAvatarUrl = group.groupAvatarUrl
-        await myApi.updateGroupsList(data, 'name_avatar', this.data.group._id)
-        myApi.updateGroupsList(group.secretKey, 'secretKey', this.data.group._id)
-        myApi.updateGroupsList(group.sign, 'sign', this.data.group._id)
-        My_GroupsList[groupIndex]=group
-/*         My_GroupsList[groupIndex].secretKey = this.data.secretKey
-        My_GroupsList[groupIndex].nickName = nickName
-        My_GroupsList[groupIndex].groupAvatarUrl = groupAvatarUrl */
-        wx.setStorageSync('My_GroupsList', My_GroupsList);
+
+        //是否创建者
+        if (this.data.isCreator) {
+          data.nickName = group.nickName
+          data.groupAvatarUrl = group.groupAvatarUrl
+          await myApi.updateGroupsList(data, 'name_avatar', this.data.group._id)
+          myApi.updateGroupsList(group.secretKey, 'secretKey', this.data.group._id)
+          myApi.updateGroupsList(group.sign, 'sign', this.data.group._id)
+          My_GroupsList[groupIndex] = group
+          wx.setStorageSync('My_GroupsList', My_GroupsList);
+        } else {
+          var groupNameRemarkList = wx.getStorageSync('groupNameRemarkList');
+          var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+          if (groupNameRemarkList == '') {
+            groupNameRemarkList = []
+          }
+          var remarkObj = {
+            groupId: group._id,
+            remark: group.remark
+          }
+          var index = -1
+          index = groupNameRemarkList.findIndex(element => {
+            return element.groupId == group._id
+          });
+         // console.log(index)
+          if (index == -1) {
+            groupNameRemarkList.push(remarkObj)
+          } else {
+            groupNameRemarkList[index] = remarkObj
+          }
+          wx.setStorageSync('groupNameRemarkList', groupNameRemarkList);
+          Joined_GroupsList[groupIndex] = group
+          wx.setStorageSync('Joined_GroupsList', Joined_GroupsList);
+        }
 
       } else {
-/*         var group = {
-          nickName: nickName,
-          groupAvatarUrl: groupAvatarUrl,
-          createTime: that.data.createTime,
-          //圈子初始化时，群主不加入成员列表
-          //membersList: [openId],
-          membersList: [],
-          secretKey: that.data.secretKey,
-          stores: []
-        } */
         groupsList.add({
             // data 字段表示需新增的 JSON 数据
             data: group
@@ -253,15 +287,12 @@ Page({
     const eventChannel = this.getOpenerEventChannel()
     // 监听getGroupData事件，获取上一页面通过eventChannel传送到当前页面的数据
     eventChannel.on('getGroupData', function (data) {
-      console.log(data)
+     // console.log(data)
       var group = data.group
       that.setData({
         group,
         groupIndex: data.groupIndex,
-        // avatarUrl: group.groupAvatarUrl,
-        // nickName: group.nickName,
-        // createTime: group.createTime,
-        // secretKey: group.secretKey,
+        isCreator: data.isCreator,
         isEdit: true
       })
 

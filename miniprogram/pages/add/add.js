@@ -77,6 +77,14 @@ Page({
     myCity:''
 
   },
+  clearName(){
+    var store = this.data.store
+    store.name = ''
+    this.setData({
+      store,
+      suggestion:[]
+    });
+  },
   getCity(){
     var isShowCity = this.data.isShowCity
     var myCity = this.data.myCity

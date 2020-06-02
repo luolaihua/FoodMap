@@ -284,6 +284,7 @@ Page({
 
 
     switch (friendsIndex) {
+      //TODO 重复导入问题
       case 'MyGroup':
         //My_GroupsList-->groupId-->group-->stores
         var My_GroupsList = wx.getStorageSync('My_GroupsList');
@@ -297,14 +298,12 @@ Page({
         console.log(stores)
 
         await myApi.updateGroupsList(stores, 'stores', groupId)
+        wx.showToast({
+          title: '导入成功！',
+          icon: 'success',
+        })
         setTimeout(() => {
-          wx.showToast({
-            title: '添加成功！',
-            icon: 'success',
-            success: res => {
-              wx.navigateBack({})
-            }
-          })
+          wx.navigateBack({})
         }, 500);
         break;
       case 'JoinedGroup':
@@ -320,14 +319,13 @@ Page({
         console.log(stores)
 
         await myApi.updateGroupsList(stores, 'stores', groupId)
-        setTimeout(() => {
+
           wx.showToast({
-            title: '添加成功！',
+            title: '导入成功！',
             icon: 'success',
-            success: res => {
-              wx.navigateBack({})
-            }
           })
+        setTimeout(() => {
+            wx.navigateBack({})
         }, 500);
         break;
       default:
@@ -534,21 +532,52 @@ Page({
     switch (friendsIndex) {
       case 'self':
         storesArr = wx.getStorageSync('storesArr')
-/*        var Tester = wx.getStorageSync('Tester');
-        //测试版
-         if(Tester!='TEST'){
-          this.setData({
-            isShowMenu:false
-          })
-        } */
         break;
       case 'MyGroup':
         isAddItemToGroup = true
         storesArr = wx.getStorageSync('storesArr')
+        var My_GroupsList  = wx.getStorageSync('My_GroupsList');
+        var group = My_GroupsList.find(item=>{
+         return item._id==groupId
+        })
+       // console.log(group)
+        var groupStores = group.stores
+        var newArr = []
+        storesArr.forEach((store,index) => {
+          var pushFlag = true
+          groupStores.forEach(groupStore=>{
+            if(groupStore.id==store.id){
+              pushFlag = false
+            }
+          })
+          if(pushFlag){
+            newArr.push(store)
+          }
+        });
+        storesArr = newArr
         break;
       case 'JoinedGroup':
         isAddItemToGroup = true
         storesArr = wx.getStorageSync('storesArr')
+        var Joined_GroupsList  = wx.getStorageSync('Joined_GroupsList');
+        var group = Joined_GroupsList.find(item=>{
+         return item._id==groupId
+        })
+       // console.log(group)
+        var groupStores = group.stores
+        var newArr = []
+        storesArr.forEach((store,index) => {
+          var pushFlag = true
+          groupStores.forEach(groupStore=>{
+            if(groupStore.id==store.id){
+              pushFlag = false
+            }
+          })
+          if(pushFlag){
+            newArr.push(store)
+          }
+        });
+        storesArr = newArr
         break;
       default:
         var friendsList = wx.getStorageSync('friendsList')
@@ -557,6 +586,7 @@ Page({
     }
 
     console.log(friendsIndex)
+    console.log(storesArr)
     /*     if (friendsIndex == 'self') {
           storesArr = wx.getStorageSync('storesArr')
         } else {

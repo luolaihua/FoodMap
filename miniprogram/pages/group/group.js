@@ -125,24 +125,24 @@ Page({
     }
 
     //生成二维码URL
-  var  QrCodeUrl = this.data.QrCodeUrl
+    var QrCodeUrl = this.data.QrCodeUrl
     myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-  
-/*     var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
-    // console.log(posterImageUrl)
-    var QrCodeUrl = posterImageUrl.result
-    if (QrCodeUrl == '') {
-      QrCodeUrl = this.data.QrCodeUrl
-      myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-    } else {
-      wx.getImageInfo({
-        src: posterImageUrl.result,
-        success(res) {
-          QrCodeUrl = res.path
+
+    /*     var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
+        // console.log(posterImageUrl)
+        var QrCodeUrl = posterImageUrl.result
+        if (QrCodeUrl == '') {
+          QrCodeUrl = this.data.QrCodeUrl
           myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-        }
-      })
-    } */
+        } else {
+          wx.getImageInfo({
+            src: posterImageUrl.result,
+            success(res) {
+              QrCodeUrl = res.path
+              myApi.makePosterImageCanvas('shareCanvas', '我的美食圈子', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+            }
+          })
+        } */
     // console.log(textArr)
 
     setTimeout(function () {
@@ -164,7 +164,6 @@ Page({
       })
     }, 2000)
   },
-  //TODO 通过二维码分享圈子+圈子设置，换头像名字
   inputCode(e) {
     this.setData({
       secretKey: e.detail.value
@@ -336,14 +335,15 @@ Page({
     myApi.vibrate()
     var index = e.currentTarget.id
     var group = this.data.GroupsList[index]
-
+    var isCreator = (this.data.TabCur == 0) ? true : false
     wx.navigateTo({
       url: '../group/createGroup/createGroup',
       success: (result) => {
         // 通过eventChannel向被打开页面传送数据
         result.eventChannel.emit('getGroupData', {
           group: group,
-          groupIndex: index
+          groupIndex: index,
+          isCreator:isCreator
         })
       },
       fail: () => {},
@@ -418,6 +418,11 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var openId = wx.getStorageSync('openId')
+    this.setData({
+      openId
+    })
+    myApi.getGroupsList(openId)
     var secretKey = options.secretKey
     //console.log(secretKey)
     if (secretKey != undefined && secretKey != '') {
@@ -441,8 +446,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var openId = wx.getStorageSync('openId')
-    myApi.getGroupsList(openId)
+
     if (this.data.TabCur == 0) {
       var GroupsList = wx.getStorageSync('My_GroupsList');
     } else {
@@ -450,8 +454,7 @@ Page({
     }
 
     this.setData({
-      GroupsList,
-      openId
+      GroupsList
     })
   },
 

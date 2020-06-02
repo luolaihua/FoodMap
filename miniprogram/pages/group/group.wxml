@@ -27,7 +27,7 @@
 	 bindtouchend="ListTouchEnd"
 	 data-target="move-box-{{index}}"
 	>
-		<view bind:tap="{{TabCur==0?'toEditGroup':'toShowGroup'}}" id="{{index}}" class="cu-avatar radius lg">
+		<view bind:tap="toEditGroup" id="{{index}}" class="cu-avatar radius lg">
 			<image
 			 class="cu-avatar radius lg"
 			 src="{{item.groupAvatarUrl}}"
@@ -35,7 +35,7 @@
 			/>
 		</view>
 		<view class="content" bind:tap="toShowGroup" id="{{index}}">
-			<view class="text-black">{{item.nickName}}</view>
+			<view class="text-black">{{(item.remark!=''&&item.remark!=undefined)?item.remark:item.nickName}}</view>
 				<view class="text-gray text-sm">
 					<text class="cuIcon-{{item.sign==''?'command':'creative'}} text-orange" />
 						{{item.sign==''?item.secretKey:item.sign}}

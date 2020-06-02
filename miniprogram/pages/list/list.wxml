@@ -78,7 +78,7 @@
 </block>
 
 <block wx:else>
-	<view class="noData">---暂无数据---</view>
+	<view class="noData">----{{isAddItemToGroup?'暂无可添加的店铺':'暂无数据'}}----</view>
 </block>
 
 <view class="cu-modal {{isShowModal?'show':''}}">

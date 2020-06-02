@@ -15,6 +15,7 @@
 	 value='{{store.name}}'
 	 bindinput="inputName"
 	/>
+	<text wx:if="{{store.name!=''}}" class="cuIcon-roundclose text-xs margin-right" bindtap="clearName" />
 	<image wx:if="{{!isShowCity}}" bindtap='getCity' style="height:40rpx;width:40rpx;" src="../../images/locate_sm.png" />
 	<text wx:if="{{isShowCity}}" class="text-orange" bindtap='getCity'>{{myCity}}</text>
 </view>
