@@ -77,6 +77,11 @@ Page({
     myCity:''
 
   },
+  closeSuggestion(){
+    this.setData({
+      suggestion:[]
+    })
+  },
   clearName(){
     var store = this.data.store
     store.name = ''

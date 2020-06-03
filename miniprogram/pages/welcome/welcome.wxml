@@ -6,6 +6,7 @@
 		</swiper-item>			
 	</block>
 </swiper>
-<image bind:tap="next" class="wel-next" src="../../images/nextOne.png" wx:if="{{currentPage!=bgImgs.length-1}}"/>
+<image bind:tap="next" class="wel-next" src="../../images/nextOne.png" wx:if="{{(currentPage!=bgImgs.length-1)&&currentPage!=0}}"/>
+<view bind:tap="next" class="wel-init"  wx:if="{{currentPage==0}}">开始</view>
 <button class="wel-start" bindtap="start" wx:if="{{currentPage==bgImgs.length-1}}">立即体验</button>
 <button class="wel-skip" bindtap="skip" wx:if="{{currentPage!=bgImgs.length-1}}">跳过</button>

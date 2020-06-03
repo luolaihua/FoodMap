@@ -21,13 +21,13 @@ Page({
     })
   },
   start() {
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../map/map'
     })
     //  wx.redirectTo({ url: '../index/index' })
   },
   skip(){
-    wx.navigateTo({
+    wx.redirectTo({
       url: '../map/map'
     })
   },

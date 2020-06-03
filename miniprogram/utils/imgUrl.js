@@ -1,5 +1,14 @@
 module.exports={
     bgList:[
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/1.jpg?sign=c76e1a854acd993be26470ea0201bd9d&t=1591157649',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/2.jpg?sign=8c9b24dcd991fc39e2e775893400ca8c&t=1591157665',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/3.jpg?sign=a18e3af996c74843e8974ab7b7616eaf&t=1591157673',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/4.jpg?sign=52f57296c050b36741ba1d9cdbada637&t=1591157684',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/5.jpg?sign=d3af12ced88efd18930d4df53d5e79d7&t=1591157692',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/6.jpg?sign=7bcaa85bba450b36fa0470f3a9ad4d39&t=1591157703',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/7.jpg?sign=46bc6cf95bf9b158d22b4b3187b2ff38&t=1591157711',
+  ],
+    bgList2:[
         'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',
         'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg1.jpg?sign=efd459f66b75a37a6d564848d5947edc&t=1590933544',
         'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg2.jpg?sign=82335166972b906f470286e35f1438fd&t=1590933562', 

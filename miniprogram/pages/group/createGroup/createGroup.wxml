@@ -65,7 +65,7 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/time.png" />
 	</view>
 	<view class="modules_input_box" >
-	<input disabled="{{true}}" class="modules_show text-grey"  value="创建时间：{{group.createTime}}"/>
+	<input disabled="{{true}}" class="modules_show text-grey" style="font-size:16px" value="创建时间：{{group.createTime}}"/>
 	</view>
 </view>
 

@@ -180,7 +180,7 @@ Page({
         isShowWelcome: true
       })
     }
-
+    console.log(options)
     /*     wx.showToast({
           title: '' + options.test,
         }) */
@@ -193,7 +193,7 @@ Page({
         }, 3000); */
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.scene) {
-      console.log(options.scene)
+      console.log(options)
       var scene = decodeURIComponent(options.scene);
       //根据长度判断是哪个，6-永久，8-即时,4-圈子;  美食详情分享： Rc3Z8f-1588951560206-List
       if (scene.length == 6 || scene.length == 8) {

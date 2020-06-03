@@ -28,7 +28,7 @@ swiper {
    justify-content: center;
    align-items: center;
 }
-.wel-next{
+.wel-next,.wel-init{
   height: 10vw;
   width: 10vw;  
   position: fixed;
@@ -38,6 +38,14 @@ swiper {
   background-color: rgba(173, 216, 230, 0.466);
   border-radius: 50%;
   z-index: 66;
+}
+.wel-init{
+  right: 40vw;
+  display: flex;
+  height: 20vw;
+  width: 20vw;  
+  justify-content: center;
+  align-items: center;
 }
 .wel-skip{
   font-size: smaller;

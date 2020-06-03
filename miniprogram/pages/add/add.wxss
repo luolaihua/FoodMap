@@ -139,11 +139,4 @@ textarea{
   background-color: white;
   padding: 10rpx 30rpx;
   border-bottom: solid 1rpx rgba(128, 128, 128, 0.24);
-
-}
-.suggestion-title{
-  
-}
-.suggestion-title{
-  
 }
