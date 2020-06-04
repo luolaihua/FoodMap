@@ -17,7 +17,7 @@ exports.main = async (event, context) => {
     case 'viewList':
     templateId = templateIds.viewList_id
     //TODO 从订阅消息点进去的界面
-    page = 'pages/map/map?test=666'
+    page = 'pages/map/map?scene='+event.scene
     msgData = {
       name1: {
         value: event.msgData.name1

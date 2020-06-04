@@ -18,7 +18,7 @@ exports.main = async (event, context) => {
       return await getMembersDetail(event)
     }
     default:
-      return '666'//cloud.getWXContext().OPENID
+      return '666' //cloud.getWXContext().OPENID
   }
 }
 async function doMsgSecCheck(event) {
@@ -86,24 +86,24 @@ async function createQrCode(event) {
 
 }
 
-async function getMembersDetail(event){
+async function getMembersDetail(event) {
   const db = cloud.database()
   const $ = db.command.aggregate
   var membersList = event.membersList
 
   //var testData = ['oV_S-4tXMVJ2NQw5b5JOXsKsfVyU','oV_S-4tXMVJ2NQw5b5JOXsKsfVyU','oV_S-4grLxma3nV7AUY6uq8MSeRQ']
-  function getDetail(openId){
-   return db.collection('userInfo').where({
+  function getDetail(openId) {
+    return db.collection('userInfo').where({
       openId: openId
     }).get()
   }
-  var tasks=[]
-  membersList.forEach(item=>{
+  var tasks = []
+  membersList.forEach(item => {
     tasks.push(getDetail(item))
   })
   var res = await Promise.all(tasks)
   var infoList = []
-  res.forEach(item=>{
+  res.forEach(item => {
     infoList.push(item.data[0].info)
   })
   console.log(infoList)

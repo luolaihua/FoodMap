@@ -63,7 +63,7 @@
 
 
 <block wx:if="{{GroupsList.length==0}}">
-	<view class="noData">---暂无数据---</view>
+	<view class="noData">{{TabCur==0?'您还没有创建美食圈子呢^.^':'您还没有加入美食圈子呢^_^'}}</view>
 </block>
 
 <block wx:if="{{isShowInputCode}}">

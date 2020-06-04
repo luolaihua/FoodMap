@@ -3,8 +3,8 @@ const _ = db.command
 const app = getApp()
 const templateIds = {
   viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
-    //新成员加入通知
-    newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
+  //新成员加入通知
+  newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }
 
 function vibrate() {
@@ -438,12 +438,12 @@ function getGroupsList(openId) {
   }).get().then(res => {
     // console.log('joined', res.data)
     //对备注预处理
-    if(res.data.length!=0){
+    if (res.data.length != 0) {
       var groupNameRemarkList = wx.getStorageSync('groupNameRemarkList');
-      if(groupNameRemarkList.length!=0){
+      if (groupNameRemarkList.length != 0) {
         res.data.forEach((group) => {
-          groupNameRemarkList.forEach(remarkObj=>{
-            if(group._id==remarkObj.groupId){
+          groupNameRemarkList.forEach(remarkObj => {
+            if (group._id == remarkObj.groupId) {
               group.remark = remarkObj.remark
             }
           })
@@ -528,16 +528,92 @@ function requestSendMsg(type) {
 }
 
 function sendMsg(type, msgData) {
+  var shareCode = wx.getStorageSync('shareCode');
   wx.cloud.callFunction({
     name: 'sendMessage',
     data: {
       type,
-      msgData
+      msgData,
+      scene: shareCode
     }
   })
 }
+/**
+ * 计算两点直线距离
+ * @param {*} lat1 
+ * @param {*} lng1 
+ * @param {*} lat2 
+ * @param {*} lng2 
+ */
+function getDistance(lat1, lng1, lat2, lng2) {
+  var radLat1 = lat1 * Math.PI / 180.0;
+  var radLat2 = lat2 * Math.PI / 180.0;
+  var a = radLat1 - radLat2;
+  var b = lng1 * Math.PI / 180.0 - lng2 * Math.PI / 180.0;
+  var s = 2 * Math.asin(Math.sqrt(Math.pow(Math.sin(a / 2), 2) +
+    Math.cos(radLat1) * Math.cos(radLat2) * Math.pow(Math.sin(b / 2), 2)));
+  s = s * 6378.137; // EARTH_RADIUS;---km
+  //s = Math.round(s * 10000) / 10000;
+  return s;
+}
+/**
+ * 通过标签对店铺排序
+ * @param {*} stores 
+ * @param {*} tag 
+ */
+function sortStoresByTag(stores, tag) {
+  switch (tag) {
+    case 'distance':
+      var myLat = app.globalData.latitude
+      var myLnd = app.globalData.longitude
+      stores.forEach(store => {
+        store.distance = getDistance(myLat, myLnd, store.latitude, store.longitude)
+      })
+      stores.sort((store1, store2) => {
+        return store1.distance - store2.distance
+      })
+      //console.log(stores)
 
+      break;
+    case 'price':
+      stores.sort((store1, store2) => {
+        return store1.price_per - store2.price_per
+      })
+      //console.log(stores)
+      break;
+    case 'favor':
+      stores.sort((store1, store2) => {
+        return store2.rateValue - store1.rateValue
+      })
+      // console.log(stores)
+
+      break;
+
+    default:
+      break;
+  }
+  return stores
+}
+/**
+ * 通过成员ID列表获取成员头像和昵称
+ * @param {*} membersList 
+ */
+async function getMembersDetail(membersList){
+
+ var res = await wx.cloud.callFunction({
+    name: 'checkSafeContent',
+    data: {
+      requestType: 'getMembersDetail',
+      membersList: membersList
+    }
+  })
+   //console.log(res)
+   return res.result
+}
 module.exports = {
+  getMembersDetail,
+  sortStoresByTag,
+  getDistance,
   templateIds,
   sendMsg,
   requestSendMsg,

@@ -10,6 +10,11 @@
 			<text class="cuIcon-roundclose" bindtap="clearSearch" />
     	</view>
  	</view>
+	<view class="cu-form-group bg-white padding-lr-lg"style="min-height:60rpx;">
+		<view class="cu-tag {{orderTag=='distance'?'bg-orange':'line-grey'}} round"id="distance" bindtap = "orderList">离我最近</view>
+		<view class="cu-tag {{orderTag=='favor'?'bg-orange':'line-grey'}} round" id="favor" bindtap = "orderList">最受好评</view>
+		<view class="cu-tag {{orderTag=='price'?'bg-orange':'line-grey'}} round" id="price" bindtap = "orderList">价格最优</view>
+ 	</view>
 	<view class="cu-bar bg-white" wx:if="{{isInstantShare||isAddItemToGroup}}">
 		<view class="action" bindtap = "cancelChoose">
 		<text class="text-gray">取消</text>
@@ -78,7 +83,7 @@
 </block>
 
 <block wx:else>
-	<view class="noData">----{{isAddItemToGroup?'暂无可添加的店铺':'暂无数据'}}----</view>
+	<view class="noData">{{isAddItemToGroup?'暂无可添加的店铺^_^':'列表里还没有美食店铺呢^_^'}}</view>
 </block>
 
 <view class="cu-modal {{isShowModal?'show':''}}">

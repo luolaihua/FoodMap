@@ -53,7 +53,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 3,
+			"current": -1,
 			"list": [
 				{
 					"id": -1,
@@ -66,6 +66,7 @@
 					"id": -1,
 					"name": "pages/group/group",
 					"pathName": "pages/group/group",
+					"query": "",
 					"scene": null
 				}
 			]

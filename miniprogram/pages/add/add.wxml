@@ -73,7 +73,7 @@
 	<!--	-->
 	<view class="cu-form-group align-start">
 		<view class="title">商铺点评:</view>
-		<textarea placeholder='' bindinput="inputNotes" name="notes" value="{{store.notes}}" />
+		<textarea placeholder='来为你的美食店铺打call叭~' bindinput="inputNotes" name="notes" value="{{store.notes}}" />
 	</view>	
 
 
@@ -123,7 +123,7 @@
 
    <view bindtap="addSpecial" class="modules_box modules_add_box" wx:if="{{store.special_list.length<9}}">
       <view class="modules_word_box">
-         <view class="modules_word">添加美食菜品</view>
+         <view class="modules_word">添加特色菜品</view>
       </view>
 	    <view class="modules_icon_box">
          <image class="modules_icon" mode="scaleToFill" src="{{icon_add}}"></image>

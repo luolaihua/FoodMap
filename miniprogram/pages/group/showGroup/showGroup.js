@@ -5,12 +5,15 @@ const imgUrl = require('../../../utils/imgUrl')
  * 美食动态删除权限：群主可以删除所有，成员只能删除自己发的
  * 美食动态编辑权限：所有人只能编辑自己发的
  */
+//TODO 当用户改了头像和名字，动态里的创建人还是旧数据，好友列表那里也是旧数据
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    tag: '',
+    stores: [],
     defaultImg: imgUrl.share3,
     bar_bgImg: imgUrl.bar_bg4,
     groupName: '',
@@ -25,6 +28,21 @@ Page({
     animToAdd: {},
     animToListAdd: {},
     animToMap: {},
+  },
+  orderList(e) {
+    var tag = e.currentTarget.id
+    var group = this.data.group
+    if (this.data.orderTag == tag) {
+      tag = ''
+      var temp = []
+      group.stores = temp.concat(temp, this.data.stores)
+    } else {
+      group.stores = myApi.sortStoresByTag(group.stores, tag)
+    }
+    this.setData({
+      orderTag: tag,
+      group
+    })
   },
   //点击弹出
   openMenu: function () {
@@ -120,6 +138,9 @@ Page({
     var groupId = options.groupId
     var type = options.type
     console.log(options)
+    wx.showLoading({
+      title: '加载中',
+    });
     //type = 'my'
     /*     if (type == 'my') {
           GroupsList = wx.getStorageSync('My_GroupsList');
@@ -152,7 +173,7 @@ Page({
   /**
    * 生命周期函数--监听页面显示
    */
-  onShow: function () {
+  onShow: async function () {
     var GroupsList = []
     var group = []
 
@@ -177,11 +198,45 @@ Page({
         group.stores[index].isStar = false
       }
     }
+    var openId = wx.getStorageSync('openId');
+    var avatarUrl = wx.getStorageSync('avatarUrl');
+    var nickName = wx.getStorageSync('nickName');
+    //更新动态里的用户头像和昵称,有店铺的时候才做更新
+    if (group.stores.length > 0) {
+      var membersList = group.membersList
+      if(membersList.length>0){
+        var membersDetail = await myApi.getMembersDetail(membersList)
+        console.log(membersDetail)
+      }
+      group.stores.forEach((store) => {
+        //先判断群主的信息
+        if(store.creatorId==openId){
+          store.creatorName = nickName
+          store.creatorAvatar = avatarUrl
+        }
+        membersList.forEach((memberId,index)=>{
+            if(memberId==store.creatorId){
+              store.creatorName = membersDetail[index].nickName
+              store.creatorAvatar = membersDetail[index].avatarUrl
+            }
+        })
+          
+      });
+
+    }
+ 
+    //店铺数据单独拿出来放在一个数组中备用
+    var stores = []
+    //stores = stores.concat([], group.stores)
     // console.log(group)
+    wx.hideLoading();
     this.setData({
       GroupsList,
       group,
+      stores: stores.concat([], group.stores)
     })
+    myApi.updateGroupsList(group.stores,'stores',group._id)
+
   },
   toAdd() {
     myApi.vibrate()

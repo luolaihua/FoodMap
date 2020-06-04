@@ -4,12 +4,14 @@ const store = db.collection('store');
 const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
+//TODO 美食列表分类筛选，离我最近？价格？、、、
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
+    orderTag: '',
     bar_bgImg: imgUrl.bar_bg7,
     groupId: '',
     isAddItemToGroup: false,
@@ -17,8 +19,8 @@ Page({
     defaultImage: imgUrl.head,
     numbers: 0,
     searchNum: 0,
-    stores: [],
-    storesArr: [],
+    stores: [], //用来显示的，搜索功能会导致二者有变化
+    storesArr: [], //原始的店铺列表
     defaultSearchValue: '',
     condition: 'noData',
     shareCode: '',
@@ -58,8 +60,54 @@ Page({
     animToForever: {},
     animToMap: {},
 
-    isShowMenu:true
+    isShowMenu: true
 
+  },
+  orderList(e) {
+    var tag = e.currentTarget.id
+    var stores = this.data.stores
+    if (this.data.orderTag == tag) {
+      tag = ''
+      var temp = []
+      stores = temp.concat(temp,this.data.storesArr)
+    } else {
+    stores=  myApi.sortStoresByTag(stores,tag)
+/*       switch (tag) {
+        case 'distance':
+          var myLat = app.globalData.latitude
+          var myLnd = app.globalData.longitude
+          stores.forEach(store => {
+            store.distance = myApi.getDistance(myLat, myLnd, store.latitude, store.longitude)
+          })
+          stores.sort((store1, store2) => {
+            return store1.distance - store2.distance
+          })
+          console.log(stores)
+
+          break;
+        case 'price':
+          stores.sort((store1, store2) => {
+            return store1.price_per - store2.price_per
+          })
+          console.log(stores)
+
+          break;
+        case 'favor':
+          stores.sort((store1, store2) => {
+            return store2.rateValue - store1.rateValue
+          })
+          console.log(stores)
+
+          break;
+
+        default:
+          break;
+      } */
+    }
+    this.setData({
+      orderTag: tag,
+      stores
+    })
   },
   //点击弹出
   openMenu: function () {
@@ -216,23 +264,23 @@ Page({
       }
     })
     //生成二维码URL
-   var QrCodeUrl = this.data.QrCodeUrl
-   myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-/*     var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
-    // console.log(posterImageUrl)
-    var QrCodeUrl = posterImageUrl.result
-    if (QrCodeUrl == '') {
-      QrCodeUrl = this.data.QrCodeUrl
-      myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-    } else {
-      wx.getImageInfo({
-        src: posterImageUrl.result,
-        success(res) {
-          QrCodeUrl = res.path
+    var QrCodeUrl = this.data.QrCodeUrl
+    myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+    /*     var posterImageUrl = await myApi.getQrCodeUrl(shareCode)
+        // console.log(posterImageUrl)
+        var QrCodeUrl = posterImageUrl.result
+        if (QrCodeUrl == '') {
+          QrCodeUrl = this.data.QrCodeUrl
           myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
-        }
-      })
-    } */
+        } else {
+          wx.getImageInfo({
+            src: posterImageUrl.result,
+            success(res) {
+              QrCodeUrl = res.path
+              myApi.makePosterImageCanvas('shareCanvas', '我的美食收藏', textArr, that.data.colorArr, that.data.fontArr, that.data.sizeArr, 600, 20, 20, 40, that.data.canvasWidth, that.data.canvasHeight, 120, 400, QrCodeUrl);
+            }
+          })
+        } */
     // console.log(textArr)
 
     setTimeout(function () {
@@ -320,12 +368,12 @@ Page({
 
         await myApi.updateGroupsList(stores, 'stores', groupId)
 
-          wx.showToast({
-            title: '导入成功！',
-            icon: 'success',
-          })
+        wx.showToast({
+          title: '导入成功！',
+          icon: 'success',
+        })
         setTimeout(() => {
-            wx.navigateBack({})
+          wx.navigateBack({})
         }, 500);
         break;
       default:
@@ -536,21 +584,21 @@ Page({
       case 'MyGroup':
         isAddItemToGroup = true
         storesArr = wx.getStorageSync('storesArr')
-        var My_GroupsList  = wx.getStorageSync('My_GroupsList');
-        var group = My_GroupsList.find(item=>{
-         return item._id==groupId
+        var My_GroupsList = wx.getStorageSync('My_GroupsList');
+        var group = My_GroupsList.find(item => {
+          return item._id == groupId
         })
-       // console.log(group)
+        // console.log(group)
         var groupStores = group.stores
         var newArr = []
-        storesArr.forEach((store,index) => {
+        storesArr.forEach((store, index) => {
           var pushFlag = true
-          groupStores.forEach(groupStore=>{
-            if(groupStore.id==store.id){
+          groupStores.forEach(groupStore => {
+            if (groupStore.id == store.id) {
               pushFlag = false
             }
           })
-          if(pushFlag){
+          if (pushFlag) {
             newArr.push(store)
           }
         });
@@ -559,21 +607,21 @@ Page({
       case 'JoinedGroup':
         isAddItemToGroup = true
         storesArr = wx.getStorageSync('storesArr')
-        var Joined_GroupsList  = wx.getStorageSync('Joined_GroupsList');
-        var group = Joined_GroupsList.find(item=>{
-         return item._id==groupId
+        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+        var group = Joined_GroupsList.find(item => {
+          return item._id == groupId
         })
-       // console.log(group)
+        // console.log(group)
         var groupStores = group.stores
         var newArr = []
-        storesArr.forEach((store,index) => {
+        storesArr.forEach((store, index) => {
           var pushFlag = true
-          groupStores.forEach(groupStore=>{
-            if(groupStore.id==store.id){
+          groupStores.forEach(groupStore => {
+            if (groupStore.id == store.id) {
               pushFlag = false
             }
           })
-          if(pushFlag){
+          if (pushFlag) {
             newArr.push(store)
           }
         });
@@ -585,17 +633,17 @@ Page({
         break;
     }
 
-    console.log(friendsIndex)
-    console.log(storesArr)
+    // console.log(friendsIndex)
+    // console.log(storesArr)
     /*     if (friendsIndex == 'self') {
           storesArr = wx.getStorageSync('storesArr')
         } else {
           var friendsList = wx.getStorageSync('friendsList')
           storesArr = friendsList[friendsIndex].stores
         } */
-
+        var stores = new Array();
     this.setData({
-      stores: storesArr,
+      stores: stores.concat(stores,storesArr),
       storesArr,
       defaultSearchValue: '',
       friendsIndex,

@@ -2,6 +2,11 @@
 <cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}" isCustom="{{true}}"isBack="{{true}}">
 	<view slot="content">{{group.nickName}}</view>
 </cu-custom>
+<view wx:if="{{group.stores.length!=0}}" class="cu-form-group padding-lr-lg margin-top-sm"style="background-color:transparent;min-height:0">
+    <view class="cu-tag {{orderTag=='distance'?'bg-orange':'line-grey'}} round"id="distance" bindtap = "orderList">离我最近</view>
+    <view class="cu-tag {{orderTag=='favor'?'bg-orange':'line-grey'}} round" id="favor" bindtap = "orderList">最受好评</view>
+    <view class="cu-tag {{orderTag=='price'?'bg-orange':'line-grey'}} round" id="price" bindtap = "orderList">价格最优</view>
+</view>
 <block wx:for="{{group.stores}}" wx:key="index" >
     <view class="cu-card case" bind:touchstart="close" bind:longpress="deleteItem" bindtap = "toInfo" id="{{item.id}}" data-index="{{index}}">
         <view class="cu-item shadow">

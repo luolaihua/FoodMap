@@ -17,44 +17,38 @@ swiper {
 }
 
 
-.wel-start{   
-   position: fixed;
-   bottom: 10vh;
-   left: 35vw;
-   height: 40px;
-   width: 30vw;
-   opacity:0.6;
+.wel-start,.wel-next,.wel-skip{   
    display: flex;
    justify-content: center;
    align-items: center;
+   height: 4vh;
+   width: 15vw;
 }
-.wel-next,.wel-init{
-  height: 10vw;
-  width: 10vw;  
+.wel-start{   
   position: fixed;
-  bottom: 10vh;
-  right: 45vw;
-  border: solid 1px grey;
-  background-color: rgba(173, 216, 230, 0.466);
-  border-radius: 50%;
+  bottom: 5vh;
+  left: 35vw;
+  height: 40px;
+  width: 30vw;
+  background-color: rgba(238, 239, 240, 0.712);
+}
+button::after{
+  border: none;
+}
+.wel-next{ 
+  position: fixed;
+  bottom: 1vh;
+  right: 3vw;
+  border: honeydew 1px solid;
+  background-color: rgba(136, 187, 245, 0.411);
   z-index: 66;
 }
-.wel-init{
-  right: 40vw;
-  display: flex;
-  height: 20vw;
-  width: 20vw;  
-  justify-content: center;
-  align-items: center;
-}
+
 .wel-skip{
   font-size: smaller;
   position: fixed;
-  bottom: 3vh;
-  right: 3vw;
-  background-color: rgba(176, 196, 222, 0.479);
-  opacity:0.6;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  bottom: 1vh;
+  left: 3vw;
+  border: honeydew 1px solid;
+  background-color: rgba(245, 136, 169, 0.418);
 }

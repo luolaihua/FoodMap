@@ -36,10 +36,12 @@ Page({
       var info = await userInfo.where({
         shareCode: shareCode
       }).get()
-      console.log(info)
+     // console.log(info)
       if (info.data.length != 0) {
         var storesCloud = info.data[0].stores
         friendsList[index].stores = storesCloud
+        friendsList[index].avatarUrl = info.data[0].info.avatarUrl
+        friendsList[index].nickName = info.data[0].info.nickName
         wx.setStorageSync('friendsList', friendsList);
         this.setData({
           friendsList

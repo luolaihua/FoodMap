@@ -161,7 +161,7 @@ Page({
           })
 
           //从本地拿数据，更新到云端
-          var ID = that.data.ID
+          
           var friendsIndex = that.data.friendsIndex
           var store_id = that.data.store_id
           var storesArr = []
@@ -175,7 +175,7 @@ Page({
             myApi.updateUserInfo(storesArr, 'stores')
 
           } else {
-
+            var groupId = that.data.groupId
             if (friendsIndex == 'MyGroup') {
               var GroupsList = wx.getStorageSync('My_GroupsList');
             } else {
@@ -184,26 +184,26 @@ Page({
 
             //根据groupId找到圈子
             var index = GroupsList.findIndex(item => {
-              return item._id == ID
+              return item._id == groupId
             })
+            //  console.log(groupId)
+            //  console.log(index)
+            
             var group = GroupsList[index]
-            storesArr = group.stores
-            var index1 = storesArr.findIndex(item => {
-              return item.id == store_id
+            // console.log(group)
+             group.stores.forEach((store,index) => {
+               if(store.id == store_id){
+                group.stores[index]= newStore
+             console.log('???')
+               }     
             })
-            storesArr[index1] = newStore
-            myApi.updateGroupsList(storesArr, 'stores', ID)
+             console.log(group.stores)
+            // console.log(index1)
+            GroupsList[index] = group
+            var key = (friendsIndex=='MyGroup')?'My_GroupsList':'Joined_GroupsList'
+            wx.setStorageSync(key, GroupsList);
+            myApi.updateGroupsList(group.stores, 'stores', group._id)
           }
-
-
-          /*           console.log(info)
-                    if (info.data.length != 0) {
-                      storesArr = info.data[0].stores
-                      store = storesArr.find(item => {
-                        return item.id == store_id
-                      })
-                    }
-           */
 
         }
       },
@@ -403,27 +403,10 @@ Page({
         //判断是否收藏了主要是看收藏id列表中是否存在此id 
         store_id = store.id + ''
         that.isStar(store_id)
-        // 切割逗号
-        //let keywords_array = store.tagList.toString().split(',')
         var shareImage = that.data.shareImage
         //设置分享图片
         if (store.images.length != 0) {
-
           shareImage = store.images[0]
-
-          /*           wx.cloud.getTempFileURL({
-                      fileList: [store.images[0]],
-                      success: res => {
-                        console.log(res)
-                        shareImage = res.fileList[0].tempFileURL
-                        that.setData({
-                          shareImage
-                        })
-                      },
-                      fail: error => {
-                        console.error("出现Bug了", error)
-                      }
-                    }) */
         }else{
           //设置默认显示的图片
           store.images.push(shareImage)
@@ -435,7 +418,8 @@ Page({
           friendsIndex,
           store_id,
           ID,
-          isShowEditBtn
+          isShowEditBtn,
+          groupId:data.groupId
         })
       })
     }

@@ -8,7 +8,7 @@
 			scale="{{scale}}"
 			longitude='{{longitude}}'
 			latitude='{{latitude}}'
-			style='height:100vh;filter: blur({{isPopping?10:0}}rpx);'
+			style='height:100vh;filter: blur({{isPopping?15:0}}rpx);'
 			markers="{{stores}}"
 			subkey="{{}}"
 			layer-style="2"

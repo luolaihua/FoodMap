@@ -5,7 +5,9 @@ const userInfo = db.collection('userInfo');
 const myApi = require('../../utils/myApi')
 const imgUrl = require('../../utils/imgUrl')
 //TODO 食堂美食推荐
-//test
+//27.31815,115.44189,27.321657819648347,115.44098877777101
+//var d =  myApi.getDistance(27.31815,115.44189,27.321657819648347,115.44098877777101)
+//console.log(d)
 Page({
 
   /**
@@ -51,6 +53,7 @@ Page({
     animAddFriends: {},
     stores: [],
   },
+
   // 控制地图缩放级别
   onIncreaseScale() {
     myApi.vibrate()
@@ -291,6 +294,8 @@ Page({
       isHighAccuracy: 'true',
       success(res) {
         //console.log(res)
+        app.globalData.latitude = res.latitude
+        app.globalData.longitude = res.longitude
         const latitude = res.latitude
         const longitude = res.longitude
         that.setData({
@@ -337,6 +342,8 @@ Page({
           starStoreIdList = res.result.memberInfos.data[0].starStoreIdList
           nickName = res.result.memberInfos.data[0].info.nickName
           avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
+        }else{
+          wx.setStorageSync('isUnLogin',true)
         }
         myApi.getGroupsList(res.result.openId)
         wx.setStorageSync('openId', res.result.openId)
@@ -348,7 +355,7 @@ Page({
       var info = await userInfo.where({
         openId: openId
       }).get()
-      //console.log(info)
+     // console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
         nickName = info.data[0].info.nickName

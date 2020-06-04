@@ -111,7 +111,7 @@ button{
   justify-content: center;
 }
 .nickName input{
-  width: 140rpx;
+  width: 160rpx;
   margin-right:10rpx;
   text-align: center;
   display: flex;

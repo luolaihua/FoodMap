@@ -284,6 +284,7 @@ Page({
 
       wx.chooseLocation({
         success: res => {
+          console.log(res)
           name = (name == '' ? res.name : name)
           var store = that.data.store
           store.name = name

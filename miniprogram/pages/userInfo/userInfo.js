@@ -156,12 +156,11 @@ Page({
     myApi.requestSendMsg('viewList')
     wx.setClipboardData({
       data: this.data.shareCode,
-      success: (result) => {
-      },
+      success: (result) => {},
       fail: () => {},
       complete: () => {}
     });
-    
+
   },
   /**
    * 更新秘钥
@@ -200,6 +199,13 @@ Page({
   },
   async stopEditName(e) {
     var nickName = e.detail.value
+    if(nickName==""){
+      wx.showToast({
+        title: '昵称不能为空',
+        icon: 'none',
+      });
+      return
+    }
     wx.showLoading({
       title: '内容安全检测中',
       mask: true,
@@ -244,72 +250,70 @@ Page({
       isVibrate_setting
     })
   },
-/*   changeMapStyle(e) {
+  /*   changeMapStyle(e) {
 
-    var isBlack = e.detail.value,
-      mapStyle
-    if (!isBlack) {
-      mapStyle = '墨渊'
-    } else {
-      mapStyle = '白浅'
+      var isBlack = e.detail.value,
+        mapStyle
+      if (!isBlack) {
+        mapStyle = '墨渊'
+      } else {
+        mapStyle = '白浅'
 
-    }
-    wx.setStorageSync('isBlack', isBlack)
-    app.globalData.isBlack = isBlack
-    this.setData({
-      isBlack,
-      mapStyle
-    })
-  }, */
+      }
+      wx.setStorageSync('isBlack', isBlack)
+      app.globalData.isBlack = isBlack
+      this.setData({
+        isBlack,
+        mapStyle
+      })
+    }, */
   onGetUserInfo: function (e) {
     myApi.vibrate()
     var that = this
-    var nickName = e.detail.userInfo.nickName
-    var avatarUrl = e.detail.userInfo.avatarUrl
+    console.log(e)
+    if (e.detail.errMsg != 'getUserInfo:fail auth deny') {
+      var nickName = e.detail.userInfo.nickName
+      var avatarUrl = e.detail.userInfo.avatarUrl
+      var isUnLogin = false
+      wx.showLoading({
+        title: '加载中',
+        mask: true,
+      });
+      //安全检测
+      myApi.checkImgAndMsg(avatarUrl, nickName).then(res => {
+        wx.hideLoading();
+        //如果是安全的，就存入
+        if (res) {
+          isUnLogin = false
+        } else {
+          wx.showModal({
+            title: '内容安全检测',
+            content: '您的用户名或头像存在安全问题，已为您设置成默认网名和头像',
+            showCancel: false,
+            confirmText: '我知道了',
+            confirmColor: '#3CC51F',
+            success: (result) => {
+              if (result.confirm) {
 
-    wx.showLoading({
-      title: '加载中',
-      mask: true,
-    });
-    //avatarUrl = 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/%E4%B8%80%E8%B7%AF%E5%90%91%E8%A5%BF_bd%5B00-10-07%5D%5B20200408-115819131%5D.jpg?sign=ab6e6d6e9dd1b8195b2f4d3facd4b531&t=1586360917'
-    //安全检测
-    myApi.checkImgAndMsg(avatarUrl, nickName).then(res => {
-      wx.hideLoading();
-      //根据是否安全获取openId还是将openId置空
-      // myApi.getOpenId(res)
-      //console.log(res)
-      //如果是安全的，就存入
-      if (res) {
-        // wx.setStorageSync('nickName', nickName)
-        // wx.setStorageSync('avatarUrl', avatarUrl)
-
-      } else {
-        wx.showModal({
-          title: '内容安全检测',
-          content: '您的用户名或头像存在安全问题，已为您设置成默认网名和头像',
-          showCancel: false,
-          confirmText: '我知道了',
-          confirmColor: '#3CC51F',
-          success: (result) => {
-            if (result.confirm) {
-
-            }
-          },
-          fail: () => {},
-          complete: () => {}
-        });
-        nickName = '美食网友' + myApi.getRandomCode(2)
-        avatarUrl = 'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/f8.png?sign=631f4b204fb7014de0ff373a5f1a37a4&t=1586346749'
-      }
-      that.setData({
-        nickName,
-        avatarUrl,
-        isUnLogin: false
+              }
+            },
+            fail: () => {},
+            complete: () => {}
+          });
+          isUnLogin = true
+          nickName = '美食家' + myApi.getRandomCode(3)
+          avatarUrl = imgUrl.defaultAvatar
+        }
+        that.setData({
+          nickName,
+          avatarUrl,
+          isUnLogin: isUnLogin
+        })
+        wx.setStorageSync('isUnLogin', isUnLogin);
+        myApi.updateUserInfo(nickName, 'nickName')
+        myApi.updateUserInfo(avatarUrl, 'avatarUrl')
       })
-      myApi.updateUserInfo(nickName, 'nickName')
-      myApi.updateUserInfo(avatarUrl, 'avatarUrl')
-    })
-
+    }
   },
 
 
@@ -356,14 +360,14 @@ Page({
   onShow: function () {
     var nickName = wx.getStorageSync('nickName')
     var avatarUrl = wx.getStorageSync('avatarUrl')
-    var isUnLogin = false
+    var isUnLogin = wx.getStorageSync('isUnLogin')
     // console.log(nickName.length)
-    if (nickName.length == 6) {
-      console.log(nickName.substr(0, 4))
-      if (nickName.substr(0, 4) == '美食网友') {
-        isUnLogin = true
-      }
-    }
+    /*     if (nickName.length == 6) {
+          console.log(nickName.substr(0, 3))
+          if (nickName.substr(0, 3) == '美食家') {
+            isUnLogin = true
+          }
+        } */
     //console.log(avatarUrl)
     var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
     if (isVibrate_setting === '') {

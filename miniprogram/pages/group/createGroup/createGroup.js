@@ -35,7 +35,7 @@ Page({
     membersDetailList: []
   },
   //获取成员详情
-  getMembersDetail() {
+ async getMembersDetail() {
     myApi.vibrate()
     var isGetMembersDetail = this.data.isGetMembersDetail
     if (!isGetMembersDetail) {
@@ -46,19 +46,12 @@ Page({
       var that = this
       var membersList = this.data.group.membersList
       console.log(membersList)
-      wx.cloud.callFunction({
-        name: 'checkSafeContent',
-        data: {
-          requestType: 'getMembersDetail',
-          membersList: membersList
-        }
-      }).then(res => {
-        wx.hideLoading();
-        console.log(res)
-        that.setData({
-          membersDetailList: res.result,
-          isGetMembersDetail: !that.data.isGetMembersDetail
-        })
+      var res = await myApi.getMembersDetail(membersList)
+      wx.hideLoading();
+      //console.log(res)
+      that.setData({
+        membersDetailList: res,
+        isGetMembersDetail: !that.data.isGetMembersDetail
       })
     } else {
       this.setData({
