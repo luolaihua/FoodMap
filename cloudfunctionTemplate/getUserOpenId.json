@@ -1,0 +1,11 @@
+[
+  {
+    "name": "GetTestData",
+    "value": {
+      "info": {},
+      "action": "initInfo",
+      "shareCode": "66666",
+      "isGetTestData": "true"
+    }
+  }
+]

@@ -8,3 +8,4 @@ module.exports = {
   "templateId_friends":"UmS6i-0fJvfTjUcr4VgbE8bfw8whhTntV3dCerxOPJA",
   
 }
+

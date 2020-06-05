@@ -9,6 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    shareCount:[],
     bar_bgImg1: imgUrl.bar_bg17,
     bar_bgImg2: imgUrl.bar_bg9,
     nickName: '',
@@ -28,6 +29,11 @@ Page({
     storeData: {},
     isUnLogin: false,
     randNum: 0
+  },
+  changePickView(e){
+    var shareCount = e.detail.value[0]+1
+    wx.setStorageSync('shareCount', shareCount);
+    //console.log(shareCount)
   },
   hideWhereToEat() {
     myApi.vibrate()
@@ -338,13 +344,32 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    var nickName = wx.getStorageSync('nickName')
+    var avatarUrl = wx.getStorageSync('avatarUrl')
+    var isUnLogin = wx.getStorageSync('isUnLogin')
     var dateSlogan = wx.getStorageSync('dateSlogan');
     var shareCode = wx.getStorageSync('shareCode');
+    var shareCount = wx.getStorageSync('shareCount');
+    if(shareCount==''){
+      shareCount=[4]
+    }else{
+      shareCount = [shareCount-1]
+    }
+    var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
+    if (isVibrate_setting === '') {
+      wx.setStorageSync('isVibrate_setting', false)
+      isVibrate_setting = false
+    }
+    app.globalData.isVibrate = isVibrate_setting
     this.setData({
+      isVibrate_setting,
+      nickName,
+      avatarUrl,
+      isUnLogin,
       dateSlogan,
-      shareCode
+      shareCode,
+      shareCount
     })
-
   },
 
   /**
@@ -358,29 +383,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    var nickName = wx.getStorageSync('nickName')
-    var avatarUrl = wx.getStorageSync('avatarUrl')
-    var isUnLogin = wx.getStorageSync('isUnLogin')
-    // console.log(nickName.length)
-    /*     if (nickName.length == 6) {
-          console.log(nickName.substr(0, 3))
-          if (nickName.substr(0, 3) == '美食家') {
-            isUnLogin = true
-          }
-        } */
-    //console.log(avatarUrl)
-    var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
-    if (isVibrate_setting === '') {
-      wx.setStorageSync('isVibrate_setting', false)
-      isVibrate_setting = false
-    }
-    app.globalData.isVibrate = isVibrate_setting
-    this.setData({
-      isVibrate_setting,
-      nickName,
-      avatarUrl,
-      isUnLogin
-    })
+    
   },
 
   /**

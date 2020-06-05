@@ -43,7 +43,7 @@ module.exports={
     bar_bg11:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/11.jpg?sign=fde65fcf8a43682db08ede3430f43435&t=1590551427',
     bar_bg12:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/12.jpg?sign=aeb41b2d3672b43446daf124f1bc6e57&t=1590551691',
     defaultAvatar:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/userAvatar/defaultAvatar.png?sign=fdadec77bbb6de52201dbfdba145caec&t=1590418969',
-    QrCodeUrl:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/QrCode.png?sign=6d5ea069c17a888a24e48a0c6b40b1b2&t=1590245841',
+    QrCodeUrl:'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/gh_8dae039a8309_258.jpg?sign=8a917f0f50dfd19431c539aeb2104820&t=1591370550',
     touch:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/touch.png?sign=0dabd4533c47ddbcc6f1ac4b1f3b399f&t=1588120391',
     feedbackUrl:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/images/feedback.png?sign=6670976380dd70c893bf39debdd27bc0&t=1587110487',
     human:'https://6c75-luo-r5nle-1301210100.tcb.qcloud.la/animalsPic/human.png?sign=f1be6b14b63398f1293a42dc626ab3a8&t=1585308592',

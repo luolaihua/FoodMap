@@ -10,8 +10,10 @@ var QQMapWX = require('../../utils/qqmap-wx-jssdk');
 var qqmapsdk = new QQMapWX({
   key: config.mapSubKey // 必填
 });
-
-var tabList = ['火锅', '奶茶', '烧烤', '串串', '水果', '自助', '海鲜', '烤鸭', '烤鸡', '烤鱼', '小吃', '烧饼', '早点', '水饺', '馄饨', '面条', '香锅', '拌饭', '麻辣烫', '黄焖鸡']
+//TODO 自己写标签？
+var tabList = ['火锅', '奶茶', '烧烤', '串串', '水果', '自助', '海鲜', '烤鸭', '烤鸡', '烤鱼', '小吃', '烧饼', '早点', '水饺', '馄饨', '米粉',
+  '香锅', '拌饭', '鸭肉', '鸡肉', '鱼肉', '猪肉', '牛肉', '羊肉', '虾蟹', '面食', '麻辣烫', '黄焖鸡'
+]
 Page({
 
   /**
@@ -73,66 +75,66 @@ Page({
     },
     isShowMenu: true,
     suggestion: [],
-    isShowCity:false,
-    myCity:''
+    isShowCity: false,
+    myCity: ''
 
   },
-  closeSuggestion(){
+  closeSuggestion() {
     this.setData({
-      suggestion:[]
+      suggestion: []
     })
   },
-  clearName(){
+  clearName() {
     var store = this.data.store
     store.name = ''
     this.setData({
       store,
-      suggestion:[]
+      suggestion: []
     });
   },
-  getCity(){
+  getCity() {
     var isShowCity = this.data.isShowCity
     var myCity = this.data.myCity
-    var that  = this
+    var that = this
     var store = this.data.store
     var inputEvent = {
-      detail:{
-        value:store.name
+      detail: {
+        value: store.name
       }
     }
-    if(myCity==''){
+    if (myCity == '') {
       qqmapsdk.reverseGeocoder({
         //位置坐标，默认获取当前位置，非必须参数
         //location: '', //获取表单传入的位置坐标,不填默认当前位置,示例为string格式
         //get_poi: 1, //是否返回周边POI列表：1.返回；0不返回(默认),非必须参数
-        success: function(res) {//成功后的回调
-         // console.log(res);
+        success: function (res) { //成功后的回调
+          // console.log(res);
           //var res = res.result;
           myCity = res.result.address_component.city
           that.setData({
             myCity
-          },()=>{
+          }, () => {
             that.inputName(inputEvent)
           })
         },
-        fail: function(error) {
+        fail: function (error) {
           console.error(error);
         },
-        complete: function(res) {
+        complete: function (res) {
           console.log(res);
         }
       })
-    }else{
+    } else {
       myCity = ''
       this.setData({
-        myCity, 
-      },()=>{
+        myCity,
+      }, () => {
         that.inputName(inputEvent)
       })
     }
 
     this.setData({
-      isShowCity:!this.data.isShowCity
+      isShowCity: !this.data.isShowCity
     })
   },
   //数据回填方法
@@ -147,10 +149,10 @@ Page({
         store.latitude = this.data.suggestion[i].latitude
         store.longitude = this.data.suggestion[i].longitude
         store.callout.content = this.data.suggestion[i].title
-        store.address =  this.data.suggestion[i].addr
+        store.address = this.data.suggestion[i].addr
         this.setData({
           store,
-          suggestion:[]
+          suggestion: []
         });
       }
     }
@@ -167,9 +169,9 @@ Page({
       qqmapsdk.getSuggestion({
         //获取输入框值并设置keyword参数
         keyword: name, //用户输入的关键词，可设置固定值,如keyword:'KFC'
-        region:myCity, //设置城市名，限制关键词所示的地域范围，非必填参数
+        region: myCity, //设置城市名，限制关键词所示的地域范围，非必填参数
         success: function (res) { //搜索成功后的回调
-         // console.log(res);
+          // console.log(res);
           var sug = [];
           for (var i = 0; i < res.data.length; i++) {
             sug.push({ // 获取返回结果，放到sug数组中
@@ -187,13 +189,13 @@ Page({
           });
         },
         fail: function (error) {
-         // console.error(error);
+          // console.error(error);
         },
         complete: function (res) {
           //console.log(res);
         }
       });
-    }else{
+    } else {
       _this.setData({ //设置suggestion属性，将关键词搜索结果以列表形式展示
         suggestion: []
       });
@@ -625,14 +627,19 @@ Page({
     var creatorId = wx.getStorageSync('openId')
     var creatorName = wx.getStorageSync('nickName')
     var creatorAvatar = wx.getStorageSync('avatarUrl')
-
-
+    var date = new Date()
+    var createTime = myApi.formatTime(date)
+    var store_id = date.getTime()
+    this.data.store.id = date.getTime()
     if (requestType == 'editStore') {
       var store = this.data.store
       //编辑过了之后,创建者也变了
       store.creatorId = creatorId
       store.creatorName = creatorName
       store.creatorAvatar = creatorAvatar
+      //编辑了的店铺应认为是新店铺，id和创建时间也要更新
+      store.createTime = createTime
+      store.id = store_id
       if (this.data.images.length != 0) {
         store.images = store.images.concat(this.data.images)
       }
@@ -645,17 +652,14 @@ Page({
           delta: 1
         });
       }, 500);
-
-
-
     } else {
-      var date = new Date()
+
       var stores = this.data.stores
       this.data.store.creatorId = creatorId
       this.data.store.creatorName = creatorName
       this.data.store.creatorAvatar = creatorAvatar
-      this.data.store.createTime = myApi.formatTime(date)
-      this.data.store.id = date.getTime()
+      this.data.store.createTime = createTime
+      this.data.store.id = store_id
       this.data.store.images = this.data.images
       //更新数据
       stores.push(this.data.store)
@@ -705,6 +709,7 @@ Page({
         if (res.confirm) {
           if (requestType == 'editStore') {
             var store = this.data.store
+            //imgList是新增的，fileList是全部
             var length = fileList.length - imgList.length //原来就有的图片数目
             fileList.splice(index, 1)
             if (index + 1 <= length) {
@@ -713,10 +718,14 @@ Page({
 
             } else {
               //删除的是新添加的
-              if (fileList[index].status == 'done') {
+/*               if (fileList[index].status == 'done') {
                 var len = index - length
                 imgList.splice(len, 1);
-              }
+              } */
+/*               console.log(fileList)
+              console.log(fileList[index]) */
+              var len = index - length
+              imgList.splice(len, 1);
             }
             that.setData({
               store,

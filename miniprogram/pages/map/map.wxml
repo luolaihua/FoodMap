@@ -74,7 +74,7 @@
 		bindtap="toFunctionPages"
 		>
 			<image src="../../images/f3.png" class="img" />
-			美食列表
+			美食便签
 		</view>
 		<view
 		class="img-box"

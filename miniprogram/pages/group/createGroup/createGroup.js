@@ -234,7 +234,13 @@ Page({
           Joined_GroupsList[groupIndex] = group
           wx.setStorageSync('Joined_GroupsList', Joined_GroupsList);
         }
-
+        wx.navigateBack({
+          complete: (res) => {
+            wx.showToast({
+              title:'修改成功',
+            })
+          },
+        });
       } else {
         groupsList.add({
             // data 字段表示需新增的 JSON 数据
@@ -242,20 +248,23 @@ Page({
           })
           .then(res => {
             console.log(res)
+            group._id = res._id
+            My_GroupsList.push(group)
+            wx.setStorageSync('My_GroupsList', My_GroupsList)
+            wx.navigateBack({
+              complete: (res) => {
+                wx.showToast({
+                  title: '创建成功',
+                })
+              },
+            });
           })
           .catch(console.error)
-        My_GroupsList.push(group)
-        wx.setStorageSync('My_GroupsList', My_GroupsList)
+
       }
 
       //await myApi.updateUserInfo(My_GroupsList,'My_GroupsList')
-      wx.navigateBack({
-        complete: (res) => {
-          wx.showToast({
-            title: (that.data.isEdit ? '修改' : '创建') + '成功',
-          })
-        },
-      });
+
 
     } else {
       wx.showToast({

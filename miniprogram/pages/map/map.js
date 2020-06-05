@@ -14,7 +14,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    isBlackStyle:false,
+    isBlackStyle: false,
     isShowWelcome: false,
     bgImgs: imgUrl.bgList,
     currentPage: 0,
@@ -330,21 +330,20 @@ Page({
         data: {
           action: 'initInfo',
           info: info,
-          shareCode: shareCode
+          shareCode: shareCode,
+          //是否获取测试数据
+          isGetTestData:true
         }
       }).then(res => {
-        //console.log(res)
-        if (res.result.memberInfos.data.length != 0) {
-          //云端数据不为空，本地数据为空
-          shareCode = res.result.memberInfos.data[0].shareCode
-          storesArr = res.result.memberInfos.data[0].stores
-          friendsList = res.result.memberInfos.data[0].friendsList
-          starStoreIdList = res.result.memberInfos.data[0].starStoreIdList
-          nickName = res.result.memberInfos.data[0].info.nickName
-          avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
-        }else{
-          wx.setStorageSync('isUnLogin',true)
-        }
+        console.log(res)
+        //云端数据不为空，本地数据为空
+        shareCode = res.result.memberInfos.data[0].shareCode
+        storesArr = res.result.memberInfos.data[0].stores
+        friendsList = res.result.memberInfos.data[0].friendsList
+        starStoreIdList = res.result.memberInfos.data[0].starStoreIdList
+        nickName = res.result.memberInfos.data[0].info.nickName
+        avatarUrl = res.result.memberInfos.data[0].info.avatarUrl
+        wx.setStorageSync('isUnLogin', true)
         myApi.getGroupsList(res.result.openId)
         wx.setStorageSync('openId', res.result.openId)
       })
@@ -355,7 +354,7 @@ Page({
       var info = await userInfo.where({
         openId: openId
       }).get()
-     // console.log(info)
+      // console.log(info)
       if (info.data.length != 0) {
         storesArr = info.data[0].stores
         nickName = info.data[0].info.nickName
@@ -387,12 +386,12 @@ Page({
         } */
     that.initMap()
     this.initData()
-/*     var isBlackStyle = wx.getStorageSync('isBlack')
-    console.log(isBlackStyle)
+    /*     var isBlackStyle = wx.getStorageSync('isBlack')
+        console.log(isBlackStyle)
 
-    this.setData({
-      isBlackStyle
-    }) */
+        this.setData({
+          isBlackStyle
+        }) */
     /*     db.collection('isOpenFun').doc('isOpen').get().then(res => {
           // res.data 包含该记录的数据
          // console.log('Hide Function ?',res.data.isHide)

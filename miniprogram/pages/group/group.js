@@ -40,7 +40,7 @@ Page({
     ],
     fontArr: ['italic', 'oblique', 'normal'],
     sizeArr: [12, 14, 16, 18, 20, 22, 24, 26, 28],
-    QrCodeUrl: '../../images/QrCode.png',
+    QrCodeUrl: '../../images/QrCode.jpg',
     posterUrl: '',
     isShowPoster: false,
 
@@ -117,10 +117,9 @@ Page({
       //生成海报文本内容
       storesArr.forEach(item => {
         textArr.push(item.name)
-        console.log(item.keywords)
-        if (item.keywords != "") {
-          textArr = textArr.concat(item.keywords.split(','))
-        }
+       // console.log(item.tagList) 
+       //暂时不把标签也加入
+       // textArr = textArr.concat(item.tagList)
       })
     }
 

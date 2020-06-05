@@ -5,7 +5,6 @@ const imgUrl = require('../../../utils/imgUrl')
  * 美食动态删除权限：群主可以删除所有，成员只能删除自己发的
  * 美食动态编辑权限：所有人只能编辑自己发的
  */
-//TODO 当用户改了头像和名字，动态里的创建人还是旧数据，好友列表那里也是旧数据
 Page({
 
   /**
@@ -188,6 +187,7 @@ Page({
     var index = GroupsList.findIndex(item => {
       return item._id == this.data.groupId
     })
+    
     group = GroupsList[index]
 
     //判断是否被收藏 

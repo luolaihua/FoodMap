@@ -60,7 +60,7 @@
         </view>
       </view>
 		<view class="cu-bar showTitle">
-			<text class="text-cut text-bold text-shadow">{{storeData.store.name}}</text>
+			<text class="text-cut text-bold text-shadow text-green">{{storeData.store.name}}</text>
 		</view>
     </view>
     <view class="cu-bar bg-white">
@@ -69,7 +69,19 @@
     </view>
   </view>
 </view>
-
+<view class="modules_box">
+	<view class="modules_icon_box">
+		<image class="modules_icon" mode="scaleToFill" src="../../images/instantShare.png" />
+	</view>
+	<view class="modules_title_box">即时分享次数</view>
+	<view class="modules_switch_box">
+		<picker-view indicator-style="height: 50px;" style="width: 100%; height: 100%;" value="{{shareCount}}" bindchange="changePickView">
+		<picker-view-column>
+			<view wx:for="{{10}}" wx:key="index" style="line-height: 50px; text-align: center;font-size:40rpx">{{index+1}}</view>
+		</picker-view-column>
+		</picker-view>
+	</view>
+</view>
 <navigator url="../welcome/welcome">
 	<button class="modules_box" style="width: calc(100% - 20px);" >
 		<image class="modules_icon" mode="scaleToFill" src="../../images/help.png" />

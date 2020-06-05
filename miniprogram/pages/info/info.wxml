@@ -8,7 +8,7 @@
 	 indicator-dots="true"
 	 circular="true"
 	 autoplay="true"
-	 interval="5000"
+	 interval="3000"
 	 duration="500"
 	 bindchange="cardSwiper"
 	 indicator-color="#8799a3"
@@ -68,7 +68,7 @@
   		</view>
 	</view>
 	<view class="notes" wx:if="{{store.notes!=''}}">
-		<text class="notes-title">个人点评：</text>
+		<text class="notes-title">商铺点评：</text>
 		<text  class="notes-content"selectable="{{true}}" >{{store.notes}}</text>
 	</view>
 </view>

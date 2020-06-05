@@ -2,7 +2,8 @@ const db = wx.cloud.database()
 const _ = db.command
 const app = getApp()
 const templateIds = {
-  viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
+  //viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
+  viewList_id:'subAzhXR7X1gWqXc759FsAo7Pi_j35vaxF3zqDbFdmc',
   //新成员加入通知
   newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }

@@ -155,7 +155,7 @@ Page({
         // 为指定事件添加一个监听器，获取被打开页面传送到当前页面的数据
         editStore: async function (data) {
           var newStore = data.store
-          console.log(newStore)
+          //console.log(newStore)
           that.setData({
             store: newStore
           })
@@ -194,10 +194,9 @@ Page({
              group.stores.forEach((store,index) => {
                if(store.id == store_id){
                 group.stores[index]= newStore
-             console.log('???')
                }     
             })
-             console.log(group.stores)
+             //console.log(group.stores)
             // console.log(index1)
             GroupsList[index] = group
             var key = (friendsIndex=='MyGroup')?'My_GroupsList':'Joined_GroupsList'

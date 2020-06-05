@@ -50,7 +50,7 @@ Page({
     ],
     fontArr: ['italic', 'oblique', 'normal'],
     sizeArr: [12, 14, 16, 18, 20, 22, 24, 26, 28],
-    QrCodeUrl: '../../images/QrCode.png',
+    QrCodeUrl: '../../images/QrCode.jpg',
     posterUrl: '',
     isShowPoster: false,
     //---------------菜单动画
@@ -258,10 +258,9 @@ Page({
     //生成海报文本内容
     storesArr.forEach(item => {
       textArr.push(item.name)
-      console.log(item.keywords)
-      if (item.keywords != "") {
-        textArr = textArr.concat(item.keywords.split(','))
-      }
+       // console.log(item.tagList) 
+       //暂时不把标签也加入
+       // textArr = textArr.concat(item.tagList)
     })
     //生成二维码URL
     var QrCodeUrl = this.data.QrCodeUrl
@@ -380,6 +379,10 @@ Page({
         var nickName = wx.getStorageSync('nickName');
         var avatarUrl = wx.getStorageSync('avatarUrl');
         var instantShareCode = myApi.getRandomCode(8)
+        var shareCount = wx.getStorageSync('shareCount');
+        if(shareCount==''){
+          shareCount=5
+        }
         db.collection('instantShare').add({
           // data 字段表示需新增的 JSON 数据
           data: {
@@ -390,7 +393,7 @@ Page({
             instantShareCode: instantShareCode,
             createTime: myApi.formatTime(new Date()),
             stores: shareList,
-            shareCount: 6
+            shareCount: shareCount
           },
           success: function (res) {
             // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id

@@ -19,7 +19,7 @@
 		<image class="modules_icon" mode="scaleToFill" src="../../../images/name.png" />
 	</view>
 	<view class="modules_input_box">
-	<input disabled="{{!isCreator}}" class="modules_input text-{{isCreator?'':'grey'}}" id="name" placeholder="圈子名称" bindinput="inputContent" maxlength="8" value="{{group.nickName}}"/>
+	<input disabled="{{!isCreator}}" class="modules_input text-{{isCreator?'':'grey'}}" id="name" placeholder="圈子名称" bindinput="inputContent" maxlength="12" value="{{group.nickName}}"/>
 	<text wx:if="{{isCreator}}" class="cuIcon-roundclose" id="name" bindtap="clearContent" />
 	</view>
 </view>

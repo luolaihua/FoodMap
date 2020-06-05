@@ -1,7 +1,8 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
 const templateIds = {
-  viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
+  //viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
+  viewList_id: 'subAzhXR7X1gWqXc759FsAo7Pi_j35vaxF3zqDbFdmc',
     //新成员加入通知
     newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }
@@ -19,20 +20,14 @@ exports.main = async (event, context) => {
     //TODO 从订阅消息点进去的界面
     page = 'pages/map/map?scene='+event.scene
     msgData = {
-      name1: {
-        value: event.msgData.name1
+      thing1: {
+        value: event.msgData.thing1
       },
-      thing2: {
-        value: event.msgData.thing2
+      phrase2: {
+        value: event.msgData.phrase2
       },
-      date3: {
-        value: event.msgData.date3
-      },
-      thing4: {
-        value: event.msgData.thing4
-      },
-      thing5: {
-        value: event.msgData.thing5
+      time3: {
+        value: event.msgData.time3
       }
     }
     break

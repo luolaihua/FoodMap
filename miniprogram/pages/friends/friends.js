@@ -21,6 +21,7 @@ Page({
     isBack: true
 
   },
+  //TODO 分享次数自定义 ,目前是6次
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
     myApi.vibrate()
@@ -42,7 +43,9 @@ Page({
         friendsList[index].stores = storesCloud
         friendsList[index].avatarUrl = info.data[0].info.avatarUrl
         friendsList[index].nickName = info.data[0].info.nickName
-        wx.setStorageSync('friendsList', friendsList);
+        console.log(friendsList)
+        myApi.updateUserInfo(friendsList,'friendsList')
+        //wx.setStorageSync('friendsList', friendsList);
         this.setData({
           friendsList
         }, () => {
@@ -203,13 +206,14 @@ Page({
     // console.log(shareCodesFromList)
     // console.log(friendsList)
 
-
+    var isForever = true
     if (shareCode.length == 6) {
       //如果是永久分享
       var info = await userInfo.where({
         shareCode: shareCode
       }).get()
     } else {
+      isForever = false
       //如果是即时分享，不存入好友列表
       var info = await instantShare.where({
         instantShareCode: shareCode
@@ -222,7 +226,12 @@ Page({
           shareCount: _.inc(-1)
         },
       }).then(res => {
-        console.log(res)
+        //删除分享次数为零的
+        instantShare.where({
+          shareCount: 0
+        }).remove().then(result=>{
+          console.log(result)
+        })
       })
 
     }
@@ -238,16 +247,14 @@ Page({
           状态{{thing4.DATA}}
           温馨提示{{thing5.DATA}
        */
-      //console.log(info)
       var msgData = {
-        openId: info.data[0].openId,
-        name1: nickName,
-        thing2: '美食店铺分享',
-        date3: myApi.formatTime(new Date()),
-        thing4: '已查看',
-        thing5: nickName + '已查看您的美食列表',
+        openId:isForever?(info.data[0].openId):(info.data[0]._openid) ,
+        thing1: nickName,
+        phrase2: isForever?'永久分享':'即时分享',
+        time3: myApi.formatTime(new Date()),
       }
       //console.log(msgData)
+      //发送订阅消息
       myApi.sendMsg('viewList', msgData)
 
 
