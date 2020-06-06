@@ -65,6 +65,9 @@ Page({
         })
       }
     });
+    this.setData({
+      isShowWhereToEat: false
+    })
   },
   whereToEat() {
     myApi.vibrate()
@@ -256,23 +259,6 @@ Page({
       isVibrate_setting
     })
   },
-  /*   changeMapStyle(e) {
-
-      var isBlack = e.detail.value,
-        mapStyle
-      if (!isBlack) {
-        mapStyle = '墨渊'
-      } else {
-        mapStyle = '白浅'
-
-      }
-      wx.setStorageSync('isBlack', isBlack)
-      app.globalData.isBlack = isBlack
-      this.setData({
-        isBlack,
-        mapStyle
-      })
-    }, */
   onGetUserInfo: function (e) {
     myApi.vibrate()
     var that = this
@@ -321,8 +307,6 @@ Page({
       })
     }
   },
-
-
   //订阅消息
   sendMessage: function () {
     wx.requestSubscribeMessage({

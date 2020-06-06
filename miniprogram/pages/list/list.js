@@ -301,6 +301,15 @@ Page({
       })
     }, 2000)
   },
+      /**
+   * 点击放大图片
+   * @param {} e 
+   */
+  posterImageClick: function (e) {
+    wx.previewImage({
+      urls: [this.data.posterUrl],
+    });
+  },
   /**
    * 点击分享按钮,生成分享码分享---即时分享
    * stores为展示的数据---搜索会筛选数据

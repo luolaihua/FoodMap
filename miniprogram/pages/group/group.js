@@ -163,6 +163,15 @@ Page({
       })
     }, 2000)
   },
+    /**
+   * 点击放大图片
+   * @param {} e 
+   */
+  posterImageClick: function (e) {
+    wx.previewImage({
+      urls: [this.data.posterUrl],
+    });
+  },
   inputCode(e) {
     this.setData({
       secretKey: e.detail.value

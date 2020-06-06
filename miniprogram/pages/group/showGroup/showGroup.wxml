@@ -12,7 +12,9 @@
         <view class="cu-item shadow">
                 <view class="image">
                 <image src="{{item.images.length==0?defaultImg:item.images[0]}}" mode="aspectFill"></image>
-                <view class="cu-tag bg-blue">TEST</view>
+                <!--
+                <view class="cu-tag bg-blue">TEST</view>                
+                -->
                 <view class="cu-bar bg-shadeBottom">
                     <text class="text-cut">{{item.notes}}</text>
                 </view>

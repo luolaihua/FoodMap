@@ -151,7 +151,7 @@ Page({
     settingList[index].value = e.detail.value
 
     //设置气泡窗口
-    if (index == 7) {
+    if (index == 8) {
       var display = 'BYCLICK'
       if (e.detail.value) {
         display = 'ALWAYS'
@@ -163,6 +163,12 @@ Page({
         item.callout.display = display
       })
 
+    }
+    if(index==7){
+      wx.showToast({
+        title: '双指上下滑动切换俯视',
+        icon: 'none',
+      });
     }
     this.setData({
       settingList,

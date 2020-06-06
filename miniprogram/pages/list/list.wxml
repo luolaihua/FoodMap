@@ -118,7 +118,7 @@
 	<view class="middle-flex-column-center" style="position:fixed;left:0;top:0;width:100%;height:100%;background:rgba(0,0,0,0.2);z-index:10000;">
 		<view class="middle-flex-column-center" style="width:600rpx;height:920rpx;background:#ffffff;border-radius:16rpx;">
 			<view style="width:400rpx;height:650rpx;">
-				<image style="width:100%;height:100%;" src="{{posterUrl}}" />
+				<image style="width:100%;height:100%;" src="{{posterUrl}}" bindtap="posterImageClick"/>
 			</view>
 			<view style="width:600rpx;height:80rpx;line-height:80rpx;text-align:center;font-size:28rpx;color:#1078e7;" bindtap="copyShareCode">
 				<text class="posterText">保存后分享给朋友

@@ -49,7 +49,7 @@ async function initInfo(event, openId) {
       //是否添加测试数据
       if (event.isGetTestData) {
         //测试用的朋友列表
-        var testIdList = ['test-001', 'test-002', 'test-003']
+        var testIdList = ['test-001', 'test-002', 'test-003', 'test-004', 'test-005', 'test-006']
         var tasks = []
         testIdList.forEach(id => {
           tasks.push(
@@ -92,7 +92,7 @@ async function initInfo(event, openId) {
 
 
         //加入测试朋友圈
-        var groupsIdList = ['f2a60d815ed9fdb50049a5f434591b49', '5a93cec95eda00e70045a87e0367e675']
+        var groupsIdList = ['f2a60d815ed9fdb50049a5f434591b49', '5a93cec95eda00e70045a87e0367e675','4d5a19345ed86b7a003189cf00e847e2']
         groupsIdList.forEach(id => {
           db.collection('groupsList').doc(id).update({
             data: {

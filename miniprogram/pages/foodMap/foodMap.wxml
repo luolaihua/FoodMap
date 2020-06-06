@@ -17,15 +17,15 @@ show-compass="{{settingList[0].value}}"
  show-scale="{{settingList[1].value}}"
  enable-3D="{{settingList[2].value}}"
   show-location="{{settingList[3].value}}"
- enable-traffic="{{settingList[4].value}}"
-enable-satellite="{{settingList[5].value}}"
- enable-overlooking="{{settingList[6].value}}"
+ enable-traffic="{{settingList[5].value}}"
+enable-satellite="{{settingList[6].value}}"
+ enable-overlooking="{{settingList[7].value}}"
 
 />
 <view>
 	<image src="../../images/map.png" class="img-switch-style" bindtap="openPopup" />
 </view>
-	<block wx:if="{{settingList[8].value}}">
+	<block wx:if="{{settingList[4].value}}">
 		<image src="../../images/add.png" class="control-btn control-btn-increase" bind:touchstart="onIncreaseScale"></image>
 		<image src="../../images/sub.png" class="control-btn control-btn-decrease" bind:touchstart="onDecreaseScale"></image>
 	</block>

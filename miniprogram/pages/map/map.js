@@ -22,7 +22,7 @@ Page({
     Tester: '',
     isHideMap: false,
     defaultImg: imgUrl.bar_bg20,
-    defaultImg2: '../../images/3.png',
+    defaultImg2: '../../images/title.png',
     setting: {
       skew: 0,
       rotate: 0,
