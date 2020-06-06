@@ -1,6 +1,6 @@
 <cu-custom bgColor="bg-gradual-pink" bgImage="{{bar_bgImg}}" isCustom="{{true}}" isBack="{{true}}">
 	<view slot="backText">返回</view>
-	<view slot="content">{{isAddItemToGroup?'添加店铺到美食圈子':(friendsIndex=='self'?'我的美食便签':"好友的美食便签")}}</view>
+	<view slot="content">{{isAddItemToGroup?'导入店铺到美食圈子':(friendsIndex=='self'?'我的美食便签':"好友的美食便签")}}</view>
 </cu-custom>
 <block wx:if="{{storesArr.length!=0}}">
 	<view class="cu-bar search bg-white">
@@ -53,7 +53,7 @@
 	</checkbox-group>
 	<block wx:if="{{isInstantShare||isAddItemToGroup}}">
 		<view class=" flex flex-direction">
-			<button class="cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur text-bold" style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;" bind:tap="shareItems">{{isAddItemToGroup?'添加':'分享'}}店铺</button>
+			<button class="cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur text-bold" style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;" bind:tap="shareItems">{{isAddItemToGroup?'导入':'分享'}}店铺</button>
 		</view>
 		<!--
 			<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">{{isAddItemToGroup?'添加':'分享'}}</van-button>
@@ -83,7 +83,7 @@
 </block>
 
 <block wx:else>
-	<view class="noData">{{isAddItemToGroup?'暂无可添加的店铺^_^':'列表里还没有美食店铺呢^_^'}}</view>
+	<view class="noData">{{isAddItemToGroup?'暂无可导入的美食店铺^_^':'列表里还没有美食店铺呢^_^'}}</view>
 </block>
 
 <view class="cu-modal {{isShowModal?'show':''}}">

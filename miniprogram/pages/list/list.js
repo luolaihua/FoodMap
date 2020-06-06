@@ -184,6 +184,7 @@ Page({
     })
   },
   toFoodMap() {
+    this.close()
     myApi.vibrate()
     var stores = this.data.storesArr
     wx.navigateTo({
@@ -444,6 +445,7 @@ Page({
    * 打开即时分享
    */
   instantShare() {
+    this.close()
     myApi.vibrate()
     this.setData({
       isShowModal: false,
@@ -454,6 +456,7 @@ Page({
    * 永久分享
    */
   foreverShare() {
+    this.close()
     myApi.vibrate()
     var shareCode = wx.getStorageSync('shareCode')
     this.createPoster(shareCode, this.data.storesArr)

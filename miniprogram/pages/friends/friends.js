@@ -235,7 +235,7 @@ Page({
       })
 
     }
-
+    wx.hideLoading();
     console.log('getShareData', info)
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
@@ -294,13 +294,13 @@ Page({
       })
     } else {
       wx.showToast({
-        title: '用户不存在',
+        title: '用户不存在或者分享码已失效',
         icon: 'none',
         image: '',
-        duration: 1500,
+        duration: 2000,
         mask: false,
         success: (result) => {
-          wx.hideLoading();
+         
         }
       });
     }

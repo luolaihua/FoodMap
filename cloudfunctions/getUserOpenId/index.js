@@ -75,9 +75,20 @@ async function initInfo(event, openId) {
 
         //增加测试的店铺数据
         var resGetStores = await userInfo.where({
-          _id: 'baada3ac5ed8da4a004c4c9f333755e1'
-        }).get()  
+          _id: '8abc3c855edbb24e0042b3990412327e'
+        }).get() 
+        //店铺的创建人之类的信息也要改过来呀
+
         initData.stores = resGetStores.data[0].stores
+
+        initData.stores.forEach((store,index)=>{
+          initData.stores[index].creatorName = event.info.nickName
+          initData.stores[index].creatorAvatar = event.info.avatarUrl
+          initData.stores[index].creatorId = openId
+          initData.stores[index].createTime = event.info.createTime
+        })
+        console.log(initData.stores)
+
         memberInfos.data.push(initData)
 
         //同时更新到数据库端

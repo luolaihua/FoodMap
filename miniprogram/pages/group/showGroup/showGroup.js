@@ -118,6 +118,7 @@ Page({
     })
   },
   toFoodMap() {
+    this.close()
     myApi.vibrate()
     var stores = this.data.group.stores
     wx.navigateTo({
@@ -239,12 +240,14 @@ Page({
 
   },
   toAdd() {
+    this.close()
     myApi.vibrate()
     wx.navigateTo({
       url: '../../add/add?groupId=' + this.data.groupId + '&requestType=' + this.data.type
     });
   },
   toAddList() {
+    this.close()
     myApi.vibrate()
     wx.navigateTo({
       url: '../../list/list?groupId=' + this.data.groupId + '&friendsIndex=' + this.data.type

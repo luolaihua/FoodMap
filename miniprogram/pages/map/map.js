@@ -89,7 +89,7 @@ Page({
     }
   },
   onLocate() {
-    this.initMap()
+    this.initMap(16)
   },
   /**
    * 欢迎页
@@ -285,7 +285,7 @@ Page({
     //this.initMenu()
     this.openMenu()
   },
-  async initMap() {
+  async initMap(scale) {
     var that = this
     //初始化 定位
     wx.getLocation({
@@ -301,7 +301,7 @@ Page({
         that.setData({
           latitude,
           longitude,
-          scale: 16
+          scale: scale
         })
       }
     })
@@ -384,7 +384,7 @@ Page({
           that.initMap()
           this.initData()
         } */
-    that.initMap()
+    that.initMap(5)
     this.initData()
     /*     var isBlackStyle = wx.getStorageSync('isBlack')
         console.log(isBlackStyle)
