@@ -33,11 +33,11 @@ Page({
       enableZoom: true,
       enableScroll: true,
       enableRotate: true,
-      showCompass: false,
+      showCompass: true,
       enable3D: true,
       enableOverlooking: true,
       enableSatellite: false,
-      enableTraffic: false,
+      enableTraffic: true,
     },
     scale: 16,
     longitude: 113.3245211,
@@ -52,8 +52,114 @@ Page({
     animToAdd: {},
     animAddFriends: {},
     stores: [],
+    //去哪吃
+    whereToEatList: [],
+    defaultFoodImg: imgUrl.share,
+    isShowWhereToEat: false,
+    storeData: {},
+    randNum: 0
   },
-
+  //去哪吃功能函数
+  hideWhereToEat() {
+    myApi.vibrate()
+    this.setData({
+      isShowWhereToEat: false
+    })
+  },
+  nextOne() {
+    myApi.vibrate()
+    var whereToEatList = this.data.whereToEatList
+    var randNum = Math.floor(Math.random() * whereToEatList.length)
+    var storeData = whereToEatList[randNum]
+    //console.log(storeData)
+    this.setData({
+      storeData
+    })
+  },
+  chooseIt() {
+    myApi.vibrate()
+    var storeData = this.data.storeData
+    wx.navigateTo({
+      url: '../info/info?friendsIndex=' + storeData.friendsIndex,
+      success: function (res) {
+        // 通过eventChannel向被打开页面传送数据
+        res.eventChannel.emit('getStore', {
+          store: storeData.store,
+          groupId: storeData.groupId,
+          secretKey: storeData.secretKey
+        })
+      }
+    });
+    this.setData({
+      isShowWhereToEat: false
+    })
+  },
+  whereToEat() {
+    myApi.vibrate()
+    var whereToEatList = this.data.whereToEatList
+    if (whereToEatList.length == 0) {
+      var My_GroupList = wx.getStorageSync('My_GroupsList');
+      var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+      var storesArr = wx.getStorageSync('storesArr');
+      //从三个地方取店铺，
+      My_GroupList.forEach(group => {
+        group.stores.forEach(store => {
+          var tempData = {}
+          tempData.store = store
+          tempData.groupId = group._id
+          tempData.secretKey = group.secretKey
+          tempData.friendsIndex = 'MyGroup'
+          whereToEatList.push(tempData)
+        });
+      })
+      Joined_GroupsList.forEach(group => {
+        group.stores.forEach(store => {
+          var tempData = {}
+          tempData.store = store
+          tempData.groupId = group._id
+          tempData.secretKey = group.secretKey
+          tempData.friendsIndex = 'JoinedGroup'
+          whereToEatList.push(tempData)
+        });
+      })
+      storesArr.forEach(store => {
+        var tempData = {}
+        tempData.store = store
+        tempData.groupId = 'null'
+        tempData.secretKey = 'null'
+        tempData.friendsIndex = 'self'
+        whereToEatList.push(tempData)
+      });
+      // console.log(whereToEatList)
+      if (whereToEatList.length == 0) {
+        wx.showToast({
+          title: '您还没有添加店铺或者加入美食圈呢',
+          icon: 'none'
+        });
+        return
+      }
+    }
+    var randNum = Math.floor(Math.random() * whereToEatList.length)
+    //不重复抽取
+    if (randNum == this.data.randNum) {
+      randNum = Math.floor(Math.random() * whereToEatList.length)
+    }
+    var storeData = whereToEatList[randNum]
+    console.log(storeData)
+    this.setData({
+      randNum,
+      storeData,
+      whereToEatList,
+      isShowWhereToEat: true
+    })
+  },
+  previewFoodImg(){
+    var storeData = this.data.storeData
+   var foodImg =  storeData.store.images.length==0?this.data.defaultFoodImg:storeData.store.images[0]
+   wx.previewImage({
+    urls: [foodImg],
+  });
+  },
   // 控制地图缩放级别
   onIncreaseScale() {
     myApi.vibrate()
@@ -611,13 +717,14 @@ Page({
   testEnd(e) {
     var startTime = this.data.startTime
     var endTime = e.timeStamp
-    if (endTime - startTime > 6666) {
-      this.setData({
-        isTesting: true
-      })
+    if (endTime - startTime > 1000) {
+      wx.vibrateShort()
+      this.whereToEat()
+    }else{
+      this.openMenu()
     }
   },
-  cancelInput() {
+/*   cancelInput() {
     this.setData({
       isTesting: false
     })
@@ -637,6 +744,6 @@ Page({
       wx.setStorageSync('Tester', 'TEST');
     }
     this.cancelInput()
-  }
+  } */
 
 })

@@ -12,7 +12,6 @@
 			markers="{{stores}}"
 			subkey="{{}}"
 			layer-style="2"
-			show-compass="{{true}}"
 			setting="{{setting}}"
 			bindtap="tapMap"
 			bindcallouttap="onMarkerTap"
@@ -30,7 +29,6 @@
 		</block>
 	<view>
 		<image wx:if="{{isPopping}}" class="coverPage" src="{{defaultImg}}" />
-
 		<image wx:if="{{isPopping}}" class="coverPage2" src="{{defaultImg2}}" mode="aspectFit"/>	
 
 
@@ -90,9 +88,29 @@
 		src="../../images/eating.png"
 		class="img-switch-style"
 		animation="{{animMenu}}"
-		bindtap="openMenu"
 		bind:touchstart="testStart"
 		bind:touchend="testEnd"
 		/>
 	</view>
+
+
+	<!--去哪吃弹窗-->
+<view class="cu-modal {{isShowWhereToEat?'show':''}}">
+  <view class="cu-dialog">
+    <view class="bg-img  showWhere" bindtap = "previewFoodImg" style="background-image: url({{storeData.store.images.length==0?defaultFoodImg:storeData.store.images[0]}});height:200px;">
+      <view class="cu-bar justify-end text-red text-bold">
+        <view class="action" catchtap="hideWhereToEat">
+          <text class="cuIcon-roundclose text-bold text-shadow"></text>
+        </view>
+      </view>
+		<view class="cu-bar showTitle">
+			<text class="text-cut text-bold text-shadow text-green">{{storeData.store.name}}</text>
+		</view>
+    </view>
+    <view class="cu-bar bg-white">
+      <view class="action margin-0 flex-sub " bindtap="nextOne">换一家</view>
+	   <view class="action margin-0 flex-sub solid-left text-green" bindtap="chooseIt">就选它</view>
+    </view>
+  </view>
+</view>
 </block>

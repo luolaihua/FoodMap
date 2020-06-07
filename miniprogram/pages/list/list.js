@@ -69,40 +69,40 @@ Page({
     if (this.data.orderTag == tag) {
       tag = ''
       var temp = []
-      stores = temp.concat(temp,this.data.storesArr)
+      stores = temp.concat(temp, this.data.storesArr)
     } else {
-    stores=  myApi.sortStoresByTag(stores,tag)
-/*       switch (tag) {
-        case 'distance':
-          var myLat = app.globalData.latitude
-          var myLnd = app.globalData.longitude
-          stores.forEach(store => {
-            store.distance = myApi.getDistance(myLat, myLnd, store.latitude, store.longitude)
-          })
-          stores.sort((store1, store2) => {
-            return store1.distance - store2.distance
-          })
-          console.log(stores)
+      stores = myApi.sortStoresByTag(stores, tag)
+      /*       switch (tag) {
+              case 'distance':
+                var myLat = app.globalData.latitude
+                var myLnd = app.globalData.longitude
+                stores.forEach(store => {
+                  store.distance = myApi.getDistance(myLat, myLnd, store.latitude, store.longitude)
+                })
+                stores.sort((store1, store2) => {
+                  return store1.distance - store2.distance
+                })
+                console.log(stores)
 
-          break;
-        case 'price':
-          stores.sort((store1, store2) => {
-            return store1.price_per - store2.price_per
-          })
-          console.log(stores)
+                break;
+              case 'price':
+                stores.sort((store1, store2) => {
+                  return store1.price_per - store2.price_per
+                })
+                console.log(stores)
 
-          break;
-        case 'favor':
-          stores.sort((store1, store2) => {
-            return store2.rateValue - store1.rateValue
-          })
-          console.log(stores)
+                break;
+              case 'favor':
+                stores.sort((store1, store2) => {
+                  return store2.rateValue - store1.rateValue
+                })
+                console.log(stores)
 
-          break;
+                break;
 
-        default:
-          break;
-      } */
+              default:
+                break;
+            } */
     }
     this.setData({
       orderTag: tag,
@@ -259,9 +259,9 @@ Page({
     //生成海报文本内容
     storesArr.forEach(item => {
       textArr.push(item.name)
-       // console.log(item.tagList) 
-       //暂时不把标签也加入
-       // textArr = textArr.concat(item.tagList)
+      // console.log(item.tagList) 
+      //暂时不把标签也加入
+      // textArr = textArr.concat(item.tagList)
     })
     //生成二维码URL
     var QrCodeUrl = this.data.QrCodeUrl
@@ -302,7 +302,7 @@ Page({
       })
     }, 2000)
   },
-      /**
+  /**
    * 点击放大图片
    * @param {} e 
    */
@@ -390,8 +390,8 @@ Page({
         var avatarUrl = wx.getStorageSync('avatarUrl');
         var instantShareCode = myApi.getRandomCode(8)
         var shareCount = wx.getStorageSync('shareCount');
-        if(shareCount==''){
-          shareCount=5
+        if (shareCount == '') {
+          shareCount = 5
         }
         db.collection('instantShare').add({
           // data 字段表示需新增的 JSON 数据
@@ -490,15 +490,16 @@ Page({
   chooseAllItem() {
     myApi.vibrate()
     var shareIndexList = []
-
-    function getAllIndex(item, index) {
-      shareIndexList.push(index)
+    var isChooseAll = !this.data.isChooseAll
+    if (isChooseAll) {
+      this.data.stores.forEach((item, index) => {
+        shareIndexList.push(index)
+      });
     }
-    this.data.stores.forEach(getAllIndex);
     console.log(shareIndexList)
     this.setData({
       shareIndexList,
-      isChooseAll: true
+      isChooseAll
     })
 
   },
@@ -512,6 +513,11 @@ Page({
       isChooseAll: false,
       shareIndexList: []
     })
+    if(this.data.isAddItemToGroup){
+      wx.navigateBack({
+        delta: 1
+      });
+    }
   },
   /**
    * 点击CheckBox，挨个选择
@@ -656,9 +662,9 @@ Page({
           var friendsList = wx.getStorageSync('friendsList')
           storesArr = friendsList[friendsIndex].stores
         } */
-        var stores = new Array();
+    var stores = new Array();
     this.setData({
-      stores: stores.concat(stores,storesArr),
+      stores: stores.concat(stores, storesArr),
       storesArr,
       defaultSearchValue: '',
       friendsIndex,

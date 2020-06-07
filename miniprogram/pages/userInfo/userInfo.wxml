@@ -53,9 +53,9 @@
 <!--去哪吃弹窗-->
 <view class="cu-modal {{isShowWhereToEat?'show':''}}">
   <view class="cu-dialog">
-    <view class="bg-img  showWhere" style="background-image: url({{storeData.store.images.length==0?defaultImg:storeData.store.images[0]}});height:200px;">
+    <view class="bg-img  showWhere" bindtap = "previewFoodImg" style="background-image: url({{storeData.store.images.length==0?defaultImg:storeData.store.images[0]}});height:200px;">
       <view class="cu-bar justify-end text-red text-bold">
-        <view class="action" bindtap="hideWhereToEat">
+        <view class="action" catchtap ="hideWhereToEat">
           <text class="cuIcon-roundclose text-bold text-shadow"></text>
         </view>
       </view>

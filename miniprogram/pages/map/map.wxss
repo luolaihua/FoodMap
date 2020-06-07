@@ -108,7 +108,7 @@ map{
     width: 6vw;
     z-index: 99;
     right: 10px;
-    opacity: 0.6;
+    opacity: 0.8;
   }
   .control-btn-increase {
     bottom:50vh;
@@ -118,4 +118,14 @@ map{
   }
   .control-btn-locate{
     bottom: 34vh;
+  }
+  /*去哪吃*/
+  .showTitle{
+    display: flex;
+    justify-content: center;
+  }
+  .showWhere{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }

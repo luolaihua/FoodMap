@@ -29,6 +29,8 @@ enable-satellite="{{settingList[6].value}}"
 		<image src="../../images/add.png" class="control-btn control-btn-increase" bind:touchstart="onIncreaseScale"></image>
 		<image src="../../images/sub.png" class="control-btn control-btn-decrease" bind:touchstart="onDecreaseScale"></image>
 	</block>
+	<image src="../../images/locate.png" class="control-btn control-btn-locate" bind:touchstart="onLocate"></image>
+
 <van-popup
  show="{{ show }}"
  round

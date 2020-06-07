@@ -15,7 +15,7 @@
 		<view class="cu-tag {{orderTag=='favor'?'bg-orange':'line-grey'}} round" id="favor" bindtap = "orderList">最受好评</view>
 		<view class="cu-tag {{orderTag=='price'?'bg-orange':'line-grey'}} round" id="price" bindtap = "orderList">价格最优</view>
  	</view>
-	<view class="cu-bar bg-white" wx:if="{{isInstantShare||isAddItemToGroup}}">
+	<view class="cu-bar bg-white solid shadow-warp" wx:if="{{isInstantShare||isAddItemToGroup}}">
 		<view class="action" bindtap = "cancelChoose">
 		<text class="text-gray">取消</text>
 		</view>
@@ -23,7 +23,7 @@
 			选择需要{{isAddItemToGroup?'添加':'分享'}}的店铺
 		</view>
 		<view class="action" bindtap="chooseAllItem">
-			<text class="text-green">全选</text>
+			<text class="text-green">{{isChooseAll?'全不选':'全选'}}</text>
 		</view>
 	</view>
 	<checkbox-group bindchange="chooseItem">

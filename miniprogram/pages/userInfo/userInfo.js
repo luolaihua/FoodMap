@@ -30,6 +30,7 @@ Page({
     isUnLogin: false,
     randNum: 0
   },
+  //即时分享次数
   changePickView(e){
     var shareCount = e.detail.value[0]+1
     wx.setStorageSync('shareCount', shareCount);
@@ -156,6 +157,13 @@ Page({
 
 
 
+  },
+  previewFoodImg(){
+    var storeData = this.data.storeData
+   var foodImg =  storeData.store.images.length==0?this.data.defaultFoodImg:storeData.store.images[0]
+   wx.previewImage({
+    urls: [foodImg],
+  });
   },
   /**
    * 复制秘钥

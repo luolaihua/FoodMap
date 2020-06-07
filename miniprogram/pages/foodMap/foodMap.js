@@ -75,6 +75,9 @@ Page({
       }
     ]
   },
+  onLocate(){
+    this.initMap(14)
+  },
   // 控制地图缩放级别
   onIncreaseScale() {
     myApi.vibrate()
@@ -220,11 +223,11 @@ Page({
         stores: data.stores,
         defaultScale: config.default_scale
       })
-      that.initMap()
+      that.initMap(5)
     })
 
   },
-  initMap() {
+  initMap(scale) {
     var that = this
     //初始化 定位
     wx.getLocation({
@@ -237,7 +240,8 @@ Page({
         const longitude = res.longitude
         that.setData({
           latitude,
-          longitude
+          longitude,
+          scale:scale
         })
       }
     })

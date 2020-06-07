@@ -28,4 +28,6 @@
  .control-btn-decrease {
    bottom: 42vh;
  }
-  
+ .control-btn-locate{
+  bottom: 34vh;
+}

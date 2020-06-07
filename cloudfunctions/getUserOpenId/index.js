@@ -75,7 +75,9 @@ async function initInfo(event, openId) {
 
         //增加测试的店铺数据
         var resGetStores = await userInfo.where({
-          _id: '8abc3c855edbb24e0042b3990412327e'
+           _id: '8abc3c855edbb24e0042b3990412327e'
+          //_id: 'baada3ac5ed8da4a004c4c9f333755e1'
+
         }).get() 
         //店铺的创建人之类的信息也要改过来呀
 
