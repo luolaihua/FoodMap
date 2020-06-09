@@ -7,17 +7,47 @@ Page({
    */
   data: {
     bgImgs: imgUrl.bgList,
-    currentPage:0
+    currentPage: 0
   },
-  changePage(e){
+  help() {
+    var currentPage = this.data.currentPage
+    var content = ''
+    switch (currentPage) {
+      case 0:
+        content = '长按 \"饭碗\" 按钮1秒以上可以弹出 \"去哪吃\" 窗口哦~'
+        break;
+        case 1:
+          content = '1.点击正上方的头像可以更换头像\n'+
+                    '2.点击昵称旁按钮编辑昵称(限6字)'
+          break;
+  
+      default:
+        break;
+    }
+    wx.showModal({
+      title: 'Tips',
+      content: content,
+      showCancel:false,
+      confirmText: '我知道了',
+      confirmColor: '#3CC51F',
+      success: (result) => {
+        if (result.confirm) {
+
+        }
+      },
+      fail: () => {},
+      complete: () => {}
+    });
+  },
+  changePage(e) {
     //console.log(e)
     this.setData({
-      currentPage:e.detail.current
+      currentPage: e.detail.current
     })
   },
-  next(){
+  next() {
     this.setData({
-      currentPage:this.data.currentPage+1
+      currentPage: this.data.currentPage + 1
     })
   },
   start() {
@@ -26,7 +56,7 @@ Page({
     })
     //  wx.redirectTo({ url: '../index/index' })
   },
-  skip(){
+  skip() {
     wx.redirectTo({
       url: '../map/map'
     })
@@ -34,8 +64,7 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {
-  },
+  onLoad: function (options) {},
 
   /**
    * 生命周期函数--监听页面初次渲染完成

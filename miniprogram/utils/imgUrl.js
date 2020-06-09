@@ -1,12 +1,22 @@
 module.exports={
     bgList:[
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w1.png?sign=d8772c4456192313548925826c450d53&t=1591685010',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w2.png?sign=a1cc9a62cfe63acec13f3ccfe5957504&t=1591685025',
+            'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w4.png?sign=f4de7747f91bd16531c8fe7812a341ba&t=1591685040',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w5.png?sign=dd8ebe931e4c6df3ccd6fcf9e133908b&t=1591685048',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w6.png?sign=8723c8f5dc5ccad4065061364dce57ae&t=1591685056',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w7.png?sign=5097f3d8165acfc8e6b262c66f188400&t=1591713398',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w3.png?sign=a8fa0be1084340e4dd3e1041d3254423&t=1591685271',
+   
+    ],
+    bgList3:[
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/1.jpg?sign=c76e1a854acd993be26470ea0201bd9d&t=1591157649',
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/2.jpg?sign=8c9b24dcd991fc39e2e775893400ca8c&t=1591157665',
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/3.jpg?sign=a18e3af996c74843e8974ab7b7616eaf&t=1591157673',
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/4.jpg?sign=52f57296c050b36741ba1d9cdbada637&t=1591157684',
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/5.jpg?sign=d3af12ced88efd18930d4df53d5e79d7&t=1591157692',
         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/6.jpg?sign=7bcaa85bba450b36fa0470f3a9ad4d39&t=1591157703',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/7.jpg?sign=46bc6cf95bf9b158d22b4b3187b2ff38&t=1591157711',
+         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/7.jpg?sign=46bc6cf95bf9b158d22b4b3187b2ff38&t=1591157711',
   ],
     bgList2:[
         'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',

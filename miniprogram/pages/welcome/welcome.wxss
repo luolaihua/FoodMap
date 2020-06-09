@@ -26,11 +26,10 @@ swiper {
 }
 .wel-start{   
   position: fixed;
-  bottom: 5vh;
+  bottom: 4vh;
   left: 35vw;
   height: 40px;
   width: 30vw;
-  background-color: rgba(238, 239, 240, 0.712);
 }
 button::after{
   border: none;
@@ -43,7 +42,13 @@ button::after{
   background-color: rgba(136, 187, 245, 0.411);
   z-index: 66;
 }
-
+.wel-help{ 
+  position: fixed;
+  top: 6vh;
+  left: 3vw;
+  z-index: 66;
+  font-size: 50rpx;
+}
 .wel-skip{
   font-size: smaller;
   position: fixed;

@@ -4,6 +4,13 @@ const imgUrl = require('../../utils/imgUrl')
 const db = wx.cloud.database()
 const _ = db.command
 const groupsList = db.collection('groupsList')
+const app = getApp();
+var touchStartX = 0; //触摸时的原点 
+var touchStartY = 0; //触摸时的原点 
+var time = 0; // 时间记录，用于滑动时且时间小于1s则执行左右滑动 
+var interval = ""; // 记录/清理时间记录 
+var touchMoveX = 0; // x轴方向移动的距离
+var touchMoveY = 0; // y轴方向移动的距离
 /**
  * 圈子创建和加入数量限制：6
  */
@@ -43,7 +50,69 @@ Page({
     QrCodeUrl: '../../images/QrCode.jpg',
     posterUrl: '',
     isShowPoster: false,
+    spareSpaceHeight: 0
+  },
+  //通过touchStart和touchEnd来控制长按的时间
+  groupStart: function (e) {
+    touchStartX = e.touches[0].pageX; // 获取触摸时的原点 
+    touchStartY = e.touches[0].pageY; // 获取触摸时的原点 
+    // 使用js计时器记录时间 
+    interval = setInterval(function () {
+      time++;
+    }, 100);
 
+  },
+  // 触摸移动事件 
+  groupMove: function (e) {
+    touchMoveX = e.touches[0].pageX;
+    touchMoveY = e.touches[0].pageY;
+  },
+
+  groupEnd: function (e) {
+    var moveX = Math.abs(touchMoveX - touchStartX);
+    var moveY = Math.abs(touchMoveY - touchStartY)
+    //console.log(moveX+"  Y: "+moveY)
+    var TabCur =this.data.TabCur
+    var event = {
+      currentTarget:{
+        dataset:{
+          id:TabCur
+        }
+      }
+    }
+    //event.currentTarget.dataset.id = TabCur
+   // console.log(event)
+    if (moveX <= moveY && touchMoveY != 0) { // 上下
+      // 向上滑动
+      if (touchMoveY - touchStartY <= -100 && time < 800) {
+       // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
+      }
+      // 向下滑动 
+      if (touchMoveY - touchStartY >= 90 && time < 800) {
+        //console.log('向下滑动-更新 ' + touchMoveY + '   |  ' + touchStartY);
+        this.tabSelect(event)
+      }
+    } else if (touchMoveX != 0) { // 左右
+      // 向左滑动
+      if (touchMoveX - touchStartX <= -80 && time < 800) {
+       // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
+        if(TabCur==0){
+          event.currentTarget.dataset.id = 1
+          this.tabSelect(event)
+        }
+
+      }
+      // 向右滑动 
+      if (touchMoveX - touchStartX >= 80 && time < 800) {
+        //console.log('向右滑动' + touchMoveX + '  |  ' + touchStartX + 'left');
+        if(TabCur==1){
+          event.currentTarget.dataset.id = 0
+          this.tabSelect(event)
+        }
+      }
+    }
+    clearInterval(interval); // 清除setInterval 
+    time = 0;
   },
   /**
    * 生成分享海报
@@ -84,6 +153,7 @@ Page({
    */
   savePosterImage: function () {
     myApi.vibrate()
+    myApi.requestSendMsg('newMemberToGroup')
     var that = this;
     var filePath = that.data.posterUrl;
     wx.saveImageToPhotosAlbum({
@@ -94,7 +164,7 @@ Page({
           icon: 'none',
           duration: 1000,
           mask: true,
-        })
+        })    
         that.closePosterImage()
       }
     })
@@ -117,9 +187,9 @@ Page({
       //生成海报文本内容
       storesArr.forEach(item => {
         textArr.push(item.name)
-       // console.log(item.tagList) 
-       //暂时不把标签也加入
-       // textArr = textArr.concat(item.tagList)
+        // console.log(item.tagList) 
+        //暂时不把标签也加入
+        // textArr = textArr.concat(item.tagList)
       })
     }
 
@@ -163,7 +233,7 @@ Page({
       })
     }, 2000)
   },
-    /**
+  /**
    * 点击放大图片
    * @param {} e 
    */
@@ -312,8 +382,12 @@ Page({
       } else {
         GroupsList = wx.getStorageSync('My_GroupsList');
       }
+      //求剩余屏幕控件高度
+      var spareSpaceHeight = app.globalData.MapHeight - (90 + 140 * GroupsList.length) * app.globalData.rpx2px
+
       that.setData({
         GroupsList,
+        spareSpaceHeight
       }, () => {
         wx.hideLoading();
       })
@@ -351,7 +425,7 @@ Page({
         result.eventChannel.emit('getGroupData', {
           group: group,
           groupIndex: index,
-          isCreator:isCreator
+          isCreator: isCreator
         })
       },
       fail: () => {},
@@ -426,6 +500,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+
+
     var openId = wx.getStorageSync('openId')
     this.setData({
       openId
@@ -460,9 +536,12 @@ Page({
     } else {
       var GroupsList = wx.getStorageSync('Joined_GroupsList');
     }
+    //求剩余屏幕控件高度
+    var spareSpaceHeight = app.globalData.MapHeight - (90 + 140 * GroupsList.length) * app.globalData.rpx2px
 
     this.setData({
-      GroupsList
+      GroupsList,
+      spareSpaceHeight
     })
   },
 

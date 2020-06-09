@@ -145,7 +145,7 @@
 		 bind:delete="DelImg"
 		 file-list="{{ fileList }}"
 		 bind:after-read="afterRead"
-		 max-size="1000000"
+		 sizeType="{{sizeType}}"
 		/>
 	</view>
 	

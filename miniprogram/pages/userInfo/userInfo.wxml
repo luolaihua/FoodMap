@@ -77,7 +77,7 @@
 	<view class="modules_switch_box">
 		<picker-view indicator-style="height: 50px;" style="width: 100%; height: 100%;" value="{{shareCount}}" bindchange="changePickView">
 		<picker-view-column>
-			<view wx:for="{{10}}" wx:key="index" style="line-height: 50px; text-align: center;font-size:40rpx">{{index+1}}</view>
+			<view wx:for="{{10}}"class="solid" wx:key="index" style="line-height: 50px; text-align: center;font-size:40rpx ">{{index+1}}</view>
 		</picker-view-column>
 		</picker-view>
 	</view>

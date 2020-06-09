@@ -215,7 +215,7 @@ Page({
             console.log(res)
           }
         }) */
-    myApi.requestSendMsg('viewList')
+    //myApi.requestSendMsg('viewList')
     this.setData({
       isShowPoster: false,
     });
@@ -739,8 +739,8 @@ Page({
   toInfo(e) {
     //var id = e.currentTarget.id
     var index = e.currentTarget.dataset.index
-    var store = this.data.storesArr[index]
-    //console.log(this.data.friendsIndex)
+    var store = this.data.stores[index]
+    console.log(this.data.friendsIndex)
     wx.navigateTo({
       url: '../info/info?friendsIndex=' + this.data.friendsIndex,
       success: function (res) {

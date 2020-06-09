@@ -14,8 +14,11 @@ App({
     }
     wx.getSystemInfo({
       success: e => {
-        //console.log(e)
+        console.log(e)
         this.globalData.StatusBar = e.statusBarHeight;
+        this.globalData.screenHeight = e.screenHeight;
+        this.globalData.screenWidth = e.screenWidth;
+        this.globalData.rpx2px = e.screenWidth/750;
         let capsule = wx.getMenuButtonBoundingClientRect();
 		if (capsule) {
 		 	this.globalData.Custom = capsule;

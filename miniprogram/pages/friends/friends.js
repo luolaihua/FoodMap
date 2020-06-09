@@ -37,21 +37,26 @@ Page({
       var info = await userInfo.where({
         shareCode: shareCode
       }).get()
-     // console.log(info)
+      // console.log(info)
       if (info.data.length != 0) {
         var storesCloud = info.data[0].stores
         friendsList[index].stores = storesCloud
         friendsList[index].avatarUrl = info.data[0].info.avatarUrl
         friendsList[index].nickName = info.data[0].info.nickName
         console.log(friendsList)
-        myApi.updateUserInfo(friendsList,'friendsList')
+        myApi.updateUserInfo(friendsList, 'friendsList')
         //wx.setStorageSync('friendsList', friendsList);
         this.setData({
           friendsList
         }, () => {
-          wx.navigateTo({
-            url: '../list/list?friendsIndex=' + index,
+          wx.showToast({
+            title: '更新成功',
           });
+          setTimeout(() => {
+             wx.navigateTo({
+                url: '../list/list?friendsIndex=' + index,
+              }); 
+          }, 1000);
         })
       } else {
         wx.showToast({
@@ -229,7 +234,7 @@ Page({
         //删除分享次数为零的
         instantShare.where({
           shareCount: 0
-        }).remove().then(result=>{
+        }).remove().then(result => {
           console.log(result)
         })
       })
@@ -248,9 +253,9 @@ Page({
           温馨提示{{thing5.DATA}
        */
       var msgData = {
-        openId:isForever?(info.data[0].openId):(info.data[0]._openid) ,
+        openId: isForever ? (info.data[0].openId) : (info.data[0]._openid),
         thing1: nickName,
-        phrase2: isForever?'永久分享':'即时分享',
+        phrase2: isForever ? '永久分享' : '即时分享',
         time3: myApi.formatTime(new Date()),
       }
       //console.log(msgData)
@@ -300,7 +305,7 @@ Page({
         duration: 2000,
         mask: false,
         success: (result) => {
-         
+
         }
       });
     }

@@ -12,12 +12,13 @@
 		</swiper-item>
 	</block>
 </swiper>
-<button class="wel-start round" bindtap="start" wx:if="{{currentPage==bgImgs.length-1}}">
+<button class="wel-start bg-orange round text-bold" bindtap="start" wx:if="{{currentPage==bgImgs.length-1}}">
 	立即体验
 </button>
 <view class="wel-skip text-white text-bold round" bindtap="skip" wx:if="{{currentPage!=bgImgs.length-1}}">
 	跳过
 </view>
 <view class="wel-next text-white text-bold cuIcon-right round" bindtap="next" wx:if="{{currentPage!=bgImgs.length-1}}" />
+<text class="wel-help text-green cuIcon-question" bind:tap="help"></text> 
 
 

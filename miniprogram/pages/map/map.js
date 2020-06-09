@@ -37,7 +37,7 @@ Page({
       enable3D: true,
       enableOverlooking: true,
       enableSatellite: false,
-      enableTraffic: true,
+      enableTraffic: false,
     },
     scale: 16,
     longitude: 113.3245211,
@@ -162,7 +162,7 @@ Page({
   },
   // 控制地图缩放级别
   onIncreaseScale() {
-    myApi.vibrate()
+    wx.vibrateShort();
     let scale = this.data.scale;
     // console.log(scale)
     if (scale == 20) {
@@ -178,7 +178,7 @@ Page({
     });
   },
   onDecreaseScale() {
-    myApi.vibrate()
+    wx.vibrateShort();
     let scale = this.data.scale;
     // console.log(scale)
     if (scale == 3) {
@@ -195,6 +195,7 @@ Page({
     }
   },
   onLocate() {
+    wx.vibrateShort();
     this.initMap(16)
   },
   /**
@@ -649,12 +650,20 @@ Page({
       duration: 400,
       timingFunction: 'ease-out'
     })
+    var screenWidth = app.globalData.screenWidth
+    //横向为x轴，向右为正方向。纵向为y轴，向下为正方向
     animMenu.scale(1.4).rotateZ(0).step();
+    animToGroup.translate(-screenWidth*0.22, -screenWidth*0.22).scale(1.4).opacity(1).step();
+    animToUerInfo.translate(-screenWidth*0.36, 0).scale(1.4).opacity(1).step();
+    animToList.translate(screenWidth*0.36, 0).scale(1.4).opacity(1).step();
+    animToAdd.translate(screenWidth*0.22, -screenWidth*0.22).scale(1.4).opacity(1).step();
+    animAddFriends.translate(0, -screenWidth*0.36).scale(1.4).opacity(1).step();
+/*     animMenu.scale(1.4).rotateZ(0).step();
     animToGroup.translate(-95, -95).scale(1.4).opacity(1).step();
     animToUerInfo.translate(-140, 0).scale(1.4).opacity(1).step();
     animToList.translate(140, 0).scale(1.4).opacity(1).step();
     animToAdd.translate(95, -95).scale(1.4).opacity(1).step();
-    animAddFriends.translate(0, -140).scale(1.4).opacity(1).step();
+    animAddFriends.translate(0, -140).scale(1.4).opacity(1).step(); */
     this.setData({
       animMenu: animMenu.export(),
       animToGroup: animToGroup.export(),

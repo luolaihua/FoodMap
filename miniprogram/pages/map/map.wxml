@@ -10,7 +10,7 @@
 			latitude='{{latitude}}'
 			style='height:100vh;filter: blur({{isPopping?15:0}}rpx);'
 			markers="{{stores}}"
-			subkey="{{}}"
+			subkey=""
 			layer-style="2"
 			setting="{{setting}}"
 			bindtap="tapMap"

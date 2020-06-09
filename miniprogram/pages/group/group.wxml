@@ -16,7 +16,6 @@
 		</view>
 	</view>
 </scroll-view>
-
 <view class="cu-list menu-avatar">
 	<view
 	 wx:for="{{GroupsList}}"
@@ -52,6 +51,7 @@
 		</view>
 	</view>
 </view>
+<view style="height:{{spareSpaceHeight}}px;width:100vw" bind:touchstart="groupStart" bind:touchend="groupEnd" bind:touchmove="groupMove"></view>
 <view class=" flex flex-direction createGroup" wx:if="{{GroupsList.length<6}}">
 	<button class="text-bold cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur"  style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;"  bind:tap="toCreateGroup">{{TabCur==0?'创建圈子':'加入圈子'}}</button>
 </view>
