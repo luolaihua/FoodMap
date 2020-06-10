@@ -11,6 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
+    openId:'',
     tag: '',
     stores: [],
     defaultImg: imgUrl.share3,
@@ -230,14 +231,15 @@ Page({
     var stores = []
     //stores = stores.concat([], group.stores)
     // console.log(group)
-    wx.hideLoading();
     this.setData({
+      openId:openId,
       GroupsList,
       group,
       stores: stores.concat([], group.stores)
+    },()=>{
+      wx.hideLoading();
     })
     myApi.updateGroupsList(group.stores,'stores',group._id)
-
   },
   toAdd() {
     this.close()
@@ -345,15 +347,33 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
-
+  onPullDownRefresh:async function () {
+    wx.showLoading({
+      title: '更新中',
+    });
+    var group =await myApi.getGroupData(this.data.groupId)
+    this.setData({
+      group:group.data[0]
+    },()=>{
+      wx.hideLoading();
+      wx.showToast({
+        title: '更新成功',
+      });
+      wx.stopPullDownRefresh()
+    })
+    //console.log(group)
+    
+    //myApi.getGroupsList(this.data.openId)
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    wx.showToast({
+      title: '到底啦~',
+      icon: 'none',
+    }); 
   },
 
   /**

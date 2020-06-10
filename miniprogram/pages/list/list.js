@@ -5,6 +5,10 @@ const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
 //TODO 美食列表分类筛选，离我最近？价格？、、、
+var touchStartX = 0; //触摸时的原点 
+var touchStartY = 0; //触摸时的原点 
+var touchMoveX = 0; // x轴方向移动的距离
+var touchMoveY = 0; // y轴方向移动的距离
 Page({
 
   /**
@@ -673,6 +677,15 @@ Page({
 
     })
   },
+    /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom: function () {
+    wx.showToast({
+      title: '到底啦~',
+      icon: 'none',
+    }); 
+  },
   /**
    * 隐藏modal弹窗
    */
@@ -775,30 +788,53 @@ Page({
 
   // ListTouch触摸开始
   ListTouchStart(e) {
-    this.setData({
-      ListTouchStart: e.touches[0].pageX
-    })
+    touchStartX = e.touches[0].pageX; // 获取触摸时的原点 
+    touchStartY = e.touches[0].pageY; // 获取触摸时的原点 
   },
 
   // ListTouch计算方向
   ListTouchMove(e) {
-    this.setData({
-      ListTouchDirection: e.touches[0].pageX - this.data.ListTouchStart > 0 ? 'right' : 'left'
-    })
+    touchMoveX = e.touches[0].pageX;
+    touchMoveY = e.touches[0].pageY;
   },
 
   // ListTouch计算滚动
   ListTouchEnd(e) {
-    if (this.data.ListTouchDirection == 'left') {
-      this.setData({
+    var ListTouchDirection = ''
+    var moveX = Math.abs(touchMoveX - touchStartX);
+    var moveY = Math.abs(touchMoveY - touchStartY)
+    if (moveX <= moveY && touchMoveY != 0) { // 上下
+      // 向上滑动
+      if (touchMoveY - touchStartY <= -100 ) {
+       // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
+      }
+      // 向下滑动 
+      if (touchMoveY - touchStartY >= 90) {
+        //console.log('向下滑动-更新 ' + touchMoveY + '   |  ' + touchStartY);
+        
+      }
+    } else if (touchMoveX != 0) { // 左右
+      // 向左滑动
+      if (touchMoveX - touchStartX <= -80) {
+       // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
+       ListTouchDirection = 'left'
+
+      }
+      // 向右滑动 
+      if (touchMoveX - touchStartX >= 80 ) {
+        //console.log('向右滑动' + touchMoveX + '  |  ' + touchStartX + 'left');
+      }
+    }
+    var modalName = e.currentTarget.dataset.target
+    if (ListTouchDirection == 'left') {
+/*       this.setData({
         modalName: e.currentTarget.dataset.target
-      })
+      }) */
     } else {
-      this.setData({
-        modalName: null
-      })
+      modalName = null
     }
     this.setData({
+      modalName,
       ListTouchDirection: null
     })
   }

@@ -375,7 +375,7 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh: function () {
+  onPullDownRefresh:async function () {
 
   },
 
@@ -383,7 +383,10 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    wx.showToast({
+      title: '到底啦~',
+      icon: 'none',
+    }); 
   },
 
   /**
@@ -410,15 +413,17 @@ Page({
   ListTouchEnd(e) {
     if (this.data.ListTouchDirection == 'left') {
       this.setData({
-        modalName: e.currentTarget.dataset.target
+        modalName: e.currentTarget.dataset.target,
+        ListTouchDirection: null
       })
     } else {
       this.setData({
-        modalName: null
+        modalName: null,
+        ListTouchDirection: null
       })
     }
-    this.setData({
+/*     this.setData({
       ListTouchDirection: null
-    })
+    }) */
   }
 })

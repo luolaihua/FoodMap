@@ -1,5 +1,6 @@
 // miniprogram/pages/welcome/welcome.js
 const imgUrl = require('../../utils/imgUrl')
+const myApi = require('../../utils/myApi')
 Page({
 
   /**
@@ -11,33 +12,7 @@ Page({
   },
   help() {
     var currentPage = this.data.currentPage
-    var content = ''
-    switch (currentPage) {
-      case 0:
-        content = '长按 \"饭碗\" 按钮1秒以上可以弹出 \"去哪吃\" 窗口哦~'
-        break;
-        case 1:
-          content = '1.点击正上方的头像可以更换头像\n'+
-                    '2.点击昵称旁按钮编辑昵称(限6字)'
-          break;
-  
-      default:
-        break;
-    }
-    wx.showModal({
-      title: 'Tips',
-      content: content,
-      showCancel:false,
-      confirmText: '我知道了',
-      confirmColor: '#3CC51F',
-      success: (result) => {
-        if (result.confirm) {
-
-        }
-      },
-      fail: () => {},
-      complete: () => {}
-    });
+    myApi.help(currentPage) 
   },
   changePage(e) {
     //console.log(e)

@@ -83,7 +83,7 @@
 </block>
 
 <block wx:else>
-	<view class="noData">{{isAddItemToGroup?'暂无可导入的美食店铺^_^':'列表里还没有美食店铺呢^_^'}}</view>
+	<view class="noData">{{isAddItemToGroup?'暂无可导入的美食店铺^_^':'您的便签里还没有美食店铺呢^_^'}}</view>
 </block>
 
 <view class="cu-modal {{isShowModal?'show':''}}">

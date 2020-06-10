@@ -19,8 +19,11 @@
   opacity: 0.6;
 }
 .noData{
+  font-size: 40rpx;
+  width: 100vw;
   color: gray;
-  position: relative;
-  top: 40vh;
+  position: fixed;
+  top: 50vh;
   text-align: center;
+  z-index: 200;
 }

@@ -14,7 +14,7 @@ App({
     }
     wx.getSystemInfo({
       success: e => {
-        console.log(e)
+        //console.log(e)
         this.globalData.StatusBar = e.statusBarHeight;
         this.globalData.screenHeight = e.screenHeight;
         this.globalData.screenWidth = e.screenWidth;

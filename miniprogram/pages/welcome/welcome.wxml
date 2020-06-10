@@ -19,6 +19,6 @@
 	跳过
 </view>
 <view class="wel-next text-white text-bold cuIcon-right round" bindtap="next" wx:if="{{currentPage!=bgImgs.length-1}}" />
-<text class="wel-help text-green cuIcon-question" bind:tap="help"></text> 
+<text class="wel-help cuIcon-questionfill text-green" bind:tap="help"></text> 
 
 

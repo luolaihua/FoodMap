@@ -90,6 +90,7 @@ Page({
       // 向下滑动 
       if (touchMoveY - touchStartY >= 90 && time < 800) {
         //console.log('向下滑动-更新 ' + touchMoveY + '   |  ' + touchStartY);
+        event.title = '更新中'
         this.tabSelect(event)
       }
     } else if (touchMoveX != 0) { // 左右
@@ -261,7 +262,7 @@ Page({
     //先判断分享码格式是否符合规范
     if (secretKey.length != 4) {
       wx.showToast({
-        title: '分享码错误，请重新输入',
+        title: '秘钥错误，请重新输入',
         icon: 'none',
       });
       return
@@ -371,7 +372,7 @@ Page({
     myApi.vibrate()
     myApi.getGroupsList(this.data.openId)
     wx.showLoading({
-      title: '加载中',
+      title:e.title=='更新中'?'更新中': '加载中',
     });
     var GroupsList = []
     var index = e.currentTarget.dataset.id
@@ -608,15 +609,17 @@ Page({
   ListTouchEnd(e) {
     if (this.data.ListTouchDirection == 'left') {
       this.setData({
-        modalName: e.currentTarget.dataset.target
+        modalName: e.currentTarget.dataset.target,
+        ListTouchDirection: null
       })
     } else {
       this.setData({
-        modalName: null
+        modalName: null,
+        ListTouchDirection: null
       })
     }
-    this.setData({
+/*     this.setData({
       ListTouchDirection: null
-    })
+    }) */
   }
 })

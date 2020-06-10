@@ -225,6 +225,10 @@ Page({
   skip() {
     this.start()
   },
+  help() {
+    var currentPage = this.data.currentPage
+    myApi.help(currentPage) 
+  },
   showMap(e) {
     var isHideMap = e.detail.value
     if (!isHideMap) {

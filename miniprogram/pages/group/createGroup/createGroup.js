@@ -47,11 +47,13 @@ Page({
       var membersList = this.data.group.membersList
       console.log(membersList)
       var res = await myApi.getMembersDetail(membersList)
-      wx.hideLoading();
+     
       //console.log(res)
       that.setData({
         membersDetailList: res,
         isGetMembersDetail: !that.data.isGetMembersDetail
+      },()=>{
+        wx.hideLoading();
       })
     } else {
       this.setData({

@@ -45,9 +45,9 @@ button::after{
 .wel-help{ 
   position: fixed;
   top: 6vh;
-  left: 3vw;
+  left: 5vw;
   z-index: 66;
-  font-size: 50rpx;
+  font-size: 60rpx;
 }
 .wel-skip{
   font-size: smaller;
