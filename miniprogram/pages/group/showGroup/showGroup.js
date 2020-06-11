@@ -1,6 +1,8 @@
 // miniprogram/pages/group/showGroup/showGroup.js
 const myApi = require('../../../utils/myApi')
 const imgUrl = require('../../../utils/imgUrl')
+const app =  getApp();
+
 /**
  * 美食动态删除权限：群主可以删除所有，成员只能删除自己发的
  * 美食动态编辑权限：所有人只能编辑自己发的
@@ -11,7 +13,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    openId:'',
+    openId: '',
     tag: '',
     stores: [],
     defaultImg: imgUrl.share3,
@@ -74,11 +76,13 @@ Page({
       duration: 300,
       timingFunction: 'ease-out'
     })
-
+    var screenWidth = app.globalData.screenWidth
+    //横向为x轴，向右为正方向。纵向为y轴，向下为正方向
+   // console.log(screenWidth)
     animMenu.rotateZ(180).step();
-    animToAdd.translate(0, -60).opacity(1).step();
-    animToListAdd.translate(0, -140).opacity(1).step();
-    animToMap.translate(0, -220).opacity(1).step();
+    animToAdd.translate(0, -screenWidth*0.16).opacity(1).step();
+    animToListAdd.translate(0, -screenWidth*0.38).opacity(1).step();
+    animToMap.translate(0, -screenWidth*0.60).opacity(1).step();
     this.setData({
       animMenu: animMenu.export(),
       animToAdd: animToAdd.export(),
@@ -142,28 +146,6 @@ Page({
     wx.showLoading({
       title: '加载中',
     });
-    //type = 'my'
-    /*     if (type == 'my') {
-          GroupsList = wx.getStorageSync('My_GroupsList');
-          var index = GroupsList.findIndex(item => {
-            return item._id == groupId
-          })
-          group = GroupsList[index]
-          for (let index = 0; index < group.stores.length; index++) {
-           
-            var id = group.stores[index].id+''
-            console.log(id)
-            if(starStoreIdList.indexOf(group.stores[index].id+'')!=-1){
-              group.stores[index].isStar=true
-            }else{
-              group.stores[index].isStar=false
-            }
-            
-          }
-        } else {
-          GroupsList = wx.getStorageSync('Joined_GroupsList');
-        } */
-    // console.log(group.stores)
     this.setData({
       groupId,
       type
@@ -189,7 +171,7 @@ Page({
     var index = GroupsList.findIndex(item => {
       return item._id == this.data.groupId
     })
-    
+
     group = GroupsList[index]
 
     //判断是否被收藏 
@@ -206,40 +188,40 @@ Page({
     //更新动态里的用户头像和昵称,有店铺的时候才做更新
     if (group.stores.length > 0) {
       var membersList = group.membersList
-      if(membersList.length>0){
+      if (membersList.length > 0) {
         var membersDetail = await myApi.getMembersDetail(membersList)
         console.log(membersDetail)
       }
       group.stores.forEach((store) => {
         //先判断群主的信息
-        if(store.creatorId==openId){
+        if (store.creatorId == openId) {
           store.creatorName = nickName
           store.creatorAvatar = avatarUrl
         }
-        membersList.forEach((memberId,index)=>{
-            if(memberId==store.creatorId){
-              store.creatorName = membersDetail[index].nickName
-              store.creatorAvatar = membersDetail[index].avatarUrl
-            }
+        membersList.forEach((memberId, index) => {
+          if (memberId == store.creatorId) {
+            store.creatorName = membersDetail[index].nickName
+            store.creatorAvatar = membersDetail[index].avatarUrl
+          }
         })
-          
+
       });
 
     }
- 
+
     //店铺数据单独拿出来放在一个数组中备用
     var stores = []
     //stores = stores.concat([], group.stores)
     // console.log(group)
     this.setData({
-      openId:openId,
+      openId: openId,
       GroupsList,
       group,
       stores: stores.concat([], group.stores)
-    },()=>{
+    }, () => {
       wx.hideLoading();
     })
-    myApi.updateGroupsList(group.stores,'stores',group._id)
+    myApi.updateGroupsList(group.stores, 'stores', group._id)
   },
   toAdd() {
     this.close()
@@ -347,23 +329,47 @@ Page({
   /**
    * 页面相关事件处理函数--监听用户下拉动作
    */
-  onPullDownRefresh:async function () {
+  onPullDownRefresh: async function () {
     wx.showLoading({
       title: '更新中',
     });
-    var group =await myApi.getGroupData(this.data.groupId)
+
+    var group = await myApi.getGroupData(this.data.groupId)
     this.setData({
-      group:group.data[0]
-    },()=>{
+      group: group.data[0]
+    }, () => {
       wx.hideLoading();
       wx.showToast({
         title: '更新成功',
       });
       wx.stopPullDownRefresh()
     })
-    //console.log(group)
-    
-    //myApi.getGroupsList(this.data.openId)
+
+    //更新本地缓存
+    var My_GroupsList = wx.getStorageSync('My_GroupsList');
+    var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+    //根据groupId找到圈子
+    var index1 = My_GroupsList.findIndex(item => {
+      return item._id == this.data.groupId
+    })
+    if (index1 != -1) {
+      My_GroupsList[index1] = group.data[0]
+      wx.setStorageSync('My_GroupsList', My_GroupsList);
+    }
+
+
+    var index2 = Joined_GroupsList.findIndex(item => {
+      return item._id == this.data.groupId
+    })
+    if (index2 != -1) {
+      Joined_GroupsList[index2] = group.data[0]
+      wx.setStorageSync('Joined_GroupsList', Joined_GroupsList);
+    }
+    /*     if (this.data.type == 'MyGroup') {
+           wx.setStorageSync('My_GroupsList',GroupsList);
+        } else {
+          wx.getStorageSync('Joined_GroupsList',GroupsList);
+        } */
   },
 
   /**
@@ -373,7 +379,8 @@ Page({
     wx.showToast({
       title: '到底啦~',
       icon: 'none',
-    }); 
+      duration: 1000,
+    });
   },
 
   /**

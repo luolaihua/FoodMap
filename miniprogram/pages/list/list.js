@@ -4,7 +4,7 @@ const store = db.collection('store');
 const userInfo = db.collection('userInfo');
 const imgUrl = require('../../utils/imgUrl')
 const myApi = require('../../utils/myApi')
-//TODO 美食列表分类筛选，离我最近？价格？、、、
+
 var touchStartX = 0; //触摸时的原点 
 var touchStartY = 0; //触摸时的原点 
 var touchMoveX = 0; // x轴方向移动的距离
@@ -143,11 +143,16 @@ Page({
       duration: 300,
       timingFunction: 'ease-out'
     })
-
+    var screenWidth = app.globalData.screenWidth
+    //横向为x轴，向右为正方向。纵向为y轴，向下为正方向
+   // console.log(screenWidth)
     animMenu.rotateZ(180).step();
-    animToInstant.translate(-80, -60).opacity(1).step();
+    animToInstant.translate(-screenWidth*0.22, -screenWidth*0.16).opacity(1).step();
+    animToForever.translate(screenWidth*0.22, -screenWidth*0.16).opacity(1).step();
+    animToMap.translate(0, -screenWidth*0.22).opacity(1).step();
+/*     animToInstant.translate(-80, -60).opacity(1).step();
     animToForever.translate(80, -60).opacity(1).step();
-    animToMap.translate(0, -80).opacity(1).step();
+    animToMap.translate(0, -80).opacity(1).step(); */
     this.setData({
       animMenu: animMenu.export(),
       animToInstant: animToInstant.export(),
@@ -345,7 +350,7 @@ Page({
 
 
     switch (friendsIndex) {
-      //TODO 重复导入问题
+      //解决 重复导入问题
       case 'MyGroup':
         //My_GroupsList-->groupId-->group-->stores
         var My_GroupsList = wx.getStorageSync('My_GroupsList');
@@ -355,7 +360,8 @@ Page({
         })
         //获取这个圈子的所有店铺
         var stores = group.stores
-        stores = stores.concat(shareList)
+        //将导入的店铺放在最前面
+        stores = shareList.concat(stores)
         console.log(stores)
 
         await myApi.updateGroupsList(stores, 'stores', groupId)
@@ -376,7 +382,8 @@ Page({
         })
         //获取这个圈子的所有店铺
         var stores = group.stores
-        stores = stores.concat(shareList)
+        //stores = stores.concat(shareList)
+        stores = shareList.concat(stores)
         console.log(stores)
 
         await myApi.updateGroupsList(stores, 'stores', groupId)
@@ -684,6 +691,7 @@ Page({
     wx.showToast({
       title: '到底啦~',
       icon: 'none',
+      duration: 1000,
     }); 
   },
   /**

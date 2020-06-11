@@ -21,7 +21,6 @@ Page({
     isBack: true
 
   },
-  //TODO 分享次数自定义 ,目前是6次
   //从云端根据分享码再获取一遍数据
   async updateItem(e) {
     myApi.vibrate()
@@ -180,7 +179,6 @@ Page({
   async confirmCode() {
     var shareCode = this.data.shareCode
     //先判断分享码格式是否符合规范,6位表示永久分享，8位是即时分享
-    //TODO 设置分享次数
     if (shareCode.length != 6 && shareCode.length != 8) {
       wx.showToast({
         title: '分享码错误，请重新输入',

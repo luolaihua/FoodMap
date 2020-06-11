@@ -663,7 +663,9 @@ Page({
       this.data.store.id = store_id
       this.data.store.images = this.data.images
       //更新数据
-      stores.push(this.data.store)
+      //stores.push(this.data.store)
+      stores.unshift(this.data.store)
+
       //判断是添加到哪里
       switch (requestType) {
         case 'Mine':

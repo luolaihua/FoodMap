@@ -3,7 +3,7 @@ const _ = db.command
 const app = getApp()
 const templateIds = {
   //viewList_id: 'V09GAzDTujaHcRj78xkwlsVtWM9H0iZ0GK2OwU7ZV5M',
-  viewList_id:'subAzhXR7X1gWqXc759FsAo7Pi_j35vaxF3zqDbFdmc',
+  viewList_id: 'subAzhXR7X1gWqXc759FsAo7Pi_j35vaxF3zqDbFdmc',
   //新成员加入通知
   newMembersToGroup_id: 'mBNg9kaQNWvgPPY9uraJix1D43Fvci8EoqwaOuSEg6E'
 }
@@ -461,10 +461,10 @@ function getGroupsList(openId) {
 async function getGroupData(groupId) {
 
   var res = await db.collection('groupsList').where({
-      _id: groupId
-    }).get()
-//console.log(res)
-return res
+    _id: groupId
+  }).get()
+  //console.log(res)
+  return res
 }
 /**
  * 更新圈子数据
@@ -611,17 +611,17 @@ function sortStoresByTag(stores, tag) {
  * 通过成员ID列表获取成员头像和昵称
  * @param {*} membersList 
  */
-async function getMembersDetail(membersList){
+async function getMembersDetail(membersList) {
 
- var res = await wx.cloud.callFunction({
+  var res = await wx.cloud.callFunction({
     name: 'checkSafeContent',
     data: {
       requestType: 'getMembersDetail',
       membersList: membersList
     }
   })
-   //console.log(res)
-   return res.result
+  //console.log(res)
+  return res.result
 }
 /**
  * 使用帮助
@@ -643,39 +643,50 @@ function help(currentPage) {
         '4.为了保障用户隐私安全，用户可以随时更改自己的分享码，分享码更改后，好友将不能查看您的最新动态\n' +
         '5.\"去哪吃\"的美食店铺来源于用户加入或创建的美食圈子以及用户自己的美食便签'
       break;
+
     case 2:
+      tips = '美食圈子-'
+      content = '1.向下滑动空白区域可以更新数据\n' +
+        '2.左右滑动空白区域可切换内容\n' +
+        '3.点击圈子头像可编辑圈子资料\n' +
+        '4.向左滑动圈子条目可进行相应操作\n'
+      break;
+    case 3:
+      tips = '美食圈子-'
+      content = '1.向下滑动空白区域可以更新数据\n' +
+      '2.左右滑动空白区域可切换内容\n' +
+        '2.点击圈子头像可查看圈子资料\n' +
+        '3.为了方便测试，支持用户加入自己创建的美食圈子\n' +
+        '4.向左滑动圈子条目可进行相应操作\n' +
+        '5.由于小程序尚未上线，目前仅支持输入秘钥加入圈子，扫码加入圈子功能敬请期待'
+      break;
+    case 4:
       tips = '美食好友-'
       content = '1.向左滑动条目可对好友进行好友更新、置顶和删除操作\n' +
         '2.由于小程序尚未上线，小程序码功能暂不可用，目前仅支持输入分享码的方式加好友，扫码加好友的方式敬请期待。\n' +
         '3.为了方便测试，目前支持用户把自己添加为美食好友\n' +
         '4.好友因为分享码的关系分为即时好友和永久好友。永久好友可以通过更新数据，获取好友最新的美食动态。'
       break;
-    case 3:
-      tips = '美食圈子-'
-      content = '1.向下滑动可以更新数据\n' +
-        '2.点击圈子头像可以查看和编辑圈子资料\n' +
-        '3.为了方便测试，支持用户加入自己创建的美食圈子\n' +
-        '4.向左滑动圈子条目可进行相应操作\n' +
-        '5.由于小程序尚未上线，目前仅支持输入秘钥加入圈子，扫码加入圈子功能敬请期待'
-      break;
-    case 4:
-      tips = '添加美食-'
-      content = '1.店铺名称-点击右侧定位按钮可切换本地店铺和全国店铺\n' +
-        '2.店铺地址-点击右侧地图按钮可在地图上选择位置\n'+
-        '3.为了保证图片上传成功，请等图片上传完毕再点击保存店铺'
-      break;
+
     case 5:
       tips = '美食地图-'
       content = '点击美食图标上方气泡窗口可以跳转到美食店铺详情'
       break;
-      case 6:
-        tips = '美食便签-'
-        content = '1.向左滑动条目可对美食店铺进行置顶和删除操作\n' +
-          '2.即时分享：好友输入您的即时分享码后，只能查看您当前选择分享的美食店铺，而且分享码的使用次数有限制，当次数用完时，该即时分享码将失效。\n'+
-          '3.永久分享：好友输入您的永久分享码后，能查看您美食便签里所有的美食店铺，而且可以通过更新获取您实时的美食动态。\n'+
-          '4.由于小程序未上线，分享海报中的小程序码现在仅供演示作用，后期用户可以扫码添加好友\n'+
-          '5.点击海报下方划横线文字字即可复制分享码'
-        break;
+    case 6:
+      tips = '添加美食-'
+      content = '1.店铺名称-点击右侧定位按钮可切换本地店铺和全国店铺\n' +
+        '2.店铺地址-点击右侧地图按钮可在地图上选择位置\n' +
+        '3.为了保证图片上传成功，请等图片上传完毕再点击保存店铺'
+      break;
+    case 7:
+      tips = '美食便签-'
+      content = '1.向左滑动条目可对美食店铺进行置顶和删除操作\n' +
+        '2.即时分享：好友输入您的即时分享码后，只能查看您当前选择分享的美食店铺，而且分享码的使用次数有限制，当次数用完时，该即时分享码将失效。\n' +
+        '3.永久分享：好友输入您的永久分享码后，能查看您美食便签里所有的美食店铺，而且可以通过更新获取您实时的美食动态。\n' +
+        '4.由于小程序未上线，分享海报中的小程序码现在仅供演示作用，后期用户可以扫码添加好友\n' +
+        '5.点击海报下方划横线文字字即可复制分享码'
+      break;
+
     default:
       break;
   }

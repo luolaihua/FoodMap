@@ -38,7 +38,6 @@
         </view>
     </view>
 </block>
-
 <block wx:if="{{group.stores.length==0}}">
 	<view class="noData">还没有人发布美食动态呢^_^</view>
 </block>

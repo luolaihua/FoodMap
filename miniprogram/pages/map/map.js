@@ -294,7 +294,7 @@ Page({
         isShowWelcome: true
       })
     }
-    console.log(options)
+   // console.log(options)
     /*     wx.showToast({
           title: '' + options.test,
         }) */

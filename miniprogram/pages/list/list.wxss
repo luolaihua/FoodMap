@@ -98,7 +98,7 @@
  .img-box,.img-box2 {
   position: fixed;
   bottom: 4vh;
-  right: 43vw;
+  right: 40vw;
   z-index: 100;
   display: flex;
   flex-direction: column;

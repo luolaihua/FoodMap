@@ -1,28 +1,14 @@
 module.exports={
     bgList:[
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w1.png?sign=d8772c4456192313548925826c450d53&t=1591685010',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w2.png?sign=a1cc9a62cfe63acec13f3ccfe5957504&t=1591685025',
-            'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w4.png?sign=f4de7747f91bd16531c8fe7812a341ba&t=1591685040',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w5.png?sign=dd8ebe931e4c6df3ccd6fcf9e133908b&t=1591685048',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w6.png?sign=8723c8f5dc5ccad4065061364dce57ae&t=1591685056',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w7.png?sign=5097f3d8165acfc8e6b262c66f188400&t=1591713398',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/w3.png?sign=a8fa0be1084340e4dd3e1041d3254423&t=1591685271',
-   
-    ],
-    bgList3:[
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/1.jpg?sign=c76e1a854acd993be26470ea0201bd9d&t=1591157649',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/2.jpg?sign=8c9b24dcd991fc39e2e775893400ca8c&t=1591157665',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/3.jpg?sign=a18e3af996c74843e8974ab7b7616eaf&t=1591157673',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/4.jpg?sign=52f57296c050b36741ba1d9cdbada637&t=1591157684',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/5.jpg?sign=d3af12ced88efd18930d4df53d5e79d7&t=1591157692',
-        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/6.jpg?sign=7bcaa85bba450b36fa0470f3a9ad4d39&t=1591157703',
-         'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/7.jpg?sign=46bc6cf95bf9b158d22b4b3187b2ff38&t=1591157711',
-  ],
-    bgList2:[
-        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/20150224113430_BRtks.jpeg?sign=3c4633a271f8236d859a29f9704622b8&t=1590587305',
-        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg1.jpg?sign=efd459f66b75a37a6d564848d5947edc&t=1590933544',
-        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg2.jpg?sign=82335166972b906f470286e35f1438fd&t=1590933562', 
-        'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/bgImages/bg3.jpg?sign=aadc51af74dd46f67d6f7c265997ebe8&t=1590933578',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/main.jpg?sign=27f90dd6a783682c2f2cd0066f61649f&t=1591885727',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/userinfo.jpg?sign=c9deb6874a3746748e92a6c1a9f0ad41&t=1591885809',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/group1.jpg?sign=93cd75cbe18e784719777470d2093718&t=1591885827',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/group2.jpg?sign=c214970b7b5cb56c123e77c3679d5106&t=1591885838',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/friends.jpg?sign=14e9d434ab02cee11726261217fe66ff&t=1591885856',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/map.jpg?sign=c319845e4292cfa36d61c63c7fb7c018&t=1591885877',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/add.jpg?sign=267fe6bcbf0d1e5ef048911d24cedc7a&t=1591885915',
+        'https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/appImages/list.jpg?sign=e9f4c4075ed391224ca7f1d397f344c5&t=1591885934',
+
     ],
     icon_sub:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/icon_edit_sub_60.png?sign=1be4ae7f0ec64e4d67f3c227c45c195c&t=1590887887',
     icon_add:'https://6c75-luo-map-5mmfi-1301569935.tcb.qcloud.la/appImage/icon_edit_add_60.png?sign=99d02fe3159ae53bc793ccbcc9091d26&t=1590887818',
