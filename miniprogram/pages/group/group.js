@@ -475,6 +475,9 @@ Page({
             groupsList.where({
               _id: id
             }).remove().then(res => {
+              wx.showToast({
+                title: '删除成功',
+              });
               console.log(res)
             })
           } else {
@@ -483,6 +486,9 @@ Page({
                 membersList: _.pull(openId)
               }
             }).then(res => {
+              wx.showToast({
+                title: '退出成功',
+              });
               console.log(res)
             })
             wx.setStorageSync('Joined_GroupsList', GroupsList);

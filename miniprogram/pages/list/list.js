@@ -554,8 +554,13 @@ Page({
     }
     // console.log(stores)
     // console.log(this.data.storesArr)
+    wx.showToast({
+      title: '置顶成功',
+    });
     this.setData({
-      stores
+      stores,
+      modalName:null,
+      ListTouchDirection: null
     })
   },
   /**
@@ -596,8 +601,13 @@ Page({
     }
     // console.log(stores)
     // console.log(this.data.storesArr)
+    wx.showToast({
+      title: '删除成功',
+    });
     this.setData({
-      stores
+      stores,
+      modalName:null,
+      ListTouchDirection: null
     })
   },
   /**
