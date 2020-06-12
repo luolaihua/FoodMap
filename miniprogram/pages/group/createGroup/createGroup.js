@@ -103,11 +103,14 @@ Page({
         getAvatar: function (data) {
           var group = that.data.group
           group.groupAvatarUrl = data.avatarUrl
+
           that.setData({
             group,
             //avatarUrl: data.avatarUrl
           })
-          // console.log(data)
+          //  console.log(data)
+          //  console.log(group)
+
         }
       }
     })
@@ -175,7 +178,7 @@ Page({
     })
   },
   copyCode() {
-    myApi.vibrate()
+    wx.vibrateShort();
     wx.setClipboardData({
       data: this.data.group.secretKey,
     });

@@ -95,8 +95,8 @@
 	<view class="cu-form-group">
 		<view class="title">个性图标:</view>
 		<image style="  height:60rpx;width:60rpx" src="{{store.iconPath}}" mode="aspectFit"></image>
-		<van-dropdown-menu>
-			<van-dropdown-item id="item" title="     ">
+		<van-dropdown-menu close-on-click-outside="true">
+			<van-dropdown-item id="item" title="             ">
 				<view class="keywords-box">
 					<block wx:for="{{foodIconList}}" wx:key="index">
 						<image class="foodIcon" src="{{item}}" id="{{index}}" mode="aspectFit" bindtap = "chooseIcon"></image>

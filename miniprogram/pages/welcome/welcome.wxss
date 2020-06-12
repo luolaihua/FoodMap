@@ -48,7 +48,6 @@ button::after{
   left: 5vw;
   z-index: 66;
   font-size: 60rpx;
-  opacity: 0.6;
 }
 .wel-skip{
   font-size: smaller;

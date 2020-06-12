@@ -330,6 +330,7 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: async function () {
+    wx.vibrateShort();
     wx.showLoading({
       title: '更新中',
     });

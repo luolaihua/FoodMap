@@ -72,32 +72,33 @@ Page({
     var moveX = Math.abs(touchMoveX - touchStartX);
     var moveY = Math.abs(touchMoveY - touchStartY)
     //console.log(moveX+"  Y: "+moveY)
-    var TabCur =this.data.TabCur
+    var TabCur = this.data.TabCur
     var event = {
-      currentTarget:{
-        dataset:{
-          id:TabCur
+      currentTarget: {
+        dataset: {
+          id: TabCur
         }
       }
     }
     //event.currentTarget.dataset.id = TabCur
-   // console.log(event)
+    // console.log(event)
     if (moveX <= moveY && touchMoveY != 0) { // 上下
       // 向上滑动
       if (touchMoveY - touchStartY <= -100 && time < 800) {
-       // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
+        // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
       }
       // 向下滑动 
       if (touchMoveY - touchStartY >= 90 && time < 800) {
         //console.log('向下滑动-更新 ' + touchMoveY + '   |  ' + touchStartY);
+        wx.vibrateShort();
         event.title = '更新中'
         this.tabSelect(event)
       }
     } else if (touchMoveX != 0) { // 左右
       // 向左滑动
       if (touchMoveX - touchStartX <= -80 && time < 800) {
-       // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
-        if(TabCur==0){
+        // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
+        if (TabCur == 0) {
           event.currentTarget.dataset.id = 1
           this.tabSelect(event)
         }
@@ -106,7 +107,7 @@ Page({
       // 向右滑动 
       if (touchMoveX - touchStartX >= 80 && time < 800) {
         //console.log('向右滑动' + touchMoveX + '  |  ' + touchStartX + 'left');
-        if(TabCur==1){
+        if (TabCur == 1) {
           event.currentTarget.dataset.id = 0
           this.tabSelect(event)
         }
@@ -165,7 +166,7 @@ Page({
           icon: 'none',
           duration: 1000,
           mask: true,
-        })    
+        })
         that.closePosterImage()
       }
     })
@@ -372,7 +373,7 @@ Page({
     myApi.vibrate()
     myApi.getGroupsList(this.data.openId)
     wx.showLoading({
-      title:e.title=='更新中'?'更新中': '加载中',
+      title: e.title == '更新中' ? '更新中' : '加载中',
     });
     var GroupsList = []
     var index = e.currentTarget.dataset.id
@@ -618,8 +619,8 @@ Page({
         ListTouchDirection: null
       })
     }
-/*     this.setData({
-      ListTouchDirection: null
-    }) */
+    /*     this.setData({
+          ListTouchDirection: null
+        }) */
   }
 })

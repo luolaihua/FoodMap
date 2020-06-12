@@ -207,7 +207,7 @@ Page({
     });
   },
   copyShareCode() {
-    myApi.vibrate()
+    wx.vibrateShort();
     wx.setClipboardData({
       data: this.data.shareCode,
     });

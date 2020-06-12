@@ -9,7 +9,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    shareCount:[],
+    shareCount: [],
     bar_bgImg1: imgUrl.bar_bg17,
     bar_bgImg2: imgUrl.bar_bg9,
     nickName: '',
@@ -31,8 +31,8 @@ Page({
     randNum: 0
   },
   //即时分享次数
-  changePickView(e){
-    var shareCount = e.detail.value[0]+1
+  changePickView(e) {
+    var shareCount = e.detail.value[0] + 1
     wx.setStorageSync('shareCount', shareCount);
     //console.log(shareCount)
   },
@@ -158,18 +158,18 @@ Page({
 
 
   },
-  previewFoodImg(){
+  previewFoodImg() {
     var storeData = this.data.storeData
-   var foodImg =  storeData.store.images.length==0?this.data.defaultFoodImg:storeData.store.images[0]
-   wx.previewImage({
-    urls: [foodImg],
-  });
+    var foodImg = storeData.store.images.length == 0 ? this.data.defaultFoodImg : storeData.store.images[0]
+    wx.previewImage({
+      urls: [foodImg],
+    });
   },
   /**
    * 复制秘钥
    */
   copyCode() {
-    myApi.vibrate()
+    wx.vibrateShort();
     myApi.requestSendMsg('viewList')
     wx.setClipboardData({
       data: this.data.shareCode,
@@ -216,36 +216,43 @@ Page({
   },
   async stopEditName(e) {
     var nickName = e.detail.value
-    if(nickName==""){
+    if (nickName == "") {
       wx.showToast({
         title: '昵称不能为空',
         icon: 'none',
       });
       return
     }
-    wx.showLoading({
-      title: '内容安全检测中',
-      mask: true,
-    });
-    var res = await myApi.doMsgSecCheck(nickName)
-    wx.hideLoading();
-    if (res) {
-      wx.showToast({
-        title: '设置成功',
+    if (nickName != this.data.nickName) {
+      wx.showLoading({
+        title: '内容安全检测中',
+        mask: true,
       });
-      myApi.updateUserInfo(nickName, 'nickName')
-      //wx.setStorageSync('nickName', nickName)
-    } else {
-      wx.showToast({
-        title: '昵称不符合安全规范',
-        icon: 'none',
-      });
-      nickName = ''
+      var res = await myApi.doMsgSecCheck(nickName)
+      wx.hideLoading();
+      if (res) {
+        wx.showToast({
+          title: '设置成功',
+        });
+        myApi.updateUserInfo(nickName, 'nickName')
+        //wx.setStorageSync('nickName', nickName)
+      } else {
+        wx.showToast({
+          title: '昵称不符合安全规范',
+          icon: 'none',
+        });
+        nickName = ''
+      }
+      this.setData({
+        nickName,
+        isEditName: false
+      })
+    }else{
+      this.setData({
+        isEditName: false
+      })
     }
-    this.setData({
-      nickName,
-      isEditName: false
-    })
+
   },
   editName() {
     this.setData({
@@ -288,7 +295,7 @@ Page({
         } else {
           wx.showModal({
             title: '内容安全检测',
-            content: '您的用户名或头像存在安全问题，已为您设置成默认网名和头像',
+            content: '您的用户名或头像存在安全问题，已为您设置成默认昵称和头像',
             showCancel: false,
             confirmText: '我知道了',
             confirmColor: '#3CC51F',
@@ -342,10 +349,10 @@ Page({
     var dateSlogan = wx.getStorageSync('dateSlogan');
     var shareCode = wx.getStorageSync('shareCode');
     var shareCount = wx.getStorageSync('shareCount');
-    if(shareCount==''){
-      shareCount=[4]
-    }else{
-      shareCount = [shareCount-1]
+    if (shareCount == '') {
+      shareCount = [4]
+    } else {
+      shareCount = [shareCount - 1]
     }
     var isVibrate_setting = wx.getStorageSync('isVibrate_setting')
     if (isVibrate_setting === '') {
@@ -375,7 +382,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    
+
   },
 
   /**

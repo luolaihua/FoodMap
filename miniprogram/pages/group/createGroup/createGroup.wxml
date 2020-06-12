@@ -4,6 +4,7 @@
 </cu-custom>
 <view class="userInfo bg-image" style="background-image: url({{bar_bgImg2}});">
 	<image bindtap="{{isCreator?'changeAvatar':''}}" src="{{group.groupAvatarUrl}}" class="avatar bg-grey light" />
+	<text class="text-grey" wx:if="{{isCreator}}">点击头像可更换</text>
 </view>
 <view class="modules_box"wx:if="{{!isCreator}}">
 	<view class="modules_icon_box">

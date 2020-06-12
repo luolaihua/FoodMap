@@ -57,7 +57,7 @@ exports.main = async (event, context) => {
         page: page,
         lang: 'zh_CN',
         data: msgData,
-        miniprogramState: 'developer'
+        miniprogramState: 'trial'
       })
     console.log(result)
     return result

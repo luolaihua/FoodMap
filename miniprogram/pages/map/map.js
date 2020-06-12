@@ -95,7 +95,7 @@ Page({
     })
   },
   whereToEat() {
-    myApi.vibrate()
+    wx.vibrateShort()
     var whereToEatList = this.data.whereToEatList
     if (whereToEatList.length == 0) {
       var My_GroupList = wx.getStorageSync('My_GroupsList');
@@ -722,7 +722,7 @@ Page({
     })
   },
 
-  testStart(e) {
+/*   testStart(e) {
     var startTime = e.timeStamp
     this.data.startTime = startTime
     //console.log(e)
@@ -736,7 +736,7 @@ Page({
     }else{
       this.openMenu()
     }
-  },
+  }, */
 /*   cancelInput() {
     this.setData({
       isTesting: false

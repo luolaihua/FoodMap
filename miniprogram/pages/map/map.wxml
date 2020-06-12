@@ -88,8 +88,8 @@
 		src="../../images/eating.png"
 		class="img-switch-style"
 		animation="{{animMenu}}"
-		bind:touchstart="testStart"
-		bind:touchend="testEnd"
+		bind:tap="openMenu"
+		bind:longpress="whereToEat"
 		/>
 	</view>
 

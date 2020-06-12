@@ -39,7 +39,9 @@ Page({
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad: function (options) {},
+  onLoad: function (options) {
+
+  },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -52,7 +54,18 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    wx.showToast({
+      title: '点击左上角帮助按钮，可查看使用技巧',
+      icon: 'none',
+      image: '',
+      duration: 3000,
+      mask: false,
+      success: (result)=>{
+        
+      },
+      fail: ()=>{},
+      complete: ()=>{}
+    });
   },
 
   /**

@@ -5,9 +5,12 @@
 </cu-custom>
 <view class="userInfo bg-img" style="background-image: url({{bar_bgImg2}});" hover-class="none" hover-stop-propagation="false">
 	<image bindtap="changeAvatar" src="{{avatarUrl}}" class="avatar" />
-	<view class="nickName" hover-class="none" hover-stop-propagation="false">
-		<input focus="{{true}}" class="text-bold" style="border: {{isEditName?'solid 1px gray':''}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName}}"></input>
+	<view class="nickName" bindtap = "editName">
+		<input focus="{{true}}" class="text-bold" style="border: {{isEditName?'solid 1px gray':'none'}}" cursor="2" bindblur="stopEditName" disabled="{{!isEditName}}" maxlength="6" value="{{nickName}}"></input>
+		<!--
 		<image src="{{editUrl}}" class="editName" mode="scaleToFill" bindtap = "editName"/>
+		-->
+		
 	</view>
 </view>
 <button class="btn-box" style="width: calc(100% - 20px);" open-type="getUserInfo" bindgetuserinfo="onGetUserInfo">
