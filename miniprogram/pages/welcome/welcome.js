@@ -14,6 +14,7 @@ Page({
     var currentPage = this.data.currentPage
     myApi.help(currentPage) 
   },
+
   changePage(e) {
     //console.log(e)
     this.setData({

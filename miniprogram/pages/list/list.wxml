@@ -3,24 +3,27 @@
 	<view slot="content">{{isAddItemToGroup?'导入店铺到美食圈子':(friendsIndex=='self'?'我的美食便签':"好友的美食便签")}}</view>
 </cu-custom>
 <block wx:if="{{storesArr.length!=0}}">
-	<view class="cu-bar search bg-white">
-		<view class='search-form round'>
-			<text class="cuIcon-search" />
-			<input type="text" placeholder="搜索美食店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" confirm-type="search" />
-			<text class="cuIcon-roundclose" bindtap="clearSearch" />
-    	</view>
- 	</view>
-	<view class="cu-form-group bg-white padding-lr-lg"style="min-height:60rpx;">
-		<view class="cu-tag {{orderTag=='distance'?'bg-orange':'line-grey'}} round"id="distance" bindtap = "orderList">离我最近</view>
-		<view class="cu-tag {{orderTag=='favor'?'bg-orange':'line-grey'}} round" id="favor" bindtap = "orderList">最受好评</view>
-		<view class="cu-tag {{orderTag=='price'?'bg-orange':'line-grey'}} round" id="price" bindtap = "orderList">价格最优</view>
- 	</view>
-	<view class="cu-bar bg-white solid shadow-warp" wx:if="{{isInstantShare||isAddItemToGroup}}">
-		<view class="action" bindtap = "cancelChoose">
+	<block  wx:if="{{!isInstantShare&&!isAddItemToGroup&&!isChooseToDelete}}">
+		<view class="cu-bar search bg-white">
+			<view class='search-form round'>
+				<text class="cuIcon-search" />
+				<input type="text" placeholder="搜索美食店铺" value="{{defaultSearchValue}}" bindinput="storeSearch" confirm-type="search" />
+				<text class="cuIcon-roundclose" bindtap="clearSearch" />
+			</view>
+		</view>
+		<view class="cu-form-group bg-white padding-lr-lg"style="min-height:60rpx;">
+			<view class="cu-tag {{orderTag=='distance'?'bg-orange':'line-grey'}} round"id="distance" bindtap = "orderList">离我最近</view>
+			<view class="cu-tag {{orderTag=='favor'?'bg-orange':'line-grey'}} round" id="favor" bindtap = "orderList">最受好评</view>
+			<view class="cu-tag {{orderTag=='price'?'bg-orange':'line-grey'}} round" id="price" bindtap = "orderList">价格最优</view>
+		</view>
+	</block>
+
+	<view class="cu-bar bg-white solid " wx:if="{{isInstantShare||isAddItemToGroup||isChooseToDelete}}">
+		<view class="action" bindtap="cancelChoose">
 		<text class="text-gray">取消</text>
 		</view>
 		<view class="content text-bold">
-			选择需要{{isAddItemToGroup?'添加':'分享'}}的店铺
+			选择需要{{isAddItemToGroup?'导入':isChooseToDelete?'删除':'分享'}}的店铺
 		</view>
 		<view class="action" bindtap="chooseAllItem">
 			<text class="text-green">{{isChooseAll?'全不选':'全选'}}</text>
@@ -28,22 +31,22 @@
 	</view>
 	<checkbox-group bindchange="chooseItem">
 		<view class="cu-list menu-avatar" bind:touchstart="close">
-			<view wx:for="{{stores}}" wx:key="_id" class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="{{(isInstantShare||isAddItemToGroup)?'':'ListTouchEnd'}}" data-target="move-box-{{index}}">
-				<view bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" class="cu-avatar radius lg">
+			<view wx:for="{{stores}}" wx:key="_id" class="cu-item {{modalName=='move-box-'+ index?'move-cur':''}}" bindtouchstart="ListTouchStart" bindtouchmove="ListTouchMove" bindtouchend="{{(isInstantShare||isAddItemToGroup||isChooseToDelete)?'':'ListTouchEnd'}}" data-target="move-box-{{index}}">
+				<view bind:tap="{{(isInstantShare||isAddItemToGroup||isChooseToDelete)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}" class="cu-avatar radius lg">
 					<image class="cu-avatar radius lg" src="{{item.images.length==0?defaultImage:item.images[0]}}" mode="aspectFill" lazy-load="false" binderror="" bindload="" />
 				</view>
-				<view class="content" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
+				<view class="content" bind:tap="{{(isInstantShare||isAddItemToGroup||isChooseToDelete)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
 					<view class="text-black">{{item.name}}</view>
 					<view class="text-gray text-sm">
 						<text class="cuIcon-locationfill text-orange" />
 						{{item.address}}
 					</view>
 				</view>
-				<view class="action" bind:tap="{{(isInstantShare||isAddItemToGroup)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
+				<view class="action" bind:tap="{{(isInstantShare||isAddItemToGroup||isChooseToDelete)?'':'toInfo'}}" id="{{item.id}}" data-index="{{index}}">
 					<view class="text-grey text-xs">¥ {{item.price_per}}</view>
 					<view class="cuIcon-favorfill text-yellow sm"> {{item.rateValue}}</view>
 				</view>
-				<checkbox value="{{index}}" wx:if="{{isInstantShare||isAddItemToGroup}}" checked="{{isChooseAll}}" />
+				<checkbox value="{{index}}" wx:if="{{isInstantShare||isAddItemToGroup||isChooseToDelete}}" checked="{{isChooseAll}}" />
 				<view class="move">
 					<view class="bg-cyan light" id="{{index}}" bindtap="topItem">置顶</view>
 					<view class="bg-red light" id="{{index}}" bindtap="deleteItem">删除</view>
@@ -51,9 +54,9 @@
 			</view>
 		</view>
 	</checkbox-group>
-	<block wx:if="{{isInstantShare||isAddItemToGroup}}">
+	<block wx:if="{{isInstantShare||isAddItemToGroup||isChooseToDelete}}">
 		<view class=" flex flex-direction">
-			<button class="cu-btn margin-tb-sm lg bg-img round btn text-black shadow-blur text-bold" style="background-image: url({{bar_bgImg}});height: 100rpx;font-size:40rpx;" bind:tap="shareItems">{{isAddItemToGroup?'导入':'分享'}}店铺</button>
+			<button class="cu-btn margin-tb-sm lg bg-{{isChooseToDelete?'red':'img'}} round btn text-{{isChooseToDelete?'white':'black'}} shadow-blur text-bold" style="background-image: url({{isChooseToDelete?'':bar_bgImg}});height: 100rpx;font-size:40rpx;" bind:tap="shareItems">{{isAddItemToGroup?'导入':isChooseToDelete?'删除':'分享'}}店铺</button>
 		</view>
 		<!--
 			<van-button round size="large" color="linear-gradient(to right, #4bb0ff, #6149f6)" bind:click="shareItems">{{isAddItemToGroup?'添加':'分享'}}</van-button>
@@ -65,7 +68,7 @@
 	<!--
 		<image wx:if="{{!isInstantShare&&!isAddItemToGroup}}" class="shadow showMap" src="../../images/map.png" bindtap="toFoodMap" />
 	-->
-	<block wx:if="{{friendsIndex=='self'&&!isInstantShare&&isShowMenu}}">
+	<block wx:if="{{friendsIndex=='self'&&!isInstantShare&&!isChooseToDelete}}">
 		<view class="img-box" animation="{{animToInstant}}" bindtap="instantShare">
 			<image src="../../images/mango.png" class="img" />
 			即时分享
@@ -78,7 +81,7 @@
 			<image src="../../images/pear.png" class="img" />
 			永久分享
 		</view>
-		<image class="shadow img-switch-style" src="../../images/quan.png" animation="{{animMenu}}" bindtap="openMenu" />
+		<image class="shadow img-switch-style" src="../../images/quan.png" animation="{{animMenu}}" bindtap="openMenu" bind:longpress="chooseItemToDel"/>
 	</block>
 </block>
 

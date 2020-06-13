@@ -64,8 +64,15 @@ Page({
     animToForever: {},
     animToMap: {},
 
-    isShowMenu: true
+    isShowMenu: true,
+    isChooseToDelete: false
 
+  },
+  chooseItemToDel() {
+    wx.vibrateShort();
+    this.setData({
+      isChooseToDelete: true
+    })
   },
   orderList(e) {
     var tag = e.currentTarget.id
@@ -76,37 +83,6 @@ Page({
       stores = temp.concat(temp, this.data.storesArr)
     } else {
       stores = myApi.sortStoresByTag(stores, tag)
-      /*       switch (tag) {
-              case 'distance':
-                var myLat = app.globalData.latitude
-                var myLnd = app.globalData.longitude
-                stores.forEach(store => {
-                  store.distance = myApi.getDistance(myLat, myLnd, store.latitude, store.longitude)
-                })
-                stores.sort((store1, store2) => {
-                  return store1.distance - store2.distance
-                })
-                console.log(stores)
-
-                break;
-              case 'price':
-                stores.sort((store1, store2) => {
-                  return store1.price_per - store2.price_per
-                })
-                console.log(stores)
-
-                break;
-              case 'favor':
-                stores.sort((store1, store2) => {
-                  return store2.rateValue - store1.rateValue
-                })
-                console.log(stores)
-
-                break;
-
-              default:
-                break;
-            } */
     }
     this.setData({
       orderTag: tag,
@@ -145,14 +121,14 @@ Page({
     })
     var screenWidth = app.globalData.screenWidth
     //横向为x轴，向右为正方向。纵向为y轴，向下为正方向
-   // console.log(screenWidth)
+    // console.log(screenWidth)
     animMenu.rotateZ(180).step();
-    animToInstant.translate(-screenWidth*0.22, -screenWidth*0.16).opacity(1).step();
-    animToForever.translate(screenWidth*0.22, -screenWidth*0.16).opacity(1).step();
-    animToMap.translate(0, -screenWidth*0.22).opacity(1).step();
-/*     animToInstant.translate(-80, -60).opacity(1).step();
-    animToForever.translate(80, -60).opacity(1).step();
-    animToMap.translate(0, -80).opacity(1).step(); */
+    animToInstant.translate(-screenWidth * 0.22, -screenWidth * 0.16).opacity(1).step();
+    animToForever.translate(screenWidth * 0.22, -screenWidth * 0.16).opacity(1).step();
+    animToMap.translate(0, -screenWidth * 0.22).opacity(1).step();
+    /*     animToInstant.translate(-80, -60).opacity(1).step();
+        animToForever.translate(80, -60).opacity(1).step();
+        animToMap.translate(0, -80).opacity(1).step(); */
     this.setData({
       animMenu: animMenu.export(),
       animToInstant: animToInstant.export(),
@@ -342,110 +318,157 @@ Page({
     //这里用的是展示的数据，也就是可以使搜索之后的数据
     var stores = this.data.stores
     //console.log(stores)
-    var shareList = []
-    for (let index = 0; index < shareIndexList.length; index++) {
-      shareList.push(stores[shareIndexList[index]])
-    }
-    console.log('shareList', shareList)
+    if (this.data.isChooseToDelete) {
+      //console.log(storesArr)
+      wx.showModal({
+        title: '删除美食店铺',
+        content: '删除后不可恢复，请确认',
+        showCancel: true,
+        cancelText: '取消',
+        cancelColor: '#000000',
+        confirmText: '确定',
+        confirmColor: '#3CC51F',
+        success: (result) => {
+          if (result.confirm) {
+            var storesArr = this.data.storesArr
+            var starStoreIdList = wx.getStorageSync("starStoreIdList")
+            //console.log(starStoreIdList)
+            var starListLength = starStoreIdList.length
+            for (let index = 0; index < shareIndexList.length; index++) {
+              //console.log('deleteList', stores[shareIndexList[index]])
+              storesArr.forEach((item, storeIndex) => {
 
+                if (item.id == stores[shareIndexList[index]].id) {
+                  //如果删除的条目为收藏的店铺，需要把店铺取消收藏
+                  var id = item.id + ''
+                  if (starStoreIdList.length != 0) {
+                    var idIndex = starStoreIdList.indexOf(id)
+                    //如果要删除的店铺为收藏进来的，
+                    if (idIndex != -1) {
+                      //先把id列表的的id删除
+                      starStoreIdList.splice(idIndex, 1)
+                    }
+                  }
+                  storesArr.splice(storeIndex, 1)
+                }
+              })
+            }
 
-    switch (friendsIndex) {
-      //解决 重复导入问题
-      case 'MyGroup':
-        //My_GroupsList-->groupId-->group-->stores
-        var My_GroupsList = wx.getStorageSync('My_GroupsList');
-        //通过groupId找到是哪个圈子
-        var group = My_GroupsList.find(item => {
-          return item._id == groupId
-        })
-        //获取这个圈子的所有店铺
-        var stores = group.stores
-        //将导入的店铺放在最前面
-        stores = shareList.concat(stores)
-        console.log(stores)
+            //没必要删除一次店铺就更新一次收藏id，最后一次性来更新一次
+            if (starListLength != starStoreIdList.length) {
+              myApi.updateUserInfo(starStoreIdList, 'starStoreIdList')
+            }
+            myApi.updateUserInfo(storesArr, 'stores')
+            wx.showToast({
+              title: '删除成功',
+              icon: 'none',
+              image: '',
+              duration: 1500,
+              mask: false,
+              success: (result) => {
+                that.cancelChoose()
+              },
+              fail: () => {},
+              complete: () => {}
+            });
 
-        await myApi.updateGroupsList(stores, 'stores', groupId)
-        wx.showToast({
-          title: '导入成功！',
-          icon: 'success',
-        })
-        setTimeout(() => {
-          wx.navigateBack({})
-        }, 500);
-        break;
-      case 'JoinedGroup':
-        //My_GroupsList-->groupId-->group-->stores
-        var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
-        //通过groupId找到是哪个圈子
-        var group = Joined_GroupsList.find(item => {
-          return item._id == groupId
-        })
-        //获取这个圈子的所有店铺
-        var stores = group.stores
-        //stores = stores.concat(shareList)
-        stores = shareList.concat(stores)
-        console.log(stores)
+          }
+        },
+        fail: () => {},
+        complete: () => {}
+      });
+      /*       this.setData({
+              storesArr
+            }) */
+    } else {
+      var shareList = []
+      for (let index = 0; index < shareIndexList.length; index++) {
+        shareList.push(stores[shareIndexList[index]])
+      }
+      console.log('shareList', shareList)
 
-        await myApi.updateGroupsList(stores, 'stores', groupId)
+      switch (friendsIndex) {
+        //解决 重复导入问题
+        case 'MyGroup':
+          //My_GroupsList-->groupId-->group-->stores
+          var My_GroupsList = wx.getStorageSync('My_GroupsList');
+          //通过groupId找到是哪个圈子
+          var group = My_GroupsList.find(item => {
+            return item._id == groupId
+          })
+          //获取这个圈子的所有店铺
+          var stores = group.stores
+          //将导入的店铺放在最前面
+          stores = shareList.concat(stores)
+          console.log(stores)
 
-        wx.showToast({
-          title: '导入成功！',
-          icon: 'success',
-        })
-        setTimeout(() => {
-          wx.navigateBack({})
-        }, 500);
-        break;
-      default:
-        var nickName = wx.getStorageSync('nickName');
-        var avatarUrl = wx.getStorageSync('avatarUrl');
-        var instantShareCode = myApi.getRandomCode(8)
-        var shareCount = wx.getStorageSync('shareCount');
-        if (shareCount == '') {
-          shareCount = 5
-        }
-        db.collection('instantShare').add({
-          // data 字段表示需新增的 JSON 数据
-          data: {
-            info: {
-              nickName: nickName,
-              avatarUrl: avatarUrl
+          await myApi.updateGroupsList(stores, 'stores', groupId)
+          wx.showToast({
+            title: '导入成功！',
+            icon: 'success',
+          })
+          setTimeout(() => {
+            wx.navigateBack({})
+          }, 500);
+          break;
+        case 'JoinedGroup':
+          //My_GroupsList-->groupId-->group-->stores
+          var Joined_GroupsList = wx.getStorageSync('Joined_GroupsList');
+          //通过groupId找到是哪个圈子
+          var group = Joined_GroupsList.find(item => {
+            return item._id == groupId
+          })
+          //获取这个圈子的所有店铺
+          var stores = group.stores
+          //stores = stores.concat(shareList)
+          stores = shareList.concat(stores)
+          console.log(stores)
+
+          await myApi.updateGroupsList(stores, 'stores', groupId)
+
+          wx.showToast({
+            title: '导入成功！',
+            icon: 'success',
+          })
+          setTimeout(() => {
+            wx.navigateBack({})
+          }, 500);
+          break;
+        default:
+          var nickName = wx.getStorageSync('nickName');
+          var avatarUrl = wx.getStorageSync('avatarUrl');
+          var instantShareCode = myApi.getRandomCode(8)
+          var shareCount = wx.getStorageSync('shareCount');
+          if (shareCount == '') {
+            shareCount = 5
+          }
+          db.collection('instantShare').add({
+            // data 字段表示需新增的 JSON 数据
+            data: {
+              info: {
+                nickName: nickName,
+                avatarUrl: avatarUrl
+              },
+              instantShareCode: instantShareCode,
+              createTime: myApi.formatTime(new Date()),
+              stores: shareList,
+              shareCount: shareCount
             },
-            instantShareCode: instantShareCode,
-            createTime: myApi.formatTime(new Date()),
-            stores: shareList,
-            shareCount: shareCount
-          },
-          success: function (res) {
-            // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-            console.log(res)
-            that.createPoster(instantShareCode, shareList)
-            that.setData({
-              shareCode: instantShareCode
-            })
-            /*         wx.showModal({
-                      title: '即时美食分享码',
-                      content: instantShareCode,
-                      showCancel: true,
-                      cancelText: '取消',
-                      cancelColor: '#000000',
-                      confirmText: '确定',
-                      confirmColor: '#3CC51F',
-                      success: (result) => {
-                        if (result.confirm) {
-                          that.cancelChoose()
-                          wx.setClipboardData({
-                            data: instantShareCode,
-                          });
-                        }
-                      },
-                    }); */
-          },
-          fail: console.error,
-          complete: console.log
-        })
-        break;
+            success: function (res) {
+              // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
+              console.log(res)
+              that.createPoster(instantShareCode, shareList)
+              that.setData({
+                shareCode: instantShareCode
+              })
+            },
+            fail: console.error,
+            complete: console.log
+          })
+          break;
+      }
     }
+
 
 
 
@@ -519,12 +542,18 @@ Page({
    */
   cancelChoose() {
     myApi.vibrate()
+    var temp = []
+    var storesArr = this.data.storesArr
+    temp = temp.concat(temp, storesArr)
     this.setData({
+      stores: temp,
+      storesArr,
       isInstantShare: false,
       isChooseAll: false,
+      isChooseToDelete: false,
       shareIndexList: []
     })
-    if(this.data.isAddItemToGroup){
+    if (this.data.isAddItemToGroup) {
       wx.navigateBack({
         delta: 1
       });
@@ -535,7 +564,7 @@ Page({
    */
   chooseItem(e) {
     myApi.vibrate()
-    console.log(e)
+    //console.log(e)
     this.setData({
       shareIndexList: e.detail.value
     })
@@ -559,7 +588,7 @@ Page({
     });
     this.setData({
       stores,
-      modalName:null,
+      modalName: null,
       ListTouchDirection: null
     })
   },
@@ -567,12 +596,18 @@ Page({
    * item删除
    */
   deleteItem: function (e) {
-    myApi.vibrate()
+    wx.vibrateShort();
     var index = Number(e.currentTarget.id)
     var friendsIndex = this.data.friendsIndex
     var stores = this.data.stores
     var friendsList = wx.getStorageSync('friendsList');
 
+    var storesArr = this.data.storesArr
+    storesArr.forEach((item, storeIndex) => {
+      if (item.id == stores[index].id) {
+        storesArr.splice(storeIndex, 1)
+      }
+    })
     //如果是自身数据就更新到云端，如果是他人数据就更新本地
 
     if (friendsIndex == 'self') {
@@ -599,14 +634,16 @@ Page({
       myApi.updateUserInfo(friendsList, 'friendsList')
       //wx.setStorageSync('friendsList', friendsList);
     }
+
     // console.log(stores)
     // console.log(this.data.storesArr)
     wx.showToast({
       title: '删除成功',
     });
     this.setData({
+      storesArr,
       stores,
-      modalName:null,
+      modalName: null,
       ListTouchDirection: null
     })
   },
@@ -694,15 +731,18 @@ Page({
 
     })
   },
-    /**
+  /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    wx.showToast({
-      title: '到底啦~',
-      icon: 'none',
-      duration: 1000,
-    }); 
+    if (!this.data.isChooseToDelete && !this.data.isAddItemToGroup && !this.data.isInstantShare) {
+      wx.showToast({
+        title: '到底啦~',
+        icon: 'none',
+        duration: 1000,
+      });
+    }
+
   },
   /**
    * 隐藏modal弹窗
@@ -786,8 +826,10 @@ Page({
   },
 
   clearSearch() {
+    var stores = []
+    stores = stores.concat(stores, this.data.storesArr)
     this.setData({
-      stores: this.data.storesArr,
+      stores: stores,
       defaultSearchValue: ''
     })
   },
@@ -823,31 +865,31 @@ Page({
     var moveY = Math.abs(touchMoveY - touchStartY)
     if (moveX <= moveY && touchMoveY != 0) { // 上下
       // 向上滑动
-      if (touchMoveY - touchStartY <= -100 ) {
-       // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
+      if (touchMoveY - touchStartY <= -100) {
+        // console.log("向上滑动" + touchMoveY + '  |  ' + touchStartY + 'up')
       }
       // 向下滑动 
       if (touchMoveY - touchStartY >= 90) {
         //console.log('向下滑动-更新 ' + touchMoveY + '   |  ' + touchStartY);
-        
+
       }
     } else if (touchMoveX != 0) { // 左右
       // 向左滑动
       if (touchMoveX - touchStartX <= -80) {
-       // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
-       ListTouchDirection = 'left'
+        // console.log("左滑页面" + touchMoveX + '  |  ' + touchStartX + 'left')
+        ListTouchDirection = 'left'
 
       }
       // 向右滑动 
-      if (touchMoveX - touchStartX >= 80 ) {
+      if (touchMoveX - touchStartX >= 80) {
         //console.log('向右滑动' + touchMoveX + '  |  ' + touchStartX + 'left');
       }
     }
     var modalName = e.currentTarget.dataset.target
     if (ListTouchDirection == 'left') {
-/*       this.setData({
-        modalName: e.currentTarget.dataset.target
-      }) */
+      /*       this.setData({
+              modalName: e.currentTarget.dataset.target
+            }) */
     } else {
       modalName = null
     }

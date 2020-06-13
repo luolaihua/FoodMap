@@ -243,8 +243,8 @@ Page({
       store.creatorName = creatorName
       store.creatorAvatar = creatorAvatar
 
-      // 压入我的店铺
-      myStores.push(store)
+      // 压入我的店铺,新店铺放在顶部
+      myStores.unshift(store)
       //置零表示已收藏
       starStoreIdList.push(store_id)
       wx.showToast({
@@ -259,7 +259,7 @@ Page({
       myStores.splice(index, 1)
       starStoreIdList.splice(starStoreIdList.indexOf(store_id), 1)
       wx.showToast({
-        title: '取消收藏',
+        title: '已取消收藏',
         icon: 'success',
       });
     }
