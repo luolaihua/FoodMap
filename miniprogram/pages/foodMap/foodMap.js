@@ -192,7 +192,7 @@ Page({
   //点击地图maker
   onMarkerTap: function (event) {
     myApi.vibrate()
-    console.log(event)
+   // console.log(event)
     var storeId = event.markerId
     var stores = this.data.stores
     //根据id在店铺列表中找到指定的店铺

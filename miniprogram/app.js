@@ -12,21 +12,29 @@ App({
         env: config.envID
       })
     }
+
+
     wx.getSystemInfo({
       success: e => {
         //console.log(e)
+        if (e.platform !== 'devtools') {
+          // 打开调试
+          wx.setEnableDebug({
+            enableDebug: true
+          })
+        }
         this.globalData.StatusBar = e.statusBarHeight;
         this.globalData.screenHeight = e.screenHeight;
         this.globalData.screenWidth = e.screenWidth;
-        this.globalData.rpx2px = e.screenWidth/750;
+        this.globalData.rpx2px = e.screenWidth / 750;
         let capsule = wx.getMenuButtonBoundingClientRect();
-		if (capsule) {
-		 	this.globalData.Custom = capsule;
-			this.globalData.CustomBar = capsule.bottom + capsule.top - e.statusBarHeight;
-		} else {
-			this.globalData.CustomBar = e.statusBarHeight + 50;
-    }
-    this.globalData.MapHeight = e.screenHeight-this.globalData.CustomBar
+        if (capsule) {
+          this.globalData.Custom = capsule;
+          this.globalData.CustomBar = capsule.bottom + capsule.top - e.statusBarHeight;
+        } else {
+          this.globalData.CustomBar = e.statusBarHeight + 50;
+        }
+        this.globalData.MapHeight = e.screenHeight - this.globalData.CustomBar
       }
     })
     this.updateManager();
@@ -122,7 +130,7 @@ App({
       statusBarHeight: ''
     }
   },
-    /**
+  /**
    * 小程序主动更新
    */
   updateManager() {
@@ -130,8 +138,7 @@ App({
       return false;
     }
     const updateManager = wx.getUpdateManager();
-    updateManager.onCheckForUpdate(function (res) {
-    });
+    updateManager.onCheckForUpdate(function (res) {});
     updateManager.onUpdateReady(function () {
       wx.showModal({
         title: '有新版本',

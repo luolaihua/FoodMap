@@ -277,7 +277,7 @@ Page({
   onGetUserInfo: function (e) {
     myApi.vibrate()
     var that = this
-    console.log(e)
+   // console.log(e)
     if (e.detail.errMsg != 'getUserInfo:fail auth deny') {
       var nickName = e.detail.userInfo.nickName
       var avatarUrl = e.detail.userInfo.avatarUrl
@@ -327,7 +327,7 @@ Page({
     wx.requestSubscribeMessage({
       tmplIds: ['v-91v-ZZU9IV2isP7r341HmKTRJ3GJehx_A6l8MxmGE'],
       success(res) {
-        console.log(res)
+       // console.log(res)
         wx.cloud.callFunction({
           name: 'sendMessage',
           data: {

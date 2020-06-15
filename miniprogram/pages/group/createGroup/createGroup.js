@@ -45,7 +45,7 @@ Page({
       // 获取成员详情需要去云函数
       var that = this
       var membersList = this.data.group.membersList
-      console.log(membersList)
+     // console.log(membersList)
       var res = await myApi.getMembersDetail(membersList)
      
       //console.log(res)
@@ -65,7 +65,7 @@ Page({
   },
   deleteMember(e) {
     myApi.vibrate()
-    console.log(e)
+    //console.log(e)
     var that = this
     var index = Number(e.currentTarget.id)
     var group = this.data.group
@@ -252,7 +252,7 @@ Page({
             data: group
           })
           .then(res => {
-            console.log(res)
+           // console.log(res)
             group._id = res._id
             My_GroupsList.push(group)
             wx.setStorageSync('My_GroupsList', My_GroupsList)

@@ -122,7 +122,7 @@ Page({
           console.error(error);
         },
         complete: function (res) {
-          console.log(res);
+          //console.log(res);
         }
       })
     } else {
@@ -142,10 +142,10 @@ Page({
   backfill: function (e) {
     var store = this.data.store
     var id = e.currentTarget.id;
-    console.log(this.data.suggestion)
+    //console.log(this.data.suggestion)
     for (var i = 0; i < this.data.suggestion.length; i++) {
       if (i == id) {
-        console.log(this.data.suggestion[i].title)
+        //console.log(this.data.suggestion[i].title)
         store.name = this.data.suggestion[i].title
         store.latitude = this.data.suggestion[i].latitude
         store.longitude = this.data.suggestion[i].longitude
@@ -287,7 +287,7 @@ Page({
 
       wx.chooseLocation({
         success: res => {
-          console.log(res)
+          //console.log(res)
           name = (name == '' ? res.name : name)
           var store = that.data.store
           store.name = name
@@ -601,7 +601,7 @@ Page({
       }).then(res => {
         var tempUrlList = []
         // get temp file URL
-        console.log(res.fileList)
+        //console.log(res.fileList)
         res.fileList.forEach(item => {
           tempUrlList.push(item.tempFileURL)
         })
@@ -702,7 +702,7 @@ Page({
     var requestType = this.data.requestType
     var index = e.detail.index
     var that = this
-    console.log(fileList, imgList)
+    //console.log(fileList, imgList)
     wx.showModal({
       title: '删除图片',
       content: '确定要删除这张图片？',

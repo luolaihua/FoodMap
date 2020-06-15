@@ -292,7 +292,7 @@ Page({
         isShowMenu:false
       })
     } */
-    console.log(options)
+   // console.log(options)
     var that = this
     var store_id, store
     //判断当前是否为首页
@@ -497,10 +497,10 @@ Page({
     //如果存在,说明被收藏了
     if (idIndex == -1) {
       isStar = false
-      console.log('未收藏')
+     // console.log('未收藏')
     } else {
       isStar = true
-      console.log('已收藏')
+     // console.log('已收藏')
     }
     this.setData({
       isStar
@@ -552,7 +552,7 @@ Page({
       posterImageUrl: detail,
       isShowPosterModal: true
     })
-    console.info(detail)
+   // console.info(detail)
   },
   /**
    * 生成海报失败-回调
@@ -582,7 +582,7 @@ Page({
 
     var QrCodeUrl = ''
     var imageUrl = this.data.shareImage
-    console.log(imageUrl)
+    //console.log(imageUrl)
     var avatarUrl = wx.getStorageSync('avatarUrl')
     //无则默认
     if (avatarUrl == '') {
@@ -745,7 +745,7 @@ Page({
     wx.saveImageToPhotosAlbum({
       filePath: that.data.posterImageUrl,
       success(result) {
-        console.log(result)
+       // console.log(result)
         wx.showModal({
           title: '提示',
           content: '二维码海报已存入手机相册，赶快分享到朋友圈吧',
@@ -761,14 +761,14 @@ Page({
       fail: function (err) {
         console.log(err);
         if (err.errMsg === "saveImageToPhotosAlbum:fail auth deny") {
-          console.log("再次发起授权");
+         // console.log("再次发起授权");
           wx.showModal({
             title: '用户未授权',
             content: '如需保存海报图片到相册，需获取授权.是否在授权管理中选中“保存到相册”?',
             showCancel: true,
             success: function (res) {
               if (res.confirm) {
-                console.log('用户点击确定')
+               // console.log('用户点击确定')
                 wx.openSetting({
                   success: function success(res) {
                     console.log('打开设置', res.authSetting);

@@ -224,7 +224,7 @@ Page({
         height: that.data.canvasHeight,
         canvasId: 'shareCanvas',
         success: function (res) {
-          console.log(res.tempFilePath);
+          //console.log(res.tempFilePath);
           that.setData({
             showCanvasFlag: false,
             isShowPoster: true,
@@ -306,7 +306,7 @@ Page({
       secretKey: secretKey
     }).get()
 
-    console.log('getShareData', info)
+    //console.log('getShareData', info)
 
     if (info.data.length != 0) {
       //给群主发消息，有人加入
@@ -340,7 +340,7 @@ Page({
         }
       }).then(res => {
         myApi.getGroupsList(openId)
-        console.log(res)
+        //console.log(res)
       })
       this.setData({
         GroupsList,
@@ -478,7 +478,7 @@ Page({
               wx.showToast({
                 title: '删除成功',
               });
-              console.log(res)
+             // console.log(res)
             })
           } else {
             groupsList.doc(id).update({
@@ -489,7 +489,7 @@ Page({
               wx.showToast({
                 title: '退出成功',
               });
-              console.log(res)
+             // console.log(res)
             })
             wx.setStorageSync('Joined_GroupsList', GroupsList);
           }

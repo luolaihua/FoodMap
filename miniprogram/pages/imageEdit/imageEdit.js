@@ -75,7 +75,7 @@ Page({
            */
           console.log("[info]:云端检测成功 ", res)
           if (res.result) {
-            console.log(action)
+           // console.log(action)
             switch(action){
               case 'editUserAvatar':
                 that.updateUserAvatar(imgSrc,openId)
@@ -90,7 +90,7 @@ Page({
               title: '图片内容未通过安全检测，请重新选择图片',
             })
           }
-          console.log(res.result)
+         // console.log(res.result)
         }).catch(err => {
           wx.hideLoading();
           console.error("[error]:函数调用错误", err)
@@ -113,7 +113,7 @@ Page({
       filePath: imgSrc,
       cloudPath: "groupAvatar/AVATAR_"+new Date().getTime()+'.png'
     }).then(res => {
-      console.log('groupAvatarUrl',res)
+    //  console.log('groupAvatarUrl',res)
       const eventChannel = that.getOpenerEventChannel()
       eventChannel.emit('getAvatar', {avatarUrl: res.fileID});
       // wx.setStorageSync('groupAvatarUrl', res.fileID);
@@ -152,8 +152,8 @@ Page({
   },
   onLoad: function (options) {
     var action = options.action
-    console.log('options',options)
-    console.log('options',action)
+    // console.log('options',options)
+    // console.log('options',action)
     if(action!=''&&action!=undefined){
       this.setData({
         action
@@ -163,15 +163,15 @@ Page({
     this.cropper.upload(); //上传图片
   },
   cropperload(e) {
-    console.log('cropper加载完成');
+    //console.log('cropper加载完成');
   },
   loadimage(e) {
     wx.hideLoading();
-    console.log('图片');
+    //console.log('图片');
     this.cropper.imgReset();
   },
   clickcut(e) {
-    console.log(e.detail);
+    //console.log(e.detail);
     //图片预览
     wx.previewImage({
       current: e.detail.url, // 当前显示图片的http链接
@@ -339,12 +339,12 @@ Page({
       sizeType: ['compressed'], // original 原图，compressed 压缩图，默认二者都有
       sourceType: ['album', 'camera'], // album 从相册选图，camera 使用相机，默认二者都有
       success: function (res) {
-        console.log(res)
+       // console.log(res)
         tempPath = res.tempFilePaths[0]
         wx.getImageInfo({
           src: tempPath,
           success: (result) => {
-            console.log(result)
+           // console.log(result)
             wx.getFileSystemManager().readFile({
               filePath: tempPath, //选择图片返回的相对路径
               encoding: 'base64', //编码格式
@@ -357,7 +357,7 @@ Page({
                     file: res.data
                   },
                   success(_res) {
-                    console.log(_res)
+                   // console.log(_res)
                   },
                   fail(_res) {
                     console.log(_res)

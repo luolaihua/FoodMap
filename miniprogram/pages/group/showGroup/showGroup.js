@@ -143,7 +143,7 @@ Page({
   onLoad: function (options) {
     var groupId = options.groupId
     var type = options.type
-    console.log(options)
+    //console.log(options)
     wx.showLoading({
       title: '加载中',
     });
@@ -191,7 +191,7 @@ Page({
       var membersList = group.membersList
       if (membersList.length > 0) {
         var membersDetail = await myApi.getMembersDetail(membersList)
-        console.log(membersDetail)
+       // console.log(membersDetail)
       }
       group.stores.forEach((store) => {
         //先判断群主的信息

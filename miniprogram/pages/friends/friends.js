@@ -42,7 +42,7 @@ Page({
         friendsList[index].stores = storesCloud
         friendsList[index].avatarUrl = info.data[0].info.avatarUrl
         friendsList[index].nickName = info.data[0].info.nickName
-        console.log(friendsList)
+       // console.log(friendsList)
         myApi.updateUserInfo(friendsList, 'friendsList')
         //wx.setStorageSync('friendsList', friendsList);
         this.setData({
@@ -239,7 +239,7 @@ Page({
 
     }
     wx.hideLoading();
-    console.log('getShareData', info)
+    //console.log('getShareData', info)
     //如果数据存在,就存入朋友列表
     if (info.data.length != 0) {
       var nickName = wx.getStorageSync('nickName')
@@ -327,7 +327,7 @@ Page({
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.shareCode) {
       var shareCode = options.shareCode
-      console.log(shareCode)
+      //console.log(shareCode)
       this.setData({
         friendsList,
         shareCode

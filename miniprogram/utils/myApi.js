@@ -90,7 +90,7 @@ async function doImgSecCheck(ImageUrl, type) {
       "Extra": ""
     },
   })
-  console.log(res)
+  //console.log(res)
   if (Object.keys(res.data.Response).length < 3) {
     return true
   } else {
@@ -413,14 +413,16 @@ async function updateUserInfo(data, type) {
     default:
       break;
   }
-  console.log(openId, "-->", type, data)
+  //console.log(openId, "-->", type, data)
+  console.log( "更新-->", type)
   var res = await userInfo.where({
     openId: openId
   }).update({
     data: updateData
   })
 
-  console.log("更新完成", res)
+  //console.log("更新完成", res)
+  console.log("更新完成UserInfo")
 
 }
 /**
@@ -513,7 +515,8 @@ async function updateGroupsList(data, type, id) {
 
   var openId = wx.getStorageSync('openId')
   getGroupsList(openId)
-  console.log("更新完成GroupsList", res)
+  //console.log("更新完成GroupsList", res)
+  console.log("更新完成GroupsList")
 }
 /**
  * 请求发送订阅消息
@@ -535,7 +538,7 @@ function requestSendMsg(type) {
   wx.requestSubscribeMessage({
     tmplIds: tmplIds,
     success(res) {
-      console.log(res)
+     // console.log(res)
     }
   })
 }

@@ -276,7 +276,7 @@ Page({
         height: that.data.canvasHeight,
         canvasId: 'shareCanvas',
         success: function (res) {
-          console.log(res.tempFilePath);
+          //console.log(res.tempFilePath);
           that.setData({
             showCanvasFlag: false,
             isShowPoster: true,
@@ -385,7 +385,7 @@ Page({
       for (let index = 0; index < shareIndexList.length; index++) {
         shareList.push(stores[shareIndexList[index]])
       }
-      console.log('shareList', shareList)
+     // console.log('shareList', shareList)
 
       switch (friendsIndex) {
         //解决 重复导入问题
@@ -400,7 +400,7 @@ Page({
           var stores = group.stores
           //将导入的店铺放在最前面
           stores = shareList.concat(stores)
-          console.log(stores)
+         // console.log(stores)
 
           await myApi.updateGroupsList(stores, 'stores', groupId)
           wx.showToast({
@@ -422,7 +422,7 @@ Page({
           var stores = group.stores
           //stores = stores.concat(shareList)
           stores = shareList.concat(stores)
-          console.log(stores)
+         // console.log(stores)
 
           await myApi.updateGroupsList(stores, 'stores', groupId)
 
@@ -456,7 +456,7 @@ Page({
             },
             success: function (res) {
               // res 是一个对象，其中有 _id 字段标记刚创建的记录的 id
-              console.log(res)
+             // console.log(res)
               that.createPoster(instantShareCode, shareList)
               that.setData({
                 shareCode: instantShareCode
@@ -530,7 +530,7 @@ Page({
         shareIndexList.push(index)
       });
     }
-    console.log(shareIndexList)
+   // console.log(shareIndexList)
     this.setData({
       shareIndexList,
       isChooseAll
@@ -655,7 +655,8 @@ Page({
     var friendsIndex = options.friendsIndex
     var storesArr = []
     var isAddItemToGroup = false
-    var groupId = options.groupId
+    var groupId = options.groupId==undefined?'':options.groupId
+    
     switch (friendsIndex) {
       case 'self':
         storesArr = wx.getStorageSync('storesArr')

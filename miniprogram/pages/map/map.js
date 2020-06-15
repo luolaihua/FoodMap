@@ -145,7 +145,7 @@ Page({
       randNum = Math.floor(Math.random() * whereToEatList.length)
     }
     var storeData = whereToEatList[randNum]
-    console.log(storeData)
+   // console.log(storeData)
     this.setData({
       randNum,
       storeData,
@@ -307,7 +307,7 @@ Page({
         }, 3000); */
     //decodeURIComponent() 函数可对 encodeURIComponent() 函数编码的 URI 进行解码。
     if (options.scene) {
-      console.log(options)
+     // console.log(options)
       var scene = decodeURIComponent(options.scene);
       //根据长度判断是哪个，6-永久，8-即时,4-圈子;  美食详情分享： Rc3Z8f-1588951560206-List
       if (scene.length == 6 || scene.length == 8) {
@@ -360,7 +360,7 @@ Page({
         });
       } else {
         var codeList = scene.split('-')
-        console.log(codeList)
+       // console.log(codeList)
 
         var ID = codeList[0]
         var store_id = codeList[1]
@@ -446,7 +446,7 @@ Page({
           isGetTestData:true
         }
       }).then(res => {
-        console.log(res)
+       // console.log(res)
         //云端数据不为空，本地数据为空
         shareCode = res.result.memberInfos.data[0].shareCode
         storesArr = res.result.memberInfos.data[0].stores
