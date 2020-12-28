@@ -32,4 +32,13 @@
 
 目前我们可以通过主流的社交软件如微信，QQ等发布或者分享交流自己的美食动态，但是这些社交软件是通用的发布和分享交流信息的平台，对美食的分享交流和收藏没有针对性。本次作品针对这一块设置了美食圈子功能，小程序具有丰富的特定美食社交功能，更便于好友之间进行美食动态交流。
 
+介绍视频：
+![](https://666f-food-note-map-57hku-1302312046.tcb.qcloud.la/introduction/video_demo.mp4?sign=5ffee26578846a1628a6d03c4745dc92&t=1609122792)
 
+![](https://github.com/luolaihua/FoodMap/blob/main/1.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/2.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/3.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/4.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/5.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/6.jpg)
+![](https://github.com/luolaihua/FoodMap/blob/main/7.jpg)
