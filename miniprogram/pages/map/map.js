@@ -289,6 +289,11 @@ Page({
     //判断是否初次使用
     var isShowWelcome = wx.getStorageSync('isShowWelcome');
     if (!isShowWelcome) {
+      wx.showToast({
+        title: '向左滑动可查看更多介绍',
+        icon:'none',
+        duration:2500
+      })
       wx.setStorageSync('isShowWelcome', true);
       this.setData({
         isShowWelcome: true

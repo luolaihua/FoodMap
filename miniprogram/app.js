@@ -17,12 +17,13 @@ App({
     wx.getSystemInfo({
       success: e => {
         //console.log(e)
+        /*
         if (e.platform !== 'devtools') {
           // 打开调试
           wx.setEnableDebug({
             enableDebug: true
           })
-        }
+        }*/
         this.globalData.StatusBar = e.statusBarHeight;
         this.globalData.screenHeight = e.screenHeight;
         this.globalData.screenWidth = e.screenWidth;

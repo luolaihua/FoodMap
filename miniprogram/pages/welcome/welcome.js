@@ -56,10 +56,10 @@ Page({
    */
   onShow: function () {
     wx.showToast({
-      title: '点击左上角帮助按钮，可查看使用技巧',
+      title: '点击左上角帮助按钮，可查看当前页面使用技巧，向左滑动可查看更多介绍',
       icon: 'none',
       image: '',
-      duration: 3000,
+      duration: 4000,
       mask: false,
       success: (result)=>{
         
